@@ -4,9 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Rewrite;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using System.IO;
 
 namespace AjentiMobile
 {
@@ -29,15 +31,45 @@ namespace AjentiMobile
         {
             // Add framework services.
             services.AddMvc();
-        }
+			//services.Configure<IISOptions>(options => {
+			//	options.AutomaticAuthentication = true;
+			//});
+		}
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
+			if (env.IsDevelopment())
+			{
+				app.UseDeveloperExceptionPage();
+			}
 
-            app.UseMvc();
-        }
-    }
+			app.Use(async (context, next) =>
+			{
+				await next();
+
+				if (context.Response.StatusCode == 404 &&
+					!Path.HasExtension(context.Request.Path.Value) &&
+					!context.Request.Path.Value.StartsWith("/api/"))
+				{
+					context.Request.Path = "/index.html";
+					await next();
+				}
+			});
+
+			//app.UseRuntimeInfoPage();
+			app.UseDefaultFiles();
+			app.UseStaticFiles();
+			app.UseMvc();
+
+			if (env.EnvironmentName != "Development")
+			{
+				var options = new RewriteOptions().AddRedirectToHttpsPermanent();
+				app.UseRewriter(options);
+			}
+
+		}
+	}
 }
