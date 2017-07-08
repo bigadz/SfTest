@@ -50,8 +50,8 @@ namespace AjentiMobile
 			{
 				loggerFactory.AddFile($@"D:\ADMS\Logs\Mobile${DateTime.Now.ToShortDateString()}", append: true);
 			}
-			var logger = loggerFactory.CreateLogger("Startup");
-			logger.LogDebug($"env.EnvironmentName = ${env.EnvironmentName}", env.EnvironmentName);
+			//var logger = loggerFactory.CreateLogger("Startup");
+			//logger.LogDebug($"env.EnvironmentName = ${env.EnvironmentName}", env.EnvironmentName);
 
 			app.Use(async (context, next) =>
 			{
