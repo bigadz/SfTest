@@ -41,10 +41,17 @@ namespace AjentiMobile
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
+
 			if (env.IsDevelopment())
 			{
 				app.UseDeveloperExceptionPage();
 			}
+			else
+			{
+				loggerFactory.AddFile($@"D:\ADMS\Logs\Mobile${DateTime.Now.ToShortDateString()}", append: true);
+			}
+			var logger = loggerFactory.CreateLogger("Startup");
+			logger.LogDebug($"env.EnvironmentName = ${env.EnvironmentName}", env.EnvironmentName);
 
 			app.Use(async (context, next) =>
 			{
