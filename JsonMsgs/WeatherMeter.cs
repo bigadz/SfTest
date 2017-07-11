@@ -4,8 +4,8 @@ using System.Text;
 
 namespace JsonMsgs
 {
-    public class LoginResponse
+    public class WeatherMeter
     {
-		public bool IsSuccess { get; set; }
-    }
+		List<Meter> forecasts { get; set; }
+	}
 }
