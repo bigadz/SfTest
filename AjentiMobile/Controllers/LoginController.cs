@@ -38,17 +38,26 @@ namespace AjentiMobile.Controllers
 		[NonAction]
 		public AccountLoginResponse GetUserDetails(string token, int appId, DTOAccount account)
 		{
+			logger.LogInformation("GetUserDetails");
 			var user = AdmsApi.AccountManagement.GetUserDetails(account.AccountId);
+			logger.LogInformation("GetUserDetails user");
 			var securityUser = AdmsApi.AccountManagement.GetSecurityUser(account.Username);
+			logger.LogInformation("GetUserDetails securityUser");
 			var subscriptions = AdmsApi.InstallationManagement.GetInstallationsBySubscription(account.AccountId);
+			logger.LogInformation("GetUserDetails subscriptions");
 			var security = AdmsApi.AccountManagement.GetAccountRoles(securityUser.AccountId);
+			logger.LogInformation("GetUserDetails security");
 			var metaTags = AdmsApi.MetaData.GetMetaTagTree();
+			logger.LogInformation("GetUserDetails metaTags");
 			var usersNotifications = AdmsApi.NotificationManagement.GetAllSubscriptionsForAccount(account.AccountId, appId);
+			logger.LogInformation("GetUserDetails usersNotifications");
+			if (usersNotifications == null) logger.LogInformation("GetUserDetails usersNotifications == null");
 			var roles = new List<string>();
 			foreach (var role in security.Select(r => r.RoleName).Distinct())
 			{
 				roles.Add(role);
 			}
+			logger.LogInformation("GetUserDetails roles");
 
 			List<Location> locations = new List<Location>();
 			if (subscriptions.Count == 0)
@@ -63,6 +72,7 @@ namespace AjentiMobile.Controllers
 				var siteDashboards = this.AdmsApi.DashboardManagement.GetDashboardsForCurrentUserAndSiteTypes(
 						securityUser, subscriptions.SelectMany(l => l.SiteTypeMetaTagIds).ToList(), false);
 				locations = SetupLocations(securityUser, subscriptions, security, metaTags, siteDashboards);
+				logger.LogInformation("GetUserDetails locations");
 			}
 
 			//if (account.Username.ToLower() == "frankspaul" || account.Username.ToLower() == "clarknigel" || account.Username.ToLower() == "clis_test")
@@ -76,6 +86,7 @@ namespace AjentiMobile.Controllers
 				name = n.Name,
 				mandatory = n.Mandatory
 			});
+			logger.LogInformation("GetUserDetails notifications");
 
 			#region Setup Dashboards
 			// does the user have any dashboards??
@@ -84,6 +95,8 @@ namespace AjentiMobile.Controllers
 			{
 				var d = this.AdmsApi.DashboardManagement.GetDashboardsForUser(account.AccountId).Where(dash => dash.SiteTypeId == null).ToList();
 				dashboards = GetDashboardConfig(d);
+				logger.LogInformation("GetUserDetails dashboards");
+
 			}
 			catch (Exception ex)
 			{
