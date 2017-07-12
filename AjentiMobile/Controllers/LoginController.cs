@@ -32,13 +32,15 @@ namespace AjentiMobile.Controllers
 		public AccountLoginResponse GetUserDetails(DTOSsoToken token)
 		{
 			var account = token.Account;
+			bool accountIsNull = (account == null);
+			logger.LogInformation($"GetUserDetails (token) token.Token={token.Token}, token.AppId={token.AppId}, accountIsNull={accountIsNull}");
 			return GetUserDetails(token.Token, token.AppId, account);
 		}
 
 		[NonAction]
 		public AccountLoginResponse GetUserDetails(string token, int appId, DTOAccount account)
 		{
-			logger.LogInformation("GetUserDetails");
+			logger.LogInformation("GetUserDetails (1,2,3)");
 			var user = AdmsApi.AccountManagement.GetUserDetails(account.AccountId);
 			logger.LogInformation("GetUserDetails user");
 			var securityUser = AdmsApi.AccountManagement.GetSecurityUser(account.Username);
