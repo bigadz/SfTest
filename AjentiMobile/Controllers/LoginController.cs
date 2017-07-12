@@ -509,7 +509,7 @@ namespace AjentiMobile.Controllers
 				{
 					logger.LogInformation("Bg thread.");
 					var token = AdmsApi.AccountManagement.GenerateAppAuthenticationToken(
-						login.username, login.password, string.IsNullOrEmpty(login.appname) ? "Ajenti" : login.appname,
+						login.username, login.password, string.IsNullOrEmpty(login.appname) ? "AjentiExplorer" : login.appname,
 						(int)TimeSpan.FromDays(10).TotalSeconds);
 					logger.LogInformation("Token created.");
 
