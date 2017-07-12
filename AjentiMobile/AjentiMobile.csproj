@@ -9,9 +9,10 @@
     <Content Include="wwwroot\index.html" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="AdmsApi" Version="1.0.8" />
-    <PackageReference Include="AdmsCommon" Version="6.1.680.16489" />
+    <PackageReference Include="AdmsApi" Version="6.3.1" />
+    <PackageReference Include="AdmsCommon" Version="6.3.1" />
     <PackageReference Include="Common.Logging.Log4Net1213" Version="3.3.1" />
+    <PackageReference Include="FileShareApi" Version="6.3.1" />
     <PackageReference Include="log4net" Version="2.0.8" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.1.0" />
     <PackageReference Include="Microsoft.AspNetCore" Version="1.1.2" />
@@ -25,8 +26,8 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.BrowserLink" Version="1.1.2" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="1.1.1" />
     <PackageReference Include="NReco.Logging.File" Version="1.0.1" />
-    <PackageReference Include="RDSAPI" Version="2.0.0" />
-    <PackageReference Include="TimeSeriesApi" Version="6.1.680.16489" />
+    <PackageReference Include="RDSAPI" Version="6.3.1" />
+    <PackageReference Include="TimeSeriesApi" Version="6.3.1" />
   </ItemGroup>
   <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="1.0.1" />

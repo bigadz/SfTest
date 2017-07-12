@@ -44,6 +44,8 @@ namespace AjentiMobile.Controllers
 			DTOUserDetails user = null;
 			try
 			{
+				bool hasAccountManagement = AdmsApi.AccountManagement != null;
+				logger.LogInformation($"AdmsApi.AccountManagement = {hasAccountManagement}");
 				user = AdmsApi.AccountManagement.GetUserDetails(account.AccountId);
 			}
 			catch (Exception ex)

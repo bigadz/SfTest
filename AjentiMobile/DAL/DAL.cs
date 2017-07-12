@@ -49,6 +49,9 @@ namespace AjentiMobile
 				DashboardManagement = new DashboardManagement() { ConnectionString = connectionString },
 				WorkflowManagement = new WorkflowManagement() { ConnectionString = connectionString },
 				LedgerManagement = new LedgerManagement() { ConnectionString = connectionString },
+				NotificationManagement = new NotificationManagement() { ConnectionString = connectionString },
+				SecurityDisabled = false,
+				
 				//FileManagement = new FileManagement() { ConnectionString = connectionString }
 			};
 			admsApi.AdmsApi = admsApi; // What the?
