@@ -40,8 +40,27 @@ namespace AjentiMobile.Controllers
 		[NonAction]
 		public AccountLoginResponse GetUserDetails(string token, int appId, DTOAccount account)
 		{
-			logger.LogInformation("GetUserDetails (1,2,3)");
-			var user = AdmsApi.AccountManagement.GetUserDetails(account.AccountId);
+			logger.LogInformation($"GetUserDetails (1,2,3) account.AccountId={account.AccountId}");
+			DTOUserDetails user = null;
+			try
+			{
+				user = AdmsApi.AccountManagement.GetUserDetails(account.AccountId);
+			}
+			catch (Exception ex)
+			{
+				logger.LogError($"AdmsApi.AccountManagement.GetUserDetails by AccountId failed = {ex.Message}");
+
+				try
+				{
+					user = AdmsApi.AccountManagement.GetUserDetails(account.Username);
+				}
+				catch (Exception ex2)
+				{
+					logger.LogError($"AdmsApi.AccountManagement.GetUserDetails by Username also failed = {ex2.Message}");
+					throw ex;
+				}
+			}
+
 			logger.LogInformation("GetUserDetails user");
 			var securityUser = AdmsApi.AccountManagement.GetSecurityUser(account.Username);
 			logger.LogInformation("GetUserDetails securityUser");
