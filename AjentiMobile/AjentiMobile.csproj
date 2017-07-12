@@ -6,6 +6,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="app.config" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="dev.web.config" />
     <Content Include="wwwroot\index.html" />
   </ItemGroup>
   <ItemGroup>
