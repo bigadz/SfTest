@@ -501,13 +501,17 @@ namespace AjentiMobile.Controllers
 
 			AccountLoginResponse response = new AccountLoginResponse();
 
+			logger.LogInformation("New response created.");
+
 			await Task.Run(() => 
 			{
 				try
 				{
+					logger.LogInformation("Bg thread.");
 					var token = AdmsApi.AccountManagement.GenerateAppAuthenticationToken(
 						login.username, login.password, string.IsNullOrEmpty(login.appname) ? "Ajenti" : login.appname,
 						(int)TimeSpan.FromDays(10).TotalSeconds);
+					logger.LogInformation("Token created.");
 
 					if (token == null)
 					{
