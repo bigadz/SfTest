@@ -461,7 +461,7 @@ namespace AjentiMobile.Controllers
 		[HttpPost]
 		public async Task<AccountLoginResponse> LoginAsync([FromBody]AccountLoginRequest login)
 		{
-			logger.LogInformation("LoginController.LoginAsync()");
+			logger.LogInformation($"LoginController.LoginAsync({login.username})");
 
 			AccountLoginResponse response = new AccountLoginResponse();
 
@@ -470,17 +470,19 @@ namespace AjentiMobile.Controllers
 				try
 				{
 					var token = AdmsApi.AccountManagement.GenerateAppAuthenticationToken(
-						login.username, login.password, string.IsNullOrEmpty(login.appname) ? "AjentiExplorer" : login.appname,
+						login.username, login.password, string.IsNullOrEmpty(login.appname) ? "Ajenti" : login.appname,
 						(int)TimeSpan.FromDays(10).TotalSeconds);
 
 					if (token == null)
 					{
+						logger.LogWarning("LoginController.LoginAsync token == null");
 						this.HttpContext.Response.StatusCode = 401;
 						response.result = false;
 						response.message = "Unauthorised";
 					}
 					else
 					{
+						logger.LogWarning($"LoginController.LoginAsync token == {token.Token}");
 						response = this.GetUserDetails(token);
 					}
 				}
