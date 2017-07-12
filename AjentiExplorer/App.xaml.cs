@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-
+﻿using System;
+using System.Collections.Generic;
 using Xamarin.Forms;
 
 namespace AjentiExplorer
@@ -21,6 +21,38 @@ namespace AjentiExplorer
                 DependencyService.Register<CloudDataStore>();
 
             SetMainPage();
+
+            var loginCreds = new JsonMsgs.AccountLoginRequest
+			{
+				username = "crosera",
+				password = "notmypassword",
+			};
+			var body = Newtonsoft.Json.JsonConvert.SerializeObject(loginCreds);
+            var mobileAjentiApi = new Services.MobileAjentiApi("Prod");
+			System.Threading.Tasks.Task.Run(async () =>
+			{
+				string response;
+				try
+				{
+                    response = await mobileAjentiApi.PostAsync("/Login", body);
+					try
+					{
+						var loggedIn = Newtonsoft.Json.JsonConvert.DeserializeObject<JsonMsgs.AccountLoginResponse>(response);
+						bool success = loggedIn.result;
+						string token = loggedIn.token;
+					}
+					catch (Exception ex)
+					{
+						string m = ex.Message;
+					}
+                }
+				catch (ApplicationException appEx)
+				{
+					string m = appEx.Message;
+				}
+
+ 
+			});
         }
 
         public static void SetMainPage()
