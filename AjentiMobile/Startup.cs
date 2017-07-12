@@ -48,7 +48,7 @@ namespace AjentiMobile
 			}
 			else
 			{
-				loggerFactory.AddFile($@"D:\ADMS\Logs\Mobile${DateTime.UtcNow.ToString("yyyy-MM-dd")}.txt", append: true);
+				loggerFactory.AddFile($@"D:\ADMS\Logs\Mobile{DateTime.UtcNow.ToString("yyyy-MM-dd")}.txt", append: true);
 			}
 			//var logger = loggerFactory.CreateLogger("Startup");
 			//logger.LogDebug($"env.EnvironmentName = ${env.EnvironmentName}", env.EnvironmentName);

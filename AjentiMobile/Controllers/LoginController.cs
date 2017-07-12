@@ -65,10 +65,10 @@ namespace AjentiMobile.Controllers
 				locations = SetupLocations(securityUser, subscriptions, security, metaTags, siteDashboards);
 			}
 
-			if (account.Username.ToLower() == "frankspaul" || account.Username.ToLower() == "clarknigel" || account.Username.ToLower() == "clis_test")
-			{
-				roles.Add("Administrator");
-			}
+			//if (account.Username.ToLower() == "frankspaul" || account.Username.ToLower() == "clarknigel" || account.Username.ToLower() == "clis_test")
+			//{
+			//	roles.Add("Administrator");
+			//}
 
 			var notifications = usersNotifications.Select(n => new AppNotification()
 			{
@@ -87,7 +87,7 @@ namespace AjentiMobile.Controllers
 			}
 			catch (Exception ex)
 			{
-				logger.LogError("Failed to setup dashboards for " + account.Username, ex);
+				logger.LogError($"Failed to setup dashboards for {account.Username} - {ex.Message}");
 			}
 			#endregion
 
@@ -183,7 +183,7 @@ namespace AjentiMobile.Controllers
 					}
 					catch (Exception ex)
 					{
-						logger.LogError($"Failed to setup dashboards for site {l.InstallationId}", ex);
+						logger.LogError($"Failed to setup dashboards for site {l.InstallationId} - {ex.Message}");
 					}
 					#endregion
 
@@ -205,7 +205,7 @@ namespace AjentiMobile.Controllers
 							}
 							catch (Exception debugEx)
 							{
-								logger.LogWarning("Error generating debug output", debugEx);
+								logger.LogWarning($"Error generating debug output {debugEx.Message}");
 							}
 						}
 					}
@@ -431,7 +431,7 @@ namespace AjentiMobile.Controllers
 				}
 				catch (Exception ex)
 				{
-					logger.LogError($"Failed to setup location {ssg.Key}", ex);
+					logger.LogError($"Failed to setup location {ssg.Key} - {ex.Message}");
 				}
 			}
 			#endregion
@@ -482,13 +482,13 @@ namespace AjentiMobile.Controllers
 					}
 					else
 					{
-						logger.LogWarning($"LoginController.LoginAsync token == {token.Token}");
+						logger.LogInformation($"LoginController.LoginAsync token == {token.Account.Name}");
 						response = this.GetUserDetails(token);
 					}
 				}
 				catch (Exception ex)
 				{
-					logger.LogError($"Failed to Login {login.username}", ex);
+					logger.LogError($"Failed to Login {login.username} - {ex.Message}");
 					response.result = false;
 					response.message = "Error During Login Attempt";
 				}
