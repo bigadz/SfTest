@@ -10,6 +10,7 @@ using adms.admscommon.dto;
 using adms.database.api;
 using common.security;
 using common.utilities;
+using log4net;
 
 namespace AjentiMobile.Controllers
 {
@@ -20,12 +21,18 @@ namespace AjentiMobile.Controllers
 #region Plumbing
 		private ILogger logger;
 		private AdmsApi AdmsApi;
+		private ILog log4netLogger = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
 		public LoginController(ILogger<LoginController> logger)
 		{
 			// Store the direct injection
 			this.logger = logger;
+
+			logger.LogInformation("Performing first log4net log");
+			log4netLogger.Info("LoginController()");
+			logger.LogInformation("Created log4net log");
 			this.AdmsApi = DAL.GetAdmsApi();
+			logger.LogInformation("AdmsApi created");
 		}
 		#endregion Plumbing
 
@@ -503,17 +510,17 @@ namespace AjentiMobile.Controllers
 
 			logger.LogInformation("New response created.");
 
-			try
-			{
-				logger.LogInformation("AdmsApi.Start()");
-				this.AdmsApi.Start();
-				logger.LogInformation("started.");
-			}
-			catch (Exception ex)
-			{
-				logger.LogError($"Failed to start AdmsApi. Reason: {ex.Message}");
-				return response;
-			}
+			//try
+			//{
+			//	logger.LogInformation("AdmsApi.Start()");
+			//	this.AdmsApi.Start();
+			//	logger.LogInformation("started.");
+			//}
+			//catch (Exception ex)
+			//{
+			//	logger.LogError($"Failed to start AdmsApi. Reason: {ex.Message}");
+			//	return response;
+			//}
 
 			await Task.Run(() => 
 			{
