@@ -503,6 +503,18 @@ namespace AjentiMobile.Controllers
 
 			logger.LogInformation("New response created.");
 
+			try
+			{
+				logger.LogInformation("AdmsApi.Start()");
+				this.AdmsApi.Start();
+				logger.LogInformation("started.");
+			}
+			catch (Exception ex)
+			{
+				logger.LogError($"Failed to start AdmsApi. Reason: {ex.Message}");
+				return response;
+			}
+
 			await Task.Run(() => 
 			{
 				try
