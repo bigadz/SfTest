@@ -10,6 +10,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System.IO;
 
+using log4net;
+using log4net.Config;
+
 namespace AjentiMobile
 {
     public class Startup
@@ -22,9 +25,13 @@ namespace AjentiMobile
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables();
             Configuration = builder.Build();
-        }
 
-        public IConfigurationRoot Configuration { get; }
+			// ADMS Set up code
+			ILog log4netLogger = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+			BasicConfigurator.Configure();
+		}
+
+		public IConfigurationRoot Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
