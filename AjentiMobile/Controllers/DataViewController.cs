@@ -960,6 +960,47 @@ namespace AjentiMobile.Controllers
 			return response;
 		}
 
+		// POST https://mobile.ajenti.com.au/api/dataview/recordlocation
+		/// <summary>
+		/// Records the user's current location, asynchronously.
+		/// </summary>
+		/// <param name="request">The request.</param>
+		/// <returns></returns>
+		[HttpPost]
+		public async Task<BaseResponse> RecordLocationAsync([FromBody]RecordLocationRequest request)
+		{
+			var response = new BaseResponse();
+
+			await Task.Run(() =>
+			{
+				try
+				{
+					logger.LogInformation("DataView.RecordLocation()");
+					var account = this.AuthenticateToken(request.token);
+					if (account == null)
+					{
+						this.HttpContext.Response.StatusCode = 401;
+						response.result = false;
+						response.message = "User not Authenticated";
+					}
+					else
+					{
+						this.AdmsApi.AccountManagement.TrackCurrentUser(request.latitude, request.longitude);
+						response.result = true;
+					}
+				}
+				catch (Exception ex)
+				{
+					this.HttpContext.Response.StatusCode = 406;
+					response.result = false;
+					response.message = $"Failed To Record Location - {ex.Message}";
+					logger.LogError(response.message);
+				}
+			});
+
+			return response;
+		}
+
 		#endregion APIs
 
 	}
