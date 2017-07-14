@@ -24,7 +24,7 @@ namespace AjentiExplorer.Services
 			{
 				request.token = this.Token;
 				string body = JsonConvert.SerializeObject(request);
-				string jsonResponse = await this.ajentiMobileApi.PostAsync("/Login", body);
+				string jsonResponse = await this.ajentiMobileApi.PostAsync("/DataView/Login", body);
 				response = JsonConvert.DeserializeObject<BaseResponse>(jsonResponse);
 			}
 			catch (Exception ex)
@@ -58,7 +58,21 @@ namespace AjentiExplorer.Services
 
         public async Task<AccountLoginResponse> LoginAsync(AccountLoginRequest login)
         {
-            throw new NotImplementedException();
+			AccountLoginResponse response = null;
+
+			try
+			{
+				string body = JsonConvert.SerializeObject(login);
+				string jsonResponse = await this.ajentiMobileApi.PostAsync("/DataView/Login", body);
+				response = JsonConvert.DeserializeObject<AccountLoginResponse>(jsonResponse);
+			}
+			catch (Exception ex)
+			{
+				response.result = false;
+				response.message = $"Login failed locally - {ex.Message}";
+			}
+
+			return response;
         }
 
         public async Task<PasswordResetResponse> PasswordResetAsync(PasswordResetRequest request)
