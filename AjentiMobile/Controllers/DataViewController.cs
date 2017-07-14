@@ -877,6 +877,89 @@ namespace AjentiMobile.Controllers
 			return response;
 		}
 
+		// POST https://mobile.ajenti.com.au/api/dataview/recordsitejournal
+		/// <summary>
+		/// Stores a journal entry for the site, asynchronously.
+		/// </summary>
+		/// <param name="request">The request.</param>
+		/// <returns></returns>
+		[HttpPost]
+		public async Task<BaseResponse> RecordSiteJournalAsync([FromBody]RecordSiteJournalRequest request)
+		{
+			var response = new BaseResponse();
+
+			await Task.Run(() =>
+			{
+				try
+				{
+					logger.LogInformation("DataView.RecordSiteJournal()");
+					var account = this.AuthenticateToken(request.token);
+					if (account == null)
+					{
+						this.HttpContext.Response.StatusCode = 401;
+						response.result = false;
+						response.message = "User not Authenticated";
+					}
+					else
+					{
+						this.AdmsApi.AccountManagement.RecordSiteJournal(request.installationId, request.message, request.keepPrivate);
+						response.result = true;
+					}
+				}
+				catch (Exception ex)
+				{
+					this.HttpContext.Response.StatusCode = 406;
+					response.result = false;
+					response.message = $"Failed To Write Journal Entry - {ex.Message}";
+					logger.LogError(response.message);
+				}
+			});
+
+			return response;
+		}
+
+		// POST https://mobile.ajenti.com.au/api/dataview/getsitejournal
+		/// <summary>
+		/// Retrieves journal entries for the site, asynchronously.
+		/// </summary>
+		/// <param name="request">The request.</param>
+		/// <returns></returns>
+		[HttpPost]
+		public async Task<GetSiteJournalResponse> GetSiteJournalAsync([FromBody]GetSiteJournalRequest request)
+		{
+			var response = new GetSiteJournalResponse();
+
+			await Task.Run(() =>
+			{
+				try
+				{
+					logger.LogInformation("DataView.GetSiteJournal()");
+					var account = this.AuthenticateToken(request.token);
+					if (account == null)
+					{
+						this.HttpContext.Response.StatusCode = 401;
+						response.result = false;
+						response.message = "User not Authenticated";
+					}
+					else
+					{
+						var journal = this.AdmsApi.AccountManagement.GetSiteJournal(request.installationId, request.from, request.to);
+						response.entries = journal.Select(j => new SiteJournalEntry { time = j.TimeStamp, notes = j.Notes }).ToList();
+						response.result = true;
+					}
+				}
+				catch (Exception ex)
+				{
+					this.HttpContext.Response.StatusCode = 406;
+					response.result = false;
+					response.message = $"Failed To Retrieve Journal Entres - {ex.Message}";
+					logger.LogError(response.message);
+				}
+			});
+
+			return response;
+		}
+
 		#endregion APIs
 
 	}
