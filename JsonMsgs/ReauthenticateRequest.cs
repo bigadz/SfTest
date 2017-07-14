@@ -4,8 +4,7 @@ using System.Text;
 
 namespace JsonMsgs
 {
-    public class ReauthenticateRequest
+    public class ReauthenticateRequest: BaseRequest
     {
-		public string token { get; set; }
 	}
 }

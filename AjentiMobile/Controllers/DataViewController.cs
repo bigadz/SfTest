@@ -540,7 +540,7 @@ namespace AjentiMobile.Controllers
 			return response;
 		}
 
-		// POST https://mobile.ajenti.com.au/api/dataview/login
+		// POST https://mobile.ajenti.com.au/api/dataview/reauthenticate
 		[HttpPost]
 		public async Task<AccountLoginResponse> ReauthenticateAsync([FromBody]ReauthenticateRequest request)
 		{
@@ -564,12 +564,13 @@ namespace AjentiMobile.Controllers
 						response.result = false;
 						response.message = "Token invalid";
 					}
-
-					// get the authorisation details
-					response = this.GetUserDetails(request.token, user.AppId, AdmsApi.AccountManagement.GetAccountId(user.AccountId));
-					response.result = true;
-
-					logger.LogInformation($"DataView.Reauthenticate() - Success - {response.username} has returned");
+					else
+					{
+						// get the authorisation details
+						response = this.GetUserDetails(request.token, user.AppId, AdmsApi.AccountManagement.GetAccountId(user.AccountId));
+						response.result = true;
+						logger.LogInformation($"DataView.Reauthenticate() - Success - {response.username} has returned");
+					}
 				}
 				catch (Exception ex)
 				{
@@ -584,6 +585,46 @@ namespace AjentiMobile.Controllers
 
 		}
 
+		// POST https://mobile.ajenti.com.au/api/dataview/changepassword
+		[HttpPost]
+		public async Task<BaseResponse> ChangePasswordAsync([FromBody]ChangePasswordRequest request)
+		{
+			BaseResponse response = new BaseResponse();
+
+			await Task.Run(() =>
+			{
+				try
+				{
+					logger.LogInformation("DataView.ChangePassword()");
+
+					// authenticate the user - make sure the session is authenticated
+					var user = AdmsApi.AccountManagement.ValidateAuthenticationToken(request.token);
+					if (user == null)
+					{
+						logger.LogWarning($"DataView.Reauthenticate({request.token}) - Token Authentication Failed");
+						this.HttpContext.Response.StatusCode = 401;
+						response.result = false;
+						response.message = "Token invalid";
+					}
+					else
+					{
+						// get the authorisation details
+						response.result = this.AdmsApi.AccountManagement.ChangePasswordForUser(user.AccountId, request.oldPassword, request.newPassword);
+						response.message = response.result ? "Password Changed Successfully" : "Password Change Failed";
+						logger.LogInformation($"DataView.ChangePassword() - Success - {response.result} has returned");
+					}
+
+				}
+				catch (Exception ex)
+				{
+					logger.LogError($"Failed to Login {request.token} - {ex.Message}");
+					response.result = false;
+					response.message = "Error during ChangePassword attempt";
+				}
+			});
+
+			return response;
+		}
 
 		#endregion APIs
 
