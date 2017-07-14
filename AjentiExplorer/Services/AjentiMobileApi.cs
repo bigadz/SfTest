@@ -5,13 +5,13 @@ using System.Threading.Tasks;
 
 namespace AjentiExplorer.Services
 {
-    public class MobileAjentiApi
+    public class AjentiMobileApi
     {
 		private HttpClient client;
 		private Dictionary<string, string> baseUrls = new Dictionary<string, string>();
 		private string baseUrl;
 
-		public MobileAjentiApi(string env)
+		public AjentiMobileApi(string env)
 		{
 			this.baseUrls["Prod"] = "https://mobile.ajenti.com.au/";
 			this.baseUrl = this.baseUrls[env];
