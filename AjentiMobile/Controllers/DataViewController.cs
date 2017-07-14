@@ -501,6 +501,11 @@ namespace AjentiMobile.Controllers
 		#region APIs
 
 		// POST https://mobile.ajenti.com.au/api/dataview/login
+		/// <summary>
+		/// Login asynchronously.
+		/// </summary>
+		/// <param name="login">The login.</param>
+		/// <returns></returns>
 		[HttpPost]
 		public async Task<AccountLoginResponse> LoginAsync([FromBody]AccountLoginRequest login)
 		{
@@ -541,6 +546,11 @@ namespace AjentiMobile.Controllers
 		}
 
 		// POST https://mobile.ajenti.com.au/api/dataview/reauthenticate
+		/// <summary>
+		/// Reauthenticates asynchronously.
+		/// </summary>
+		/// <param name="request">The request.</param>
+		/// <returns></returns>
 		[HttpPost]
 		public async Task<AccountLoginResponse> ReauthenticateAsync([FromBody]ReauthenticateRequest request)
 		{
@@ -586,6 +596,11 @@ namespace AjentiMobile.Controllers
 		}
 
 		// POST https://mobile.ajenti.com.au/api/dataview/changepassword
+		/// <summary>
+		/// Changes the password asynchronously.
+		/// </summary>
+		/// <param name="request">The request.</param>
+		/// <returns></returns>
 		[HttpPost]
 		public async Task<BaseResponse> ChangePasswordAsync([FromBody]ChangePasswordRequest request)
 		{
@@ -625,6 +640,39 @@ namespace AjentiMobile.Controllers
 
 			return response;
 		}
+
+		// POST https://mobile.ajenti.com.au/api/dataview/passwordreset
+		/// <summary>
+		/// Resets the password asynchronously.
+		/// </summary>
+		/// <param name="request">The request.</param>
+		/// <returns></returns>
+		[HttpPost]
+		public async Task<PasswordResetResponse> PasswordResetAsync([FromBody]PasswordResetRequest request)
+		{
+			PasswordResetResponse response = new PasswordResetResponse();
+
+			await Task.Run(() =>
+			{
+				try
+				{
+					logger.LogInformation("DataView.ResetPassword()");
+
+					response.token = this.AdmsApi.AccountManagement.ResetPasswordForUser(request.emailAddress);
+					logger.LogInformation($"DataView.ResetPassword() - Success - token {response.token}");
+
+					response.result = !string.IsNullOrEmpty(response.token);
+					response.message = response.result ? "Password Reset Successful" : "Password Reset Failed";
+				}
+				catch (Exception ex)
+				{
+					logger.LogError($"Failed to reset password for {request.emailAddress} - {ex.Message}");
+					response.result = false;
+					response.message = "Error during ResetPassword attempt";
+				}
+			});
+
+			return response;
 
 		#endregion APIs
 
