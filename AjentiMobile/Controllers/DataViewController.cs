@@ -537,7 +537,7 @@ namespace AjentiMobile.Controllers
 		/// </summary>
 		/// <param name="login">The login.</param>
 		/// <returns></returns>
-		[HttpPost]
+		[HttpPost("Login", Name = "Login")]
 		public async Task<AccountLoginResponse> LoginAsync([FromBody]AccountLoginRequest login)
 		{
 			logger.LogInformation($"LoginController.LoginAsync({login.username})");
@@ -580,7 +580,7 @@ namespace AjentiMobile.Controllers
 		/// </summary>
 		/// <param name="request">The request.</param>
 		/// <returns></returns>
-		[HttpPost]
+		[HttpPost("Reauthenticate", Name = "Reauthenticate")]
 		public async Task<AccountLoginResponse> ReauthenticateAsync([FromBody]ReauthenticateRequest request)
 		{
 			var response = new AccountLoginResponse();
@@ -630,7 +630,7 @@ namespace AjentiMobile.Controllers
 		/// </summary>
 		/// <param name="request">The request.</param>
 		/// <returns></returns>
-		[HttpPost]
+		[HttpPost("ChangePassword", Name = "ChangePassword")]
 		public async Task<BaseResponse> ChangePasswordAsync([FromBody]ChangePasswordRequest request)
 		{
 			var response = new BaseResponse();
@@ -676,7 +676,7 @@ namespace AjentiMobile.Controllers
 		/// </summary>
 		/// <param name="request">The request.</param>
 		/// <returns></returns>
-		[HttpPost]
+		[HttpPost("PasswordReset", Name = "PasswordReset")]
 		public async Task<PasswordResetResponse> PasswordResetAsync([FromBody]PasswordResetRequest request)
 		{
 			var response = new PasswordResetResponse();
@@ -712,7 +712,7 @@ namespace AjentiMobile.Controllers
 		/// </summary>
 		/// <param name="request">The request.</param>
 		/// <returns></returns>
-		[HttpPost]
+		[HttpPost("GetCameraImageLinks", Name = "GetCameraImageLinks")]
 		public async Task<GetCameraImageLinksResponse> GetCameraImageLinksAsync([FromBody]GetCameraImageLinksRequest request)
 		{
 			var response = new GetCameraImageLinksResponse();
@@ -785,7 +785,7 @@ namespace AjentiMobile.Controllers
 		/// </summary>
 		/// <param name="request">The request.</param>>
 		/// <returns></returns>
-		[HttpPost]
+		[HttpPost("InstallationSearch", Name = "InstallationSearch")]
 		public async Task<InstallationSearchResponse> InstallationSearchAsync([FromBody]InstallationSearchRequest request)
 		{
 			var response = new InstallationSearchResponse();
@@ -834,7 +834,7 @@ namespace AjentiMobile.Controllers
 		/// </summary>
 		/// <param name="request">The request.</param>>
 		/// <returns></returns>
-		[HttpPost]
+		[HttpPost("InstallationsInRange", Name = "InstallationsInRange")]
 		public async Task<InstallationsInRangeResponse> InstallationsInRangeAsync([FromBody]InstallationsInRangeRequest request)
 		{
 			var response = new InstallationsInRangeResponse();
@@ -883,7 +883,7 @@ namespace AjentiMobile.Controllers
 		/// </summary>
 		/// <param name="request">The request.</param>
 		/// <returns></returns>
-		[HttpPost]
+		[HttpPost("RecordSiteJournal", Name = "RecordSiteJournal")]
 		public async Task<BaseResponse> RecordSiteJournalAsync([FromBody]RecordSiteJournalRequest request)
 		{
 			var response = new BaseResponse();
@@ -924,7 +924,7 @@ namespace AjentiMobile.Controllers
 		/// </summary>
 		/// <param name="request">The request.</param>
 		/// <returns></returns>
-		[HttpPost]
+		[HttpPost("GetSiteJournal", Name = "GetSiteJournal")]
 		public async Task<GetSiteJournalResponse> GetSiteJournalAsync([FromBody]GetSiteJournalRequest request)
 		{
 			var response = new GetSiteJournalResponse();
@@ -966,7 +966,7 @@ namespace AjentiMobile.Controllers
 		/// </summary>
 		/// <param name="request">The request.</param>
 		/// <returns></returns>
-		[HttpPost]
+		[HttpPost("RecordLocation", Name = "RecordLocation")]
 		public async Task<BaseResponse> RecordLocationAsync([FromBody]RecordLocationRequest request)
 		{
 			var response = new BaseResponse();
