@@ -542,9 +542,7 @@ namespace AjentiMobile.Controllers
 		{
 			logger.LogInformation($"LoginController.LoginAsync({login.username})");
 
-			AccountLoginResponse response = new AccountLoginResponse();
-
-			logger.LogInformation("New response created.");
+			var response = new AccountLoginResponse();
 
 			await Task.Run(() =>
 			{
@@ -585,7 +583,7 @@ namespace AjentiMobile.Controllers
 		[HttpPost]
 		public async Task<AccountLoginResponse> ReauthenticateAsync([FromBody]ReauthenticateRequest request)
 		{
-			AccountLoginResponse response = new AccountLoginResponse();
+			var response = new AccountLoginResponse();
 
 			logger.LogInformation("New response created.");
 
@@ -635,7 +633,7 @@ namespace AjentiMobile.Controllers
 		[HttpPost]
 		public async Task<BaseResponse> ChangePasswordAsync([FromBody]ChangePasswordRequest request)
 		{
-			BaseResponse response = new BaseResponse();
+			var response = new BaseResponse();
 
 			await Task.Run(() =>
 			{
@@ -681,7 +679,7 @@ namespace AjentiMobile.Controllers
 		[HttpPost]
 		public async Task<PasswordResetResponse> PasswordResetAsync([FromBody]PasswordResetRequest request)
 		{
-			PasswordResetResponse response = new PasswordResetResponse();
+			var response = new PasswordResetResponse();
 
 			await Task.Run(() =>
 			{
@@ -717,7 +715,7 @@ namespace AjentiMobile.Controllers
 		[HttpPost]
 		public async Task<GetCameraImageLinksResponse> GetCameraImageLinksAsync([FromBody]GetCameraImageLinksRequest request)
 		{
-			GetCameraImageLinksResponse response = new GetCameraImageLinksResponse();
+			var response = new GetCameraImageLinksResponse();
 
 			await Task.Run(() =>
 			{
@@ -780,8 +778,106 @@ namespace AjentiMobile.Controllers
 
 			return response;
 		}
-		
+
+		// POST https://mobile.ajenti.com.au/api/dataview/installationsearch
+		/// <summary>
+		/// Search for installations asynchronously.
+		/// </summary>
+		/// <param name="request">The request.</param>>
+		/// <returns></returns>
+		[HttpPost]
+		public async Task<InstallationSearchResponse> InstallationSearchAsync([FromBody]InstallationSearchRequest request)
+		{
+			var response = new InstallationSearchResponse();
+
+			await Task.Run(() =>
+			{
+				try
+				{
+					var account = this.AuthenticateToken(request.token);
+					if (account == null)
+					{
+						this.HttpContext.Response.StatusCode = 401;
+						response.result = false;
+						response.message = "User not Authenticated";
+					}
+					else
+					{
+						logger.LogInformation($"DataView.InstallationSearch({account.AccountId})");
+
+						var roles = AdmsApi.AccountManagement.GetAccountRoles(account.AccountId);
+						var metaTags = AdmsApi.MetaData.GetMetaTagTree();
+						// search for the installations, make sure security is applied
+						var installations = AdmsApi.InstallationManagement.GetInstallationDetailsBySearch(request.searchStr, account);
+						var dashboards = AdmsApi.DashboardManagement.GetDashboardsForCurrentUserAndSiteTypes(account,
+							installations.SelectMany(i => i.SiteTypeMetaTagIds).ToList(), false);
+						// setup the location objects, and filter out time series that should not be visible
+						response.results = SetupLocations(account, installations, roles, metaTags, dashboards);
+						response.result = true;
+					}
+				}
+				catch (Exception ex)
+				{
+					this.HttpContext.Response.StatusCode = 406;
+					response.result = false;
+					response.message = $"DataView.InstallationSearch failed for '{request.searchStr}' - {ex.Message}";
+					logger.LogError(response.message);
+				}
+			});
+
+			return response;
+		}
+
+		// POST https://mobile.ajenti.com.au/api/dataview/installationsinrange
+		/// <summary>
+		/// Find installations within a given radius, asynchronously.
+		/// </summary>
+		/// <param name="request">The request.</param>>
+		/// <returns></returns>
+		[HttpPost]
+		public async Task<InstallationsInRangeResponse> InstallationsInRangeAsync([FromBody]InstallationsInRangeRequest request)
+		{
+			var response = new InstallationsInRangeResponse();
+
+			await Task.Run(() =>
+			{
+				try
+				{
+					var account = this.AuthenticateToken(request.token);
+					if (account == null)
+					{
+						this.HttpContext.Response.StatusCode = 401;
+						response.result = false;
+						response.message = "User not Authenticated";
+					}
+					else
+					{
+						logger.LogInformation($"DataView.InstallationMatch({account.AccountId})");
+
+						var roles = AdmsApi.AccountManagement.GetAccountRoles(account.AccountId);
+						var metaTags = AdmsApi.MetaData.GetMetaTagTree();
+						// search for the installations, make sure security is applied
+						var installations = AdmsApi.InstallationManagement.GetInstallationDetailsInRange(request.latitude, request.longitude, request.distance);
+						var dashboards = AdmsApi.DashboardManagement.GetDashboardsForCurrentUserAndSiteTypes(account,
+							installations.SelectMany(i => i.SiteTypeMetaTagIds).ToList(), false);
+						// setup the location objects, and filter out time series that should not be visible
+						response.results = SetupLocations(account, installations, roles, metaTags, dashboards);
+						response.result = true;
+					}
+				}
+				catch (Exception ex)
+				{
+					this.HttpContext.Response.StatusCode = 406;
+					response.result = false;
+					response.message = $"DataView.InstallationInRange failed for lat,lon={request.latitude},{request.longitude} distance={request.distance} - {ex.Message}";
+					logger.LogError(response.message);
+				}
+			});
+
+			return response;
+		}
+
 		#endregion APIs
 
-		}
 	}
+}
