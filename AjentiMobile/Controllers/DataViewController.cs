@@ -35,6 +35,37 @@ namespace AjentiMobile.Controllers
 
 		#region Implementation
 
+
+		#region Helpers
+
+		private bool UserHasFieldStaffForLicensor(SecurityUser account, int timeSeriesId)
+		{
+			var installation = this.AdmsApi.InstallationManagement.GetInstallationForTimeSeriesId(timeSeriesId, false);
+			// does the user have FieldStaff result for that installations licensor??
+			return account.IsInLicensorRole(Role.FieldStaff, installation.LicensorCode);
+		}
+
+		private SecurityUser AuthenticateToken(string token)
+		{
+			if (logger.IsEnabled(LogLevel.Debug))
+			{
+				logger.LogDebug("AuthenticateToken({0}) with AdmsApi = {1}", token, this.AdmsApi == null);
+			}
+
+			var account = this.AdmsApi.AccountManagement.ValidateAuthenticationToken(token);
+
+			System.Threading.Thread.CurrentPrincipal = account.SecurityUser;
+
+			// track what method the user is executing
+			var url = HttpContext.Request.Path;
+			this.AdmsApi.AccountManagement.TrackAppUsage(account.AccountId, url.ToString());
+
+			return account.SecurityUser;
+		}
+
+		#endregion Helpers
+
+
 		private AccountLoginResponse GetUserDetails(DTOSsoToken token)
 		{
 			var account = token.Account;
@@ -673,8 +704,84 @@ namespace AjentiMobile.Controllers
 			});
 
 			return response;
+		}
 
+
+
+		// POST https://mobile.ajenti.com.au/api/dataview/getcameraimagelinks
+		/// <summary>
+		/// Gets the camera image links asynchronously.
+		/// </summary>
+		/// <param name="request">The request.</param>
+		/// <returns></returns>
+		[HttpPost]
+		public async Task<GetCameraImageLinksResponse> GetCameraImageLinksAsync([FromBody]GetCameraImageLinksRequest request)
+		{
+			GetCameraImageLinksResponse response = new GetCameraImageLinksResponse();
+
+			await Task.Run(() =>
+			{
+				try
+				{
+					var account = this.AuthenticateToken(request.token);
+					if (account == null)
+					{
+						this.HttpContext.Response.StatusCode = 401;
+						response.result = false;
+						response.message = "User not Authenticated";
+					}
+					else
+					{
+						logger.LogInformation($"DataView.GetCameraImageLinks({account.AccountId})");
+						var uri = string.Format("share://installation/{0}", request.id);
+						var files = this.AdmsApi.FileManagement.GetFilesForFileShare(account.AccountId, uri, new List<FileFilter>()
+						{
+							new WildCardFilter()
+							{
+								Name = "camera",
+								Extension = "jpg"
+							}
+						}, 5);
+						logger.LogInformation($"Found {files.Count} cameras");
+						var imageCount = 5;
+						if (request.imagesOnDisplay != null)
+						{
+							imageCount = request.imagesOnDisplay.Value + 5;
+							response.images = files.Select(f => new CameraImage
+							{
+								name = f.FileName,
+								urls = this.AdmsApi.FileManagement.GetFileVersionsForFileId(account.AccountId, f.FileId, imageCount)
+							.Where(fv => fv.Url != null).Reverse().Take(5).Reverse()
+							.Select(fv => new CameraImageUrl { timeStamp = fv.TimeStamp, url = fv.Url }).ToList()
+							}).ToList();
+							response.result = true;
+						}
+						else
+						{
+							response.images = files.Select(f => new CameraImage
+							{
+								name = f.FileName,
+								urls = this.AdmsApi.FileManagement.GetFileVersionsForFileId(account.AccountId, f.FileId, imageCount)
+							.Where(fv => fv.Url != null)
+							.Select(fv => new CameraImageUrl { timeStamp = fv.TimeStamp, url = fv.Url }).ToList()
+							}).ToList();
+							response.result = true;
+						}
+					}
+				}
+				catch (Exception ex)
+				{
+					this.HttpContext.Response.StatusCode = 500;
+					response.result = false;
+					response.message = $"Failed to fetch Camera Image Links - {ex.Message}";
+					logger.LogError(response.message);
+				}
+			});
+
+			return response;
+		}
+		
 		#endregion APIs
 
+		}
 	}
-}
