@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,32 +11,31 @@ using adms.database.api;
 using common.security;
 using common.utilities;
 using log4net;
+using adms.esbox.configuration;
 
 namespace AjentiMobile.Controllers
 {
 	[Produces("application/json")]
-	[Route("api/Login")]
-	public class LoginController : Controller
-	{
-#region Plumbing
+	[Route("api/[controller]")]
+    public class DataViewController : Controller
+    {
+		#region Plumbing
 		private ILogger logger;
 		private AdmsApi AdmsApi;
 		private ILog log4netLogger = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-		public LoginController(ILogger<LoginController> logger)
+		public DataViewController(ILogger<DataViewController> logger)
 		{
 			// Store the direct injection
 			this.logger = logger;
 
-			logger.LogInformation("Performing first log4net log");
-			log4netLogger.Info("LoginController()");
-			logger.LogInformation("Created log4net log");
 			this.AdmsApi = DAL.GetAdmsApi();
-			logger.LogInformation("AdmsApi created");
 		}
 		#endregion Plumbing
 
-		public AccountLoginResponse GetUserDetails(DTOSsoToken token)
+		#region Implementation
+
+		private AccountLoginResponse GetUserDetails(DTOSsoToken token)
 		{
 			var account = token.Account;
 			bool accountIsNull = (account == null);
@@ -44,8 +43,7 @@ namespace AjentiMobile.Controllers
 			return GetUserDetails(token.Token, token.AppId, account);
 		}
 
-		[NonAction]
-		public AccountLoginResponse GetUserDetails(string token, int appId, DTOAccount account)
+		private AccountLoginResponse GetUserDetails(string token, int appId, DTOAccount account)
 		{
 			logger.LogInformation($"GetUserDetails (1,2,3) account.AccountId={account.AccountId}");
 			DTOUserDetails user = null;
@@ -302,35 +300,33 @@ namespace AjentiMobile.Controllers
 						}
 						var meters = new List<Meter>();
 
-						////////// We don't have access to types DTOEsBoxInstallationConfiguration and DTOEsBoxEndPoint
-						//////////
-						//foreach (var ss in ssg)
-						//{
-						//	// if the config is an EsBox, we can check if control is possible
-						//	var config = ss.InstallationConfiguration is DTOEsBoxInstallationConfiguration
-						//		? (DTOEsBoxInstallationConfiguration)ss.InstallationConfiguration
-						//		: null;
-						//	foreach (
-						//		var ts in
-						//			ss.TimeSeries.Where(ts => ts.TimeSeriesUnitAbbr == "W" && ts.TimeSeriesUnit == "Watts").OrderBy(ts => ts.TimeSeriesName))
-						//	{
-						//		var detail = config == null
-						//			? (DTOEsBoxEndPoint)null
-						//			: config.EndPoints.FirstOrDefault(e => e.LiveUri == ts.LiveUri);
+						foreach (var ss in ssg)
+						{
+							// if the config is an EsBox, we can check if control is possible
+							var config = ss.InstallationConfiguration is DTOEsBoxInstallationConfiguration
+								? (DTOEsBoxInstallationConfiguration)ss.InstallationConfiguration
+								: null;
+							foreach (
+								var ts in
+									ss.TimeSeries.Where(ts => ts.TimeSeriesUnitAbbr == "W" && ts.TimeSeriesUnit == "Watts").OrderBy(ts => ts.TimeSeriesName))
+							{
+								var detail = config == null
+									? (DTOEsBoxEndPoint)null
+									: config.EndPoints.FirstOrDefault(e => e.LiveUri == ts.LiveUri);
 
-						//		//if (allowedTs.Contains(ts.TimeSeriesId))
-						//		{
-						//			meters.Add(new Meter()
-						//			{
-						//				id = ts.SourceReference,
-						//				name = ts.TimeSeriesName,
-						//				units = "W",
-						//				uri = ts.LiveUri,
-						//				canControl = detail == null ? false : detail.CanControl
-						//			});
-						//		}
-						//	}
-						//}
+								//if (allowedTs.Contains(ts.TimeSeriesId))
+								{
+									meters.Add(new Meter()
+									{
+										id = ts.SourceReference,
+										name = ts.TimeSeriesName,
+										units = "W",
+										uri = ts.LiveUri,
+										canControl = detail == null ? false : detail.CanControl
+									});
+								}
+							}
+						}
 						location.meters = meters.OrderBy(m => m.name).ToList();
 					}
 
@@ -482,7 +478,7 @@ namespace AjentiMobile.Controllers
 			return locations;
 		}
 
-		internal bool ValidateLogOn(string userName, string password)
+		private bool ValidateLogOn(string userName, string password)
 		{
 			if (String.IsNullOrEmpty(userName))
 			{
@@ -500,7 +496,11 @@ namespace AjentiMobile.Controllers
 			return ModelState.IsValid;
 		}
 
-		// POST api/values
+		#endregion Implementation
+
+		#region APIs
+
+		// POST https://mobile.ajenti.com.au/api/dataview/login
 		[HttpPost]
 		public async Task<AccountLoginResponse> LoginAsync([FromBody]AccountLoginRequest login)
 		{
@@ -510,38 +510,22 @@ namespace AjentiMobile.Controllers
 
 			logger.LogInformation("New response created.");
 
-			//try
-			//{
-			//	logger.LogInformation("AdmsApi.Start()");
-			//	this.AdmsApi.Start();
-			//	logger.LogInformation("started.");
-			//}
-			//catch (Exception ex)
-			//{
-			//	logger.LogError($"Failed to start AdmsApi. Reason: {ex.Message}");
-			//	return response;
-			//}
-
-			await Task.Run(() => 
+			await Task.Run(() =>
 			{
 				try
 				{
-					logger.LogInformation("Bg thread.");
 					var token = AdmsApi.AccountManagement.GenerateAppAuthenticationToken(
 						login.username, login.password, string.IsNullOrEmpty(login.appname) ? "AjentiExplorer" : login.appname,
 						(int)TimeSpan.FromDays(10).TotalSeconds);
-					logger.LogInformation("Token created.");
 
 					if (token == null)
 					{
-						logger.LogWarning("LoginController.LoginAsync token == null");
 						this.HttpContext.Response.StatusCode = 401;
 						response.result = false;
 						response.message = "Unauthorised";
 					}
 					else
 					{
-						logger.LogInformation($"LoginController.LoginAsync token == {token.Account.Name}");
 						response = this.GetUserDetails(token);
 					}
 				}
@@ -555,5 +539,53 @@ namespace AjentiMobile.Controllers
 
 			return response;
 		}
+
+		// POST https://mobile.ajenti.com.au/api/dataview/login
+		[HttpPost]
+		public async Task<AccountLoginResponse> ReauthenticateAsync([FromBody]ReauthenticateRequest request)
+		{
+			AccountLoginResponse response = new AccountLoginResponse();
+
+			logger.LogInformation("New response created.");
+
+			await Task.Run(() =>
+			{
+				try
+				{
+					logger.LogInformation("DataView.Reauthenticate()");
+
+
+					// authenticate the user - make sure the session is authenticated
+					var user = AdmsApi.AccountManagement.ValidateAuthenticationToken(request.token);
+					if (user == null)
+					{
+						logger.LogWarning($"DataView.Reauthenticate({request.token}) - Token Authentication Failed");
+						this.HttpContext.Response.StatusCode = 401;
+						response.result = false;
+						response.message = "Token invalid";
+					}
+
+					// get the authorisation details
+					response = this.GetUserDetails(request.token, user.AppId, AdmsApi.AccountManagement.GetAccountId(user.AccountId));
+					response.result = true;
+
+					logger.LogInformation($"DataView.Reauthenticate() - Success - {response.username} has returned");
+				}
+				catch (Exception ex)
+				{
+					logger.LogError($"Failed to Login {request.token} - {ex.Message}");
+					response.result = false;
+					response.message = "Error During Reauthentication Attempt";
+				}
+			});
+
+
+			return response;
+
+		}
+
+
+		#endregion APIs
+
 	}
 }
