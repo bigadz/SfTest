@@ -25,7 +25,8 @@ namespace AjentiExplorer
             var loginCreds = new JsonMsgs.AccountLoginRequest
 			{
 				username = "crosera",
-				password = "notmypassword",
+				password = "mypassword",
+                appname = "AjentiExplorer",
 			};
 			var body = Newtonsoft.Json.JsonConvert.SerializeObject(loginCreds);
             var mobileAjentiApi = new Services.MobileAjentiApi("Prod");
