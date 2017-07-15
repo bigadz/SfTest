@@ -11,10 +11,8 @@ namespace AjentiExplorer.Services
 
         public DataViewApi()
         {
-            this.ajentiMobileApi = new AjentiMobileApi("Prod");
+            this.ajentiMobileApi = new AjentiMobileApi(Settings.ServerEnvironment);
         }
-
-        internal string Token { get; set; }
 
         public async Task<BaseResponse> ChangePasswordAsync(ChangePasswordRequest request)
         {
@@ -22,9 +20,9 @@ namespace AjentiExplorer.Services
 
 			try
 			{
-				request.token = this.Token;
+                request.token = Settings.AuthToken;
 				string body = JsonConvert.SerializeObject(request);
-				string jsonResponse = await this.ajentiMobileApi.PostAsync("/DataView/Login", body);
+				string jsonResponse = await this.ajentiMobileApi.PostAsync("/DataView/ChangePassword", body);
 				response = JsonConvert.DeserializeObject<BaseResponse>(jsonResponse);
 			}
 			catch (Exception ex)
@@ -38,23 +36,83 @@ namespace AjentiExplorer.Services
 
         public async Task<GetCameraImageLinksResponse> GetCameraImageLinksAsync(GetCameraImageLinksRequest request)
         {
-            throw new NotImplementedException();
-        }
+			GetCameraImageLinksResponse response = null;
+
+			try
+			{
+				request.token = Settings.AuthToken;
+				string body = JsonConvert.SerializeObject(request);
+				string jsonResponse = await this.ajentiMobileApi.PostAsync("/DataView/GetCameraImageLinks", body);
+				response = JsonConvert.DeserializeObject<GetCameraImageLinksResponse>(jsonResponse);
+			}
+			catch (Exception ex)
+			{
+				response.result = false;
+				response.message = $"GetCameraImageLinksAsync failed locally - {ex.Message}";
+			}
+
+			return response;
+		}
 
         public async Task<GetSiteJournalResponse> GetSiteJournalAsync(GetSiteJournalRequest request)
         {
-            throw new NotImplementedException();
-        }
+			GetSiteJournalResponse response = null;
+
+			try
+			{
+				request.token = Settings.AuthToken;
+				string body = JsonConvert.SerializeObject(request);
+				string jsonResponse = await this.ajentiMobileApi.PostAsync("/DataView/GetSiteJournal", body);
+				response = JsonConvert.DeserializeObject<GetSiteJournalResponse>(jsonResponse);
+			}
+			catch (Exception ex)
+			{
+				response.result = false;
+				response.message = $"GetSiteJournalAsync failed locally - {ex.Message}";
+			}
+
+			return response;
+		}
 
         public async Task<InstallationSearchResponse> InstallationSearchAsync(InstallationSearchRequest request)
         {
-            throw new NotImplementedException();
-        }
+			InstallationSearchResponse response = null;
+
+			try
+			{
+				request.token = Settings.AuthToken;
+				string body = JsonConvert.SerializeObject(request);
+				string jsonResponse = await this.ajentiMobileApi.PostAsync("/DataView/InstallationSearch", body);
+				response = JsonConvert.DeserializeObject<InstallationSearchResponse>(jsonResponse);
+			}
+			catch (Exception ex)
+			{
+				response.result = false;
+				response.message = $"InstallationSearchAsync failed locally - {ex.Message}";
+			}
+
+			return response;
+		}
 
         public async Task<InstallationsInRangeResponse> InstallationsInRangeAsync(InstallationsInRangeRequest request)
         {
-            throw new NotImplementedException();
-        }
+			InstallationsInRangeResponse response = null;
+
+			try
+			{
+				request.token = Settings.AuthToken;
+				string body = JsonConvert.SerializeObject(request);
+				string jsonResponse = await this.ajentiMobileApi.PostAsync("/DataView/InstallationsInRange", body);
+				response = JsonConvert.DeserializeObject<InstallationsInRangeResponse>(jsonResponse);
+			}
+			catch (Exception ex)
+			{
+				response.result = false;
+				response.message = $"InstallationsInRangeAsync failed locally - {ex.Message}";
+			}
+
+			return response;
+		}
 
         public async Task<AccountLoginResponse> LoginAsync(AccountLoginRequest login)
         {
@@ -65,11 +123,16 @@ namespace AjentiExplorer.Services
 				string body = JsonConvert.SerializeObject(login);
 				string jsonResponse = await this.ajentiMobileApi.PostAsync("/DataView/Login", body);
 				response = JsonConvert.DeserializeObject<AccountLoginResponse>(jsonResponse);
+
+                // Store the token created by the login
+                Settings.AuthToken = response.token;
+                Settings.Username = login.username;
+                Settings.Password = Settings.StayLoggedIn ? login.password : String.Empty;
 			}
 			catch (Exception ex)
 			{
 				response.result = false;
-				response.message = $"Login failed locally - {ex.Message}";
+				response.message = $"LoginAsync failed locally - {ex.Message}";
 			}
 
 			return response;
@@ -77,22 +140,81 @@ namespace AjentiExplorer.Services
 
         public async Task<PasswordResetResponse> PasswordResetAsync(PasswordResetRequest request)
         {
-            throw new NotImplementedException();
-        }
+			PasswordResetResponse response = null;
+
+			try
+			{
+				string body = JsonConvert.SerializeObject(request);
+				string jsonResponse = await this.ajentiMobileApi.PostAsync("/DataView/PasswordReset", body);
+				response = JsonConvert.DeserializeObject<PasswordResetResponse>(jsonResponse);
+			}
+			catch (Exception ex)
+			{
+				response.result = false;
+				response.message = $"PasswordResetAsync failed locally - {ex.Message}";
+			}
+
+			return response;
+		}
 
         public async Task<AccountLoginResponse> ReauthenticateAsync(ReauthenticateRequest request)
         {
-            throw new NotImplementedException();
-        }
+			AccountLoginResponse response = null;
+
+			try
+			{
+				request.token = Settings.AuthToken;
+				string body = JsonConvert.SerializeObject(request);
+				string jsonResponse = await this.ajentiMobileApi.PostAsync("/DataView/Reauthenticate", body);
+				response = JsonConvert.DeserializeObject<AccountLoginResponse>(jsonResponse);
+			}
+			catch (Exception ex)
+			{
+				response.result = false;
+				response.message = $"ReauthenticateAsync failed locally - {ex.Message}";
+			}
+
+			return response;
+		}
 
         public async Task<BaseResponse> RecordLocationAsync(RecordLocationRequest request)
         {
-            throw new NotImplementedException();
-        }
+			BaseResponse response = null;
+
+			try
+			{
+				request.token = Settings.AuthToken;
+				string body = JsonConvert.SerializeObject(request);
+				string jsonResponse = await this.ajentiMobileApi.PostAsync("/DataView/RecordLocation", body);
+				response = JsonConvert.DeserializeObject<BaseResponse>(jsonResponse);
+			}
+			catch (Exception ex)
+			{
+				response.result = false;
+				response.message = $"RecordLocationAsync failed locally - {ex.Message}";
+			}
+
+            return response;
+		}
 
         public async Task<BaseResponse> RecordSiteJournalAsync(RecordSiteJournalRequest request)
         {
-            throw new NotImplementedException();
-        }
+			BaseResponse response = null;
+
+			try
+			{
+				request.token = Settings.AuthToken;
+				string body = JsonConvert.SerializeObject(request);
+				string jsonResponse = await this.ajentiMobileApi.PostAsync("/DataView/RecordSiteJournal", body);
+				response = JsonConvert.DeserializeObject<BaseResponse>(jsonResponse);
+			}
+			catch (Exception ex)
+			{
+				response.result = false;
+				response.message = $"RecordSiteJournalAsync failed locally - {ex.Message}";
+			}
+
+            return response;
+		}
     }
 }

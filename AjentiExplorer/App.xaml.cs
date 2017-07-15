@@ -28,41 +28,13 @@ namespace AjentiExplorer
 				password = "mypassword",
                 appname = "AjentiExplorer",
 			};
-			//var body = Newtonsoft.Json.JsonConvert.SerializeObject(loginCreds);
-            //var mobileAjentiApi = new Services.MobileAjentiApi("Prod");
+
 			System.Threading.Tasks.Task.Run(async () =>
 			{
                 Services.DataViewApi dataViewApi = new Services.DataViewApi();
 
                 var response = await dataViewApi.LoginAsync(loginCreds);
-                if (response.result == true)
-                {
-                    dataViewApi.Token = response.token;
-                }
-                else
-                {
-                    string err = response.message;
-                }
-				//string response;
-				//try
-				//{
-    //                response = await mobileAjentiApi.PostAsync("/Login", body);
-				//	try
-				//	{
-				//		var loggedIn = Newtonsoft.Json.JsonConvert.DeserializeObject<JsonMsgs.AccountLoginResponse>(response);
-				//		bool success = loggedIn.result;
-				//		string token = loggedIn.token;
-				//	}
-				//	catch (Exception ex)
-				//	{
-				//		string m = ex.Message;
-				//	}
-    //            }
-				//catch (ApplicationException appEx)
-				//{
-				//	string m = appEx.Message;
-				//}
-
+                bool result = response.result;
  
 			});
         }
