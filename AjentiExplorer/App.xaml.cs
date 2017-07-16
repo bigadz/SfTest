@@ -22,28 +22,28 @@ namespace AjentiExplorer
 
             SetMainPage();
 
-            var loginCreds = new JsonMsgs.AccountLoginRequest
-			{
-				username = "crosera",
-				password = "mypassword",
-                appname = "AjentiExplorer",
-			};
+   //         var loginCreds = new JsonMsgs.AccountLoginRequest
+			//{
+			//	username = "crosera",
+			//	password = "mypassword",
+   //             appname = "AjentiExplorer",
+			//};
 
-			System.Threading.Tasks.Task.Run(async () =>
-			{
-                Services.DataViewApi dataViewApi = new Services.DataViewApi();
+			//System.Threading.Tasks.Task.Run(async () =>
+			//{
+   //             Services.DataViewApi dataViewApi = new Services.DataViewApi();
 
-                var response = await dataViewApi.LoginAsync(loginCreds);
-                bool result = response.result;
+   //             var response = await dataViewApi.LoginAsync(loginCreds);
+   //             bool result = response.result;
  
-			});
+			//});
         }
 
         public static void SetMainPage()
         {
-            if (!UseMockDataStore && !Settings.IsLoggedIn)
+            if (true) //(!UseMockDataStore && !Settings.IsLoggedIn)
             {
-                Current.MainPage = new NavigationPage(new LoginPage())
+                Current.MainPage = new NavigationPage(new Views.LoginPage())
                 {
                     BarBackgroundColor = (Color)Current.Resources["Primary"],
                     BarTextColor = Color.White
