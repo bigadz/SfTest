@@ -14,6 +14,7 @@ namespace AjentiExplorer
         public App()
         {
             InitializeComponent();
+            MessagingCenterAlert.Init();
 
             if (UseMockDataStore)
                 DependencyService.Register<MockDataStore>();
@@ -21,29 +22,13 @@ namespace AjentiExplorer
                 DependencyService.Register<CloudDataStore>();
 
             SetMainPage();
-
-   //         var loginCreds = new JsonMsgs.AccountLoginRequest
-			//{
-			//	username = "crosera",
-			//	password = "mypassword",
-   //             appname = "AjentiExplorer",
-			//};
-
-			//System.Threading.Tasks.Task.Run(async () =>
-			//{
-   //             Services.DataViewApi dataViewApi = new Services.DataViewApi();
-
-   //             var response = await dataViewApi.LoginAsync(loginCreds);
-   //             bool result = response.result;
- 
-			//});
         }
 
         public static void SetMainPage()
         {
             if (true) //(!UseMockDataStore && !Settings.IsLoggedIn)
             {
-                Current.MainPage = new NavigationPage(new Views.LoginPage())
+                Current.MainPage = new NavigationPage(new Views.LoginPage(new LoginViewModel()))
                 {
                     BarBackgroundColor = (Color)Current.Resources["Primary"],
                     BarTextColor = Color.White

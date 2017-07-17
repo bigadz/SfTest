@@ -10,7 +10,6 @@ namespace AjentiExplorer
         public LoginViewModel()
         {
             SignInCommand = new Command(async () => await SignIn());
-            NotNowCommand = new Command(App.GoToMainPage);
         }
 
         string message = string.Empty;
@@ -20,7 +19,25 @@ namespace AjentiExplorer
             set { message = value; OnPropertyChanged(); }
         }
 
-        public ICommand NotNowCommand { get; }
+
+		public string Username
+		{
+            get { return Settings.Username; }
+            set { Settings.Username = value; OnPropertyChanged(); }
+		}
+
+		public string Password
+		{
+			get { return Settings.Password; }
+			set { Settings.Password = value; OnPropertyChanged(); }
+		}
+
+		public bool StayLoggedIn
+		{
+            get { return Settings.StayLoggedIn; }
+			set { Settings.StayLoggedIn = value; OnPropertyChanged(); }
+		}
+
         public ICommand SignInCommand { get; }
 
         async Task SignIn()
@@ -40,12 +57,31 @@ namespace AjentiExplorer
 
                 if (Settings.IsLoggedIn)
                     App.GoToMainPage();
+                else
+					MessagingCenter.Send(this, "alert", new MessagingCenterAlert
+					{
+						Title = "Login Failure",
+						Message = "Unable to log in",
+						Cancel = "OK"
+					});
             }
         }
 
         public static async Task<bool> TryLoginAsync()
         {
-            return true;
-        }
+            var loginCreds = new JsonMsgs.AccountLoginRequest
+			{
+                username = Settings.Username,
+                password = Settings.Password,
+                appname = "AjentiExplorer",
+			};
+	
+            var dataViewApi = new Services.DataViewApi();
+
+            var response = await dataViewApi.LoginAsync(loginCreds);
+
+            Settings.AuthToken = string.Empty;//response.result ? response.token : string.Empty;
+            return response.result;
+		}
     }
 }

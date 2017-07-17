@@ -40,7 +40,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Services\AjentiMobileApi.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\IDataView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\DataViewApi.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Views\Widgets\UsernamePassword.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Views\Controls\UsernamePassword.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\LoginPage.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -51,7 +51,7 @@
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)App.xaml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="$(MSBuildThisFileDirectory)Views\Widgets\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Views\Controls\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)Views\LoginPage.xaml" />

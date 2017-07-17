@@ -6,8 +6,28 @@ namespace AjentiExplorer.Views
 {
     public class LoginPage : ContentPage
     {
-        public LoginPage()
+        private LoginViewModel viewModel;
+		
+        private ActivityIndicator busyIndicator;
+
+		public LoginPage(LoginViewModel viewModel)
         {
+            BindingContext = this.viewModel = viewModel;
+
+            MessagingCenter.Subscribe<LoginViewModel, MessagingCenterAlert>(this, "alert", async (src, alert) =>
+			{
+				var _alert = alert as MessagingCenterAlert;
+                await DisplayAlert(alert.Title, alert.Message, alert.Cancel);
+			});
+
+            this.busyIndicator = new ActivityIndicator()
+            {
+                IsRunning = true,
+                Color = Color.Black,
+                BackgroundColor = Color.Gray.MultiplyAlpha(0.3),
+            };
+            this.busyIndicator.SetBinding(ActivityIndicator.IsVisibleProperty, new Binding("IsBusy"));
+
             var grid = new Grid
             {
                 ColumnDefinitions =
@@ -26,8 +46,9 @@ namespace AjentiExplorer.Views
             Content = grid;
 
             grid.Children.Add(new Label { Text = "Hello ContentPage" }, 1, 0);
-            grid.Children.Add(new Widgets.UsernamePassword(), 1, 1);
-        }
+            grid.Children.Add(new Controls.UsernamePassword(viewModel), 1, 1);
+			grid.Children.Add(busyIndicator, 0, 3, 0, 3);
+		}
     }
 }
 
