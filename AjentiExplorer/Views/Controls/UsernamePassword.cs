@@ -1,5 +1,6 @@
 ﻿using System;
 using Xamarin.Forms;
+using AjentiExplorer.ViewModels;
 
 namespace AjentiExplorer.Views.Controls
 {
@@ -20,17 +21,18 @@ namespace AjentiExplorer.Views.Controls
             {
                 Placeholder = "Enter Username",
                 FontSize = 16,
-                BindingContext = new Binding()
             };
+            this.usernameEntry.SetBinding(Entry.TextProperty, new Binding("Username"));
 
-            this.passwordEntry = new Entry
+			this.passwordEntry = new Entry
             {
                 Placeholder = "Enter Password",
                 FontSize = 16,
                 IsPassword = true,
             };
+			this.passwordEntry.SetBinding(Entry.TextProperty, new Binding("Password"));
 
-            this.loginButton = new Button
+			this.loginButton = new Button
             {
                 Command = this.viewModel.SignInCommand,
                 Text = "Login",
@@ -42,8 +44,9 @@ namespace AjentiExplorer.Views.Controls
                 IsEnabled = Settings.StayLoggedIn,
                 VerticalOptions = LayoutOptions.Center
             };
+			this.stayLoggedInSwitch.SetBinding(Switch.IsToggledProperty, new Binding("StayLoggedIn"));
 
-            this.Content = new StackLayout
+			this.Content = new StackLayout
             {
                 Orientation = StackOrientation.Vertical,
                 Children =

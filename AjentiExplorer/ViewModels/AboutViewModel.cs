@@ -7,7 +7,7 @@ using System.Windows.Input;
 
 using Xamarin.Forms;
 
-namespace AjentiExplorer
+namespace AjentiExplorer.ViewModels
 {
     public class AboutViewModel : BaseViewModel
     {

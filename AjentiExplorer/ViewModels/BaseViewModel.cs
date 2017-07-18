@@ -1,6 +1,7 @@
-﻿using Xamarin.Forms;
+﻿using AjentiExplorer.Services;
+using Xamarin.Forms;
 
-namespace AjentiExplorer
+namespace AjentiExplorer.ViewModels
 {
     public class BaseViewModel : ObservableObject
     {
@@ -9,12 +10,25 @@ namespace AjentiExplorer
         /// </summary>
         public IDataStore<Item> DataStore => DependencyService.Get<IDataStore<Item>>();
 
+        protected IDataView dataViewApi = new DataViewApi();
+
+        public INavigation Navigation { get; set;  }
+
         bool isBusy = false;
         public bool IsBusy
         {
             get { return isBusy; }
             set { SetProperty(ref isBusy, value); }
         }
+
+
+		string busyMessage = string.Empty;
+		public string BusyMessage
+		{
+			get { return busyMessage; }
+            set { SetProperty(ref busyMessage, value); }
+		}
+
         /// <summary>
         /// Private backing field to hold the title
         /// </summary>

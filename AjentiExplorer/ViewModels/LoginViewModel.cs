@@ -3,22 +3,16 @@ using System.Windows.Input;
 
 using Xamarin.Forms;
 
-namespace AjentiExplorer
+namespace AjentiExplorer.ViewModels
 {
     public class LoginViewModel : BaseViewModel
     {
+        public ICommand SignInCommand { get; }
+
         public LoginViewModel()
         {
-            SignInCommand = new Command(async () => await SignIn());
+            SignInCommand = new Command(async () => await SignInAsync());
         }
-
-        string message = string.Empty;
-        public string Message
-        {
-            get { return message; }
-            set { message = value; OnPropertyChanged(); }
-        }
-
 
 		public string Username
 		{
@@ -38,25 +32,23 @@ namespace AjentiExplorer
 			set { Settings.StayLoggedIn = value; OnPropertyChanged(); }
 		}
 
-        public ICommand SignInCommand { get; }
-
-        async Task SignIn()
+        async Task SignInAsync()
         {
             try
             {
                 IsBusy = true;
-                Message = "Signing In...";
+                BusyMessage = "Signing In...";
 
                 // Log the user in
                 await TryLoginAsync();
             }
             finally
             {
-                Message = string.Empty;
+                BusyMessage = string.Empty;
                 IsBusy = false;
 
                 if (Settings.IsLoggedIn)
-                    App.GoToMainPage();
+                    App.SwitchToPage(this.Navigation, new Views.SearchMapPage(new SearchViewModel())); //App.GoToMainPage();
                 else
 					MessagingCenter.Send(this, "alert", new MessagingCenterAlert
 					{
@@ -67,7 +59,34 @@ namespace AjentiExplorer
             }
         }
 
-        public static async Task<bool> TryLoginAsync()
+		public async Task ReauthenticateAsync()
+		{
+			try
+			{
+				IsBusy = true;
+				BusyMessage = "Logging In...";
+
+				// Log the user in
+				await TryReauthenticateAsync();
+			}
+			finally
+			{
+				BusyMessage = string.Empty;
+				IsBusy = false;
+
+				if (Settings.IsLoggedIn)
+					App.SwitchToPage(this.Navigation, new Views.SearchMapPage(new SearchViewModel())); //App.GoToMainPage();
+				else
+					MessagingCenter.Send(this, "alert", new MessagingCenterAlert
+					{
+						Title = "Login Failure",
+						Message = "Unable to log in",
+						Cancel = "OK"
+					});
+			}
+		}
+
+		async Task<bool> TryLoginAsync()
         {
             var loginCreds = new JsonMsgs.AccountLoginRequest
 			{
@@ -75,13 +94,34 @@ namespace AjentiExplorer
                 password = Settings.Password,
                 appname = "AjentiExplorer",
 			};
-	
-            var dataViewApi = new Services.DataViewApi();
 
-            var response = await dataViewApi.LoginAsync(loginCreds);
+            var response = await this.dataViewApi.LoginAsync(loginCreds);
 
-            Settings.AuthToken = string.Empty;//response.result ? response.token : string.Empty;
+            Settings.AuthToken = response.result ? response.token : string.Empty;
             return response.result;
 		}
-    }
+
+		async Task<bool> TryReauthenticateAsync()
+		{
+            var request = new JsonMsgs.ReauthenticateRequest
+            {
+                token = Settings.AuthToken,
+            };
+            var response = await this.dataViewApi.ReauthenticateAsync(request);
+
+			Settings.AuthToken = response.result ? response.token : string.Empty;
+
+            // Test everything
+    //        {
+    //            var installationSearchRequest = new JsonMsgs.InstallationSearchRequest
+				//{
+				//	token = Settings.AuthToken,
+    //                searchStr = "",
+				//};
+            //    var installationSearchResponse = await this.dataViewApi.InstallationSearchAsync(installationSearchRequest);
+            //}
+
+			return response.result;
+		}
+	}
 }

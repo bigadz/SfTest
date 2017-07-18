@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 
-namespace AjentiExplorer
+namespace AjentiExplorer.ViewModels
 {
     public class ItemDetailViewModel : BaseViewModel
     {

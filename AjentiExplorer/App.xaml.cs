@@ -24,11 +24,11 @@ namespace AjentiExplorer
             SetMainPage();
         }
 
-        public static void SetMainPage()
+        private static void SetMainPage()
         {
             if (true) //(!UseMockDataStore && !Settings.IsLoggedIn)
             {
-                Current.MainPage = new NavigationPage(new Views.LoginPage(new LoginViewModel()))
+                Current.MainPage = new NavigationPage(new Views.LoginPage(new ViewModels.LoginViewModel()))
                 {
                     BarBackgroundColor = (Color)Current.Resources["Primary"],
                     BarTextColor = Color.White
@@ -58,5 +58,23 @@ namespace AjentiExplorer
                 }
             };
         }
+
+        public static async System.Threading.Tasks.Task SwitchToPage(INavigation navigation, Page page, bool animated = true)
+        {
+			if (navigation == null) throw new ArgumentNullException("navigation");
+			if (page == null) throw new ArgumentNullException("page");
+
+            int numberOfPagesOnStack = navigation.NavigationStack.Count;
+            if (numberOfPagesOnStack > 0)
+            {
+                var topPage = navigation.NavigationStack[numberOfPagesOnStack - 1];
+                navigation.InsertPageBefore(page, topPage);
+                await navigation.PopAsync(animated);
+            }
+            else
+            {
+                await navigation.PushAsync(page, animated);
+            }
+		}
     }
 }

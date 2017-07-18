@@ -1,32 +1,25 @@
 ﻿using System;
 
 using Xamarin.Forms;
+using AjentiExplorer.ViewModels;
 
 namespace AjentiExplorer.Views
 {
     public class LoginPage : ContentPage
     {
         private LoginViewModel viewModel;
-		
-        private ActivityIndicator busyIndicator;
 
 		public LoginPage(LoginViewModel viewModel)
         {
             BindingContext = this.viewModel = viewModel;
+            this.viewModel.Navigation = this.Navigation;
 
+            // Listen for messages from the modelview
             MessagingCenter.Subscribe<LoginViewModel, MessagingCenterAlert>(this, "alert", async (src, alert) =>
 			{
 				var _alert = alert as MessagingCenterAlert;
                 await DisplayAlert(alert.Title, alert.Message, alert.Cancel);
 			});
-
-            this.busyIndicator = new ActivityIndicator()
-            {
-                IsRunning = true,
-                Color = Color.Black,
-                BackgroundColor = Color.Gray.MultiplyAlpha(0.3),
-            };
-            this.busyIndicator.SetBinding(ActivityIndicator.IsVisibleProperty, new Binding("IsBusy"));
 
             var grid = new Grid
             {
@@ -47,7 +40,13 @@ namespace AjentiExplorer.Views
 
             grid.Children.Add(new Label { Text = "Hello ContentPage" }, 1, 0);
             grid.Children.Add(new Controls.UsernamePassword(viewModel), 1, 1);
-			grid.Children.Add(busyIndicator, 0, 3, 0, 3);
+            grid.Children.Add(new Controls.BusyIndicator(viewModel), 0, 3, 0, 3);
+
+			this.Appearing += async (sender, e) => 
+            {
+                if (Settings.StayLoggedIn && Settings.IsLoggedIn)
+                    await this.viewModel.ReauthenticateAsync();
+            };   
 		}
     }
 }
