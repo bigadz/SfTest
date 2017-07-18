@@ -58,7 +58,7 @@ namespace AjentiExplorer.ViewModels
 			set { SetProperty(ref locations, value); }
 		}
 
-		async Task SearchAsync()
+		public async Task SearchAsync()
 		{
 			try
 			{
@@ -75,7 +75,7 @@ namespace AjentiExplorer.ViewModels
 		}
 
 
-		async Task<bool> TrySearchAsync()
+        async Task<bool> TrySearchAsync()
 		{
 			this.locations.Clear();
 			
@@ -100,7 +100,7 @@ namespace AjentiExplorer.ViewModels
                 response.results.ForEach(result => this.locations.Add((result)));
             }
 
-			return response.result;
+            return response.result;
 		}
 
 	}

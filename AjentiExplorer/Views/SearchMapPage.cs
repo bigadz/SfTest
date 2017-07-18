@@ -4,6 +4,7 @@ using Xamarin.Forms;
 using Xamarin.Forms.Maps;
 
 using AjentiExplorer.ViewModels;
+using System.Threading.Tasks;
 
 namespace AjentiExplorer.Views
 {
@@ -25,27 +26,44 @@ namespace AjentiExplorer.Views
 
             this.Appearing += async (sender, e) => 
             {
-				var position = await this.viewModel.GetCurrentPosition();
+                var currentPositionTask = this.viewModel.GetCurrentPosition();
+                var searchTask = this.viewModel.SearchAsync();
 
-                if (position != null)
+                await Task.WhenAll(currentPositionTask, searchTask);
+
+				var currentPosition = await currentPositionTask;
+
+                if (currentPosition != null)
                 {
 					var map = new Map(
                             MapSpan.FromCenterAndRadius(
-	                            new Position(position.Latitude, position.Longitude), 
+	                            new Position(currentPosition.Latitude, currentPosition.Longitude), 
 	                            Distance.FromKilometers(20)))
 					{
 						IsShowingUser = true,
-						//HeightRequest = 100,
-						//WidthRequest = 960,
+                        MapType = MapType.Hybrid,
 						VerticalOptions = LayoutOptions.FillAndExpand,
                         HorizontalOptions = LayoutOptions.FillAndExpand,
 					};
 					var stack = new StackLayout { Spacing = 0 };
 					stack.Children.Add(map);
 					Content = stack;
+
+                    foreach (var location in this.viewModel.Locations)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"Location {location.latitude},{location.longitude} lbl={location.name} addr={location.address}");
+						var pin = new Pin
+						{
+                            Type = PinType.SearchResult,
+                            Position = new Position((double)location.latitude, (double)location.longitude),
+                            Label = location.name,
+                            Address = location.address
+						};
+						map.Pins.Add(pin);
+                    }
                 }
             };
         }
-    }
+	}
 }
 
