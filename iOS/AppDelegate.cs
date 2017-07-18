@@ -10,17 +10,25 @@ namespace AjentiExplorer.iOS
     [Register("AppDelegate")]
     public partial class AppDelegate : global::Xamarin.Forms.Platform.iOS.FormsApplicationDelegate
     {
+        private CoreLocation.CLLocationManager locationManager;
+
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
-			global::Xamarin.Forms.Forms.Init();
+
+            global::Xamarin.Forms.Forms.Init();
             global::Xamarin.FormsMaps.Init();
 
-			var manager = new CoreLocation.CLLocationManager();
-            manager.RequestWhenInUseAuthorization(); //This is used if you are doing anything in the foreground.
+            this.locationManager = new CoreLocation.CLLocationManager();
+			this.locationManager.RequestWhenInUseAuthorization(); //This is used if you are doing anything in the foreground.
 
 			LoadApplication(new App());
 
-            return base.FinishedLaunching(app, options);
+			return base.FinishedLaunching(app, options);
         }
+
+        public override void OnActivated(UIApplication uiApplication)
+        {
+            base.OnActivated(uiApplication);
+		}
     }
 }

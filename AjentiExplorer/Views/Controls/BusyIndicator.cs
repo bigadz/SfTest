@@ -22,7 +22,7 @@ namespace AjentiExplorer.Views.Controls
                 Color = Color.White,
             	BackgroundColor = Color.Black.MultiplyAlpha(0.7),
             };
-			this.activityIndicator.SetBinding(ActivityIndicator.IsVisibleProperty, new Binding("IsBusy"));
+			//this.activityIndicator.SetBinding(ActivityIndicator.IsVisibleProperty, new Binding("IsBusy"));
 
             this.messageLabel = new Label
             {
@@ -32,6 +32,7 @@ namespace AjentiExplorer.Views.Controls
                 HorizontalOptions = LayoutOptions.Center,
 			};
 			this.messageLabel.SetBinding(Label.TextProperty, new Binding("BusyMessage"));
+			//this.messageLabel.SetBinding(Label.IsVisibleProperty, new Binding("IsBusy"));
 
 			var grid = new Grid
 			{
