@@ -731,6 +731,8 @@ namespace AjentiMobile.Controllers
 					{
 						logger.LogInformation($"DataView.GetCameraImageLinks({account.AccountId})");
 						var uri = string.Format("share://installation/{0}", request.id);
+						logger.LogInformation(uri);
+
 						var files = this.AdmsApi.FileManagement.GetFilesForFileShare(account.AccountId, uri, new List<FileFilter>()
 						{
 							new WildCardFilter()
@@ -739,10 +741,12 @@ namespace AjentiMobile.Controllers
 								Extension = "jpg"
 							}
 						}, 5);
+						if (files == null) logger.LogError("files is null");
 						logger.LogInformation($"Found {files.Count} cameras");
 						var imageCount = 5;
 						if (request.imagesOnDisplay != null)
 						{
+							logger.LogInformation($"request.imagesOnDisplay = {request.imagesOnDisplay}");
 							imageCount = request.imagesOnDisplay.Value + 5;
 							response.images = files.Select(f => new CameraImage
 							{
@@ -755,6 +759,7 @@ namespace AjentiMobile.Controllers
 						}
 						else
 						{
+							logger.LogInformation($"request.imagesOnDisplay = null");
 							response.images = files.Select(f => new CameraImage
 							{
 								name = f.FileName,
