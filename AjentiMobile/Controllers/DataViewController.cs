@@ -806,13 +806,18 @@ namespace AjentiMobile.Controllers
 						logger.LogInformation($"DataView.InstallationSearch({account.AccountId})");
 
 						var roles = AdmsApi.AccountManagement.GetAccountRoles(account.AccountId);
+						logger.LogInformation($"DataView.InstallationSearch - roles: {roles.Count}");
 						var metaTags = AdmsApi.MetaData.GetMetaTagTree();
+						logger.LogInformation($"DataView.InstallationSearch - metaTags: {metaTags.Children.Count}");
 						// search for the installations, make sure security is applied
 						var installations = AdmsApi.InstallationManagement.GetInstallationDetailsBySearch(request.searchStr, account);
+						logger.LogInformation($"DataView.InstallationSearch - installations: {installations.Count}");
 						var dashboards = AdmsApi.DashboardManagement.GetDashboardsForCurrentUserAndSiteTypes(account,
 							installations.SelectMany(i => i.SiteTypeMetaTagIds).ToList(), false);
+						logger.LogInformation($"DataView.InstallationSearch - dashboards: {dashboards.Count}");
 						// setup the location objects, and filter out time series that should not be visible
 						response.results = SetupLocations(account, installations, roles, metaTags, dashboards);
+						logger.LogInformation($"DataView.InstallationSearch - results: {response.results.Count}");
 						response.result = true;
 					}
 				}
