@@ -17,6 +17,8 @@ namespace AjentiExplorer.Views
             BindingContext = this.viewModel = viewModel;
             this.viewModel.Navigation = this.Navigation;
 
+            Title = "Map";
+
             var grid = new Grid();
             Content = grid;
 

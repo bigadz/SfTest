@@ -14,6 +14,8 @@ namespace AjentiExplorer.Views
             BindingContext = this.viewModel = viewModel;
             this.viewModel.Navigation = this.Navigation;
 
+            Title = "Login";
+
             // Listen for messages from the modelview
             MessagingCenter.Subscribe<LoginViewModel, MessagingCenterAlert>(this, "alert", async (src, alert) =>
 			{

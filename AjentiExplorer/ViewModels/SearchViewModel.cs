@@ -36,8 +36,12 @@ namespace AjentiExplorer.ViewModels
 				locator.DesiredAccuracy = 50;
 
                 position = await locator.GetLastKnownLocationAsync();
+
 				if (position == null)
-					return null;
+                {
+					Console.WriteLine("Position not determined. Using default");
+                    position = new Position { Latitude = Settings.Latitude, Longitude = Settings.Longitude, Timestamp = DateTime.Now };
+				}
 
 				Console.WriteLine("Position Timestamp: {0}", position.Timestamp);
 				Console.WriteLine("Position Latitude: {0}", position.Latitude);
@@ -46,6 +50,8 @@ namespace AjentiExplorer.ViewModels
 			catch (Exception ex)
 			{
 				Debug.WriteLine("Unable to get location, may need to increase timeout: " + ex);
+				Console.WriteLine("Position unobtaintable. Using default");
+				position = new Position { Latitude = Settings.Latitude, Longitude = Settings.Longitude, Timestamp = DateTime.Now };
 			}
 
 			return position;
@@ -108,7 +114,6 @@ namespace AjentiExplorer.ViewModels
 			
             var installationSearchRequest = new JsonMsgs.InstallationSearchRequest
 			{
-			  token = Settings.AuthToken,
               searchStr = this.SearchString,
 			};
 		    var response = await this.dataViewApi.InstallationSearchAsync(installationSearchRequest);

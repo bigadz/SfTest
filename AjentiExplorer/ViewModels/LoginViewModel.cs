@@ -103,23 +103,10 @@ namespace AjentiExplorer.ViewModels
 
 		async Task<bool> TryReauthenticateAsync()
 		{
-            var request = new JsonMsgs.ReauthenticateRequest
-            {
-                token = Settings.AuthToken,
-            };
+            var request = new JsonMsgs.ReauthenticateRequest();
             var response = await this.dataViewApi.ReauthenticateAsync(request);
 
 			Settings.AuthToken = response.result ? response.token : string.Empty;
-
-            // Test everything
-    //        {
-    //            var installationSearchRequest = new JsonMsgs.InstallationSearchRequest
-				//{
-				//	token = Settings.AuthToken,
-    //                searchStr = "",
-				//};
-            //    var installationSearchResponse = await this.dataViewApi.InstallationSearchAsync(installationSearchRequest);
-            //}
 
 			return response.result;
 		}

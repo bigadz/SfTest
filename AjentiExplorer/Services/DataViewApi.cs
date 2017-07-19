@@ -27,8 +27,11 @@ namespace AjentiExplorer.Services
 			}
 			catch (Exception ex)
 			{
-                response.result = false;
-                response.message = $"ChangePasswordAsync failed locally - {ex.Message}";
+				response = new BaseResponse
+				{
+					result = false,
+					message = $"ChangePasswordAsync failed locally - {ex.Message}",
+				};
 			}
 
             return response;
@@ -47,8 +50,11 @@ namespace AjentiExplorer.Services
 			}
 			catch (Exception ex)
 			{
-				response.result = false;
-				response.message = $"GetCameraImageLinksAsync failed locally - {ex.Message}";
+				response = new GetCameraImageLinksResponse
+				{
+					result = false,
+					message = $"GetCameraImageLinksAsync failed locally - {ex.Message}",
+				};
 			}
 
 			return response;
@@ -67,8 +73,11 @@ namespace AjentiExplorer.Services
 			}
 			catch (Exception ex)
 			{
-				response.result = false;
-				response.message = $"GetSiteJournalAsync failed locally - {ex.Message}";
+				response = new GetSiteJournalResponse
+				{
+					result = false,
+					message = $"GetSiteJournalAsync failed locally - {ex.Message}",
+				};
 			}
 
 			return response;
@@ -87,8 +96,11 @@ namespace AjentiExplorer.Services
 			}
 			catch (Exception ex)
 			{
-				response.result = false;
-				response.message = $"InstallationSearchAsync failed locally - {ex.Message}";
+				response = new InstallationSearchResponse
+				{
+					result = false,
+					message = $"InstallationSearchAsync failed locally - {ex.Message}",
+				};
 			}
 
 			return response;
@@ -107,8 +119,11 @@ namespace AjentiExplorer.Services
 			}
 			catch (Exception ex)
 			{
-				response.result = false;
-				response.message = $"InstallationsInRangeAsync failed locally - {ex.Message}";
+				response = new InstallationsInRangeResponse
+				{
+					result = false,
+					message = $"InstallationsInRangeAsync failed locally - {ex.Message}",
+				};
 			}
 
 			return response;
@@ -131,8 +146,11 @@ namespace AjentiExplorer.Services
 			}
 			catch (Exception ex)
 			{
-				response.result = false;
-				response.message = $"LoginAsync failed locally - {ex.Message}";
+				response = new AccountLoginResponse
+				{
+					result = false,
+					message = $"LoginAsync failed locally - {ex.Message}",
+				};
 			}
 
 			return response;
@@ -150,8 +168,11 @@ namespace AjentiExplorer.Services
 			}
 			catch (Exception ex)
 			{
-				response.result = false;
-				response.message = $"PasswordResetAsync failed locally - {ex.Message}";
+				response = new PasswordResetResponse
+				{
+					result = false,
+					message = $"PasswordResetAsync failed locally - {ex.Message}",
+				};
 			}
 
 			return response;
@@ -170,8 +191,11 @@ namespace AjentiExplorer.Services
 			}
 			catch (Exception ex)
 			{
-				response.result = false;
-				response.message = $"ReauthenticateAsync failed locally - {ex.Message}";
+                response = new AccountLoginResponse
+                {
+					result = false,
+				    message = $"ReauthenticateAsync failed locally - {ex.Message}",
+			    };
 			}
 
 			return response;
@@ -190,8 +214,11 @@ namespace AjentiExplorer.Services
 			}
 			catch (Exception ex)
 			{
-				response.result = false;
-				response.message = $"RecordLocationAsync failed locally - {ex.Message}";
+				response = new BaseResponse
+				{
+					result = false,
+					message = $"RecordLocationAsync failed locally - {ex.Message}",
+				};
 			}
 
             return response;
@@ -210,8 +237,11 @@ namespace AjentiExplorer.Services
 			}
 			catch (Exception ex)
 			{
-				response.result = false;
-				response.message = $"RecordSiteJournalAsync failed locally - {ex.Message}";
+				response = new BaseResponse
+				{
+					result = false,
+					message = $"RecordSiteJournalAsync failed locally - {ex.Message}",
+				};
 			}
 
             return response;
