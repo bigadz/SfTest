@@ -25,6 +25,33 @@ namespace AjentiExplorer.ViewModels
 			set { SetProperty(ref searchString, value); }
 		}
 
+
+		public async Task<Position> GetLastKnownPosition()
+		{
+			Position position = null;
+
+			try
+			{
+				var locator = CrossGeolocator.Current;
+				locator.DesiredAccuracy = 50;
+
+                position = await locator.GetLastKnownLocationAsync();
+				if (position == null)
+					return null;
+
+				Console.WriteLine("Position Timestamp: {0}", position.Timestamp);
+				Console.WriteLine("Position Latitude: {0}", position.Latitude);
+				Console.WriteLine("Position Longitude: {0}", position.Longitude);
+			}
+			catch (Exception ex)
+			{
+				Debug.WriteLine("Unable to get location, may need to increase timeout: " + ex);
+			}
+
+			return position;
+		}
+
+		
         public async Task<Position> GetCurrentPosition()
         {
             Position position = null;
@@ -38,7 +65,7 @@ namespace AjentiExplorer.ViewModels
 				if (position == null)
 					return null;
 
-				Console.WriteLine("Position Status: {0}", position.Timestamp);
+				Console.WriteLine("Position Timestamp: {0}", position.Timestamp);
 				Console.WriteLine("Position Latitude: {0}", position.Latitude);
 				Console.WriteLine("Position Longitude: {0}", position.Longitude);
 			}
@@ -51,8 +78,8 @@ namespace AjentiExplorer.ViewModels
         }
 
 
-        ObservableRangeCollection<JsonMsgs.Location> locations = new ObservableRangeCollection<JsonMsgs.Location>();
-		public ObservableRangeCollection<JsonMsgs.Location> Locations
+        ObservableRangeCollection<LocationViewModel> locations = new ObservableRangeCollection<LocationViewModel>();
+		public ObservableRangeCollection<LocationViewModel> Locations
 		{
 			get { return locations; }
 			set { SetProperty(ref locations, value); }
@@ -63,7 +90,7 @@ namespace AjentiExplorer.ViewModels
 			try
 			{
 				IsBusy = true;
-				BusyMessage = "Searching...";
+				BusyMessage = "Loading locations...";
 
 				await TrySearchAsync();
 			}
@@ -97,7 +124,7 @@ namespace AjentiExplorer.ViewModels
             }
             else
             {
-                response.results.ForEach(result => this.locations.Add((result)));
+                response.results.ForEach(result => this.locations.Add(new LocationViewModel(result)));
             }
 
             return response.result;

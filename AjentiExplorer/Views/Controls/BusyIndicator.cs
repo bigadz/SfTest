@@ -27,7 +27,7 @@ namespace AjentiExplorer.Views.Controls
             this.messageLabel = new Label
             {
 				FontAttributes = FontAttributes.None,
-				FontSize = 24,
+				FontSize = 20,
                 TextColor = Color.White,
                 HorizontalOptions = LayoutOptions.Center,
 			};
