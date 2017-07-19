@@ -270,10 +270,9 @@ namespace AjentiMobile.Controllers
 						{
 							try
 							{
+								int pinnedMetaTagCount = mt.PinnedMetaTagIds == null ? 0 : mt.PinnedMetaTags.Length;
 								if (mt.MetaTag != null)
-									logger.LogDebug(mt.MetaTag.TagPath + ' ' + mt.PinnedMetaTagIds == null
-										? "0"
-										: mt.PinnedMetaTags.Length.ToString());
+									logger.LogDebug($"{mt.MetaTag.TagPath} {pinnedMetaTagCount}");
 							}
 							catch (Exception debugEx)
 							{
@@ -857,16 +856,21 @@ namespace AjentiMobile.Controllers
 					}
 					else
 					{
-						logger.LogInformation($"DataView.InstallationMatch({account.AccountId})");
+						logger.LogInformation($"DataView.InstallationsInRange({account.AccountId}, {request.latitude}, {request.longitude}, {request.distance})");
 
 						var roles = AdmsApi.AccountManagement.GetAccountRoles(account.AccountId);
+						logger.LogInformation($"DataView.InstallationsInRange - roles: {roles.Count}");
 						var metaTags = AdmsApi.MetaData.GetMetaTagTree();
+						logger.LogInformation($"DataView.InstallationsInRange - metaTags: {metaTags.Children.Count}");
 						// search for the installations, make sure security is applied
 						var installations = AdmsApi.InstallationManagement.GetInstallationDetailsInRange(request.latitude, request.longitude, request.distance);
+						logger.LogInformation($"DataView.InstallationsInRange - installations: {installations.Count}");
 						var dashboards = AdmsApi.DashboardManagement.GetDashboardsForCurrentUserAndSiteTypes(account,
 							installations.SelectMany(i => i.SiteTypeMetaTagIds).ToList(), false);
+						logger.LogInformation($"DataView.InstallationsInRange - dashboards: {dashboards.Count}");
 						// setup the location objects, and filter out time series that should not be visible
 						response.results = SetupLocations(account, installations, roles, metaTags, dashboards);
+						logger.LogInformation($"DataView.InstallationsInRange - results: {response.results.Count}");
 						response.result = true;
 					}
 				}
