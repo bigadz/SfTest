@@ -19,7 +19,24 @@ namespace AjentiExplorer.Views
 
             Title = "Map";
 
-            var grid = new Grid();
+            // Listen for messages from the modelview(s)
+            MessagingCenter.Subscribe<InRangeViewModel, MessagingCenterAlert>(this, "alert", async (src, alert) =>
+			{
+				var _alert = alert as MessagingCenterAlert;
+				await DisplayAlert(alert.Title, alert.Message, alert.Cancel);
+			});
+			MessagingCenter.Subscribe<SearchViewModel, MessagingCenterAlert>(this, "alert", async (src, alert) =>
+			{
+				var _alert = alert as MessagingCenterAlert;
+				await DisplayAlert(alert.Title, alert.Message, alert.Cancel);
+			});
+            MessagingCenter.Subscribe<LocationViewModel, MessagingCenterAlert>(this, "alert", async (src, alert) =>
+			{
+				var _alert = alert as MessagingCenterAlert;
+				await DisplayAlert(alert.Title, alert.Message, alert.Cancel);
+			});
+
+			var grid = new Grid();
             Content = grid;
 
 			var busyIndicator = new Controls.BusyIndicator(viewModel);
@@ -33,32 +50,44 @@ namespace AjentiExplorer.Views
                 // Only create the map on first appearance
                 if (map != null) return; 
 
+                // This will not return null. It will return the default location (Hobart) if it fails to determine anything else.
                 var lastKnownPosition = await this.viewModel.GetLastKnownPosition();
 
-                if (lastKnownPosition != null)
+				map = new Map(
+                        MapSpan.FromCenterAndRadius(
+                            new Position(lastKnownPosition.Latitude, lastKnownPosition.Longitude),
+                            Distance.FromKilometers(20)))
                 {
-                    map = new Map(
-                            MapSpan.FromCenterAndRadius(
-                                new Position(lastKnownPosition.Latitude, lastKnownPosition.Longitude),
-                                Distance.FromKilometers(20)))
-                    {
-                        IsShowingUser = false,
-                        MapType = MapType.Street,
-                        VerticalOptions = LayoutOptions.FillAndExpand,
-                        HorizontalOptions = LayoutOptions.FillAndExpand,
-                    };
-					grid.Children.Insert(0, map);
-				}
+                    IsShowingUser = false,
+                    MapType = MapType.Street,
+                    VerticalOptions = LayoutOptions.FillAndExpand,
+                    HorizontalOptions = LayoutOptions.FillAndExpand,
+                };
+				grid.Children.Insert(0, map);
 
-
+                // If Searching....
+                this.viewModel.SearchString = "FISH";
                 var currentPositionTask = this.viewModel.GetCurrentPosition();
                 var searchTask = this.viewModel.SearchAsync();
-
                 await Task.WhenAll(currentPositionTask, searchTask);
-
 				var currentPosition = await currentPositionTask;
 
-                if (currentPosition != null)
+                // If InRanging...
+				//var currentPosition = await this.viewModel.GetCurrentPosition();
+
+				//            if (currentPosition == null)
+				//            {
+				//	this.viewModel.Latitude = lastKnownPosition.Latitude;
+				//	this.viewModel.Longitude = lastKnownPosition.Longitude;
+				//	await this.viewModel.InRangeAsync();
+				//}
+				//           else
+				//           {
+				//this.viewModel.Latitude = currentPosition.Latitude;
+				//this.viewModel.Longitude = currentPosition.Longitude;
+				//await this.viewModel.InRangeAsync();
+
+				if (currentPosition != null)
                 {
                     if (map != null)
                     {

@@ -48,7 +48,7 @@ namespace AjentiExplorer.ViewModels
                 IsBusy = false;
 
                 if (Settings.IsLoggedIn)
-                    App.SwitchToPage(this.Navigation, new Views.SearchMapPage(new SearchViewModel())); //App.GoToMainPage();
+                    await App.SwitchToPage(this.Navigation, new Views.SearchMapPage(new SearchViewModel())); //App.GoToMainPage();
                 else
 					MessagingCenter.Send(this, "alert", new MessagingCenterAlert
 					{
@@ -75,7 +75,7 @@ namespace AjentiExplorer.ViewModels
 				IsBusy = false;
 
 				if (Settings.IsLoggedIn)
-					App.SwitchToPage(this.Navigation, new Views.SearchMapPage(new SearchViewModel())); //App.GoToMainPage();
+					await App.SwitchToPage(this.Navigation, new Views.SearchMapPage(new SearchViewModel())); //App.GoToMainPage();
 				else
 					MessagingCenter.Send(this, "alert", new MessagingCenterAlert
 					{

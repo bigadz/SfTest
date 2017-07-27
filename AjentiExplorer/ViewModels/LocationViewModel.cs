@@ -114,6 +114,7 @@ namespace AjentiExplorer.ViewModels
             var getCameraImageLinksRequest = new JsonMsgs.GetCameraImageLinksRequest
 			{
                 id = this.location.id,
+                imagesOnDisplay = 1,
 			};
             var response = await this.dataViewApi.GetCameraImageLinksAsync(getCameraImageLinksRequest);
 

@@ -47,6 +47,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Views\SearchMapPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\LocationViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\LocationPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\InRangeViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Views\AboutPage.xaml" />

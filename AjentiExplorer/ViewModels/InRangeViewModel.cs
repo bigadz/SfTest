@@ -9,22 +9,32 @@ using Xamarin.Forms;
 
 namespace AjentiExplorer.ViewModels
 {
-    public class SearchViewModel : BaseViewModel
+    public class InRangeViewModel : BaseViewModel
     {
-		public ICommand SearchCommand { get; }
-
-        public SearchViewModel()
+        public InRangeViewModel()
         {
-			SearchCommand = new Command(async () => await SearchAsync());
 		}
 
-		string searchString = string.Empty;
-		public string SearchString
+		double range = 1000000;
+		public double Range
 		{
-			get { return searchString; }
-			set { SetProperty(ref searchString, value); }
+			get { return range; }
+			set { SetProperty(ref range, value); }
 		}
 
+		double latitude;
+		public double Latitude
+		{
+			get { return latitude; }
+			set { SetProperty(ref latitude, value); }
+		}
+
+		double longitude;
+		public double Longitude
+		{
+			get { return longitude; }
+			set { SetProperty(ref longitude, value); }
+		}
 
 		public async Task<Position> GetLastKnownPosition()
 		{
@@ -91,14 +101,14 @@ namespace AjentiExplorer.ViewModels
 			set { SetProperty(ref locations, value); }
 		}
 
-		public async Task SearchAsync()
+		public async Task InRangeAsync()
 		{
 			try
 			{
 				IsBusy = true;
-				BusyMessage = "Loading locations...";
+				BusyMessage = "Loading nearby locations...";
 
-				await TrySearchAsync();
+				await TryInRangeAsync();
 			}
 			finally
 			{
@@ -108,32 +118,39 @@ namespace AjentiExplorer.ViewModels
 		}
 
 
-        async Task<bool> TrySearchAsync()
+        async Task<bool> TryInRangeAsync()
 		{
 			this.locations.Clear();
 			
-            var installationSearchRequest = new JsonMsgs.InstallationSearchRequest
+            var installationsInRangeRequest = new JsonMsgs.InstallationsInRangeRequest
 			{
-              searchStr = this.SearchString,
+                distance = this.Range,
+                latitude = this.Latitude,
+                longitude = this.longitude,
 			};
-		    var response = await this.dataViewApi.InstallationSearchAsync(installationSearchRequest);
+            var response = await this.dataViewApi.InstallationsInRangeAsync(installationsInRangeRequest);
 
             if (!response.result)
             {
 				MessagingCenter.Send(this, "alert", new MessagingCenterAlert
 				{
-					Title = "Search Failure",
+					Title = "In Range Failure",
                     Message = $"Details: {response.message}",
 					Cancel = "OK"
 				});
             }
             else
             {
-                response.results.ForEach(result =>
+                response.results.ForEach(result => this.locations.Add(new LocationViewModel(result)));
+                if (this.locations.Count == 0)
                 {
-                    if (result.latitude.HasValue && result.longitude.HasValue)
-                        this.locations.Add(new LocationViewModel(result));
-                });
+					MessagingCenter.Send(this, "alert", new MessagingCenterAlert
+					{
+						Title = "Nearby Installations",
+						Message = "No nearby installations found",
+						Cancel = "OK"
+					});
+                }
             }
 
             return response.result;
