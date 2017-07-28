@@ -143,6 +143,24 @@
     <Reference Include="Plugin.ExternalMaps">
       <HintPath>..\packages\Xam.Plugin.ExternalMaps.4.0.1\lib\Xamarin.iOS10\Plugin.ExternalMaps.dll</HintPath>
     </Reference>
+    <Reference Include="Syncfusion.SfBusyIndicator.iOS">
+      <HintPath>..\packages\Syncfusion.Xamarin.SfBusyIndicator.15.2.0.46\lib\Xamarin.iOS10\Syncfusion.SfBusyIndicator.iOS.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.SfBusyIndicator.XForms">
+      <HintPath>..\packages\Syncfusion.Xamarin.SfBusyIndicator.15.2.0.46\lib\Xamarin.iOS10\Syncfusion.SfBusyIndicator.XForms.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.SfBusyIndicator.XForms.iOS">
+      <HintPath>..\packages\Syncfusion.Xamarin.SfBusyIndicator.15.2.0.46\lib\Xamarin.iOS10\Syncfusion.SfBusyIndicator.XForms.iOS.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.SfNavigationDrawer.iOS">
+      <HintPath>..\packages\Syncfusion.Xamarin.SfNavigationDrawer.15.2.0.46\lib\Xamarin.iOS10\Syncfusion.SfNavigationDrawer.iOS.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.SfNavigationDrawer.XForms">
+      <HintPath>..\packages\Syncfusion.Xamarin.SfNavigationDrawer.15.2.0.46\lib\Xamarin.iOS10\Syncfusion.SfNavigationDrawer.XForms.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.SfNavigationDrawer.XForms.iOS">
+      <HintPath>..\packages\Syncfusion.Xamarin.SfNavigationDrawer.15.2.0.46\lib\Xamarin.iOS10\Syncfusion.SfNavigationDrawer.XForms.iOS.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json" />

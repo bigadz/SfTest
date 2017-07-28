@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleDisplayName</key>
-	<string>AjentiExplorer</string>
+	<string>Ajenti Explorer</string>
 	<key>CFBundleName</key>
-	<string>AjentiExplorer</string>
+	<string>Ajenti Explorer</string>
 	<key>CFBundleIdentifier</key>
 	<string>au.com.adamcroser.ajentiexplorer</string>
 	<key>CFBundleShortVersionString</key>

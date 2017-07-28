@@ -1,7 +1,7 @@
 ﻿using System;
-
 using Xamarin.Forms;
 using AjentiExplorer.ViewModels;
+
 
 namespace AjentiExplorer.Views
 {
@@ -41,10 +41,10 @@ namespace AjentiExplorer.Views
             Content = grid;
 
             var busyIndicator = new Controls.BusyIndicator(viewModel);
-            busyIndicator.SetBinding(ContentView.IsVisibleProperty, new Binding("IsBusy"));
+            busyIndicator.SetBinding(IsVisibleProperty, new Binding("IsBusy"));
 
 			//grid.Children.Add(new Label { Text = "Hello ContentPage" }, 1, 0);
-            grid.Children.Add(new Controls.UsernamePassword(viewModel), 1, 1);
+			grid.Children.Add(new Controls.UsernamePassword(viewModel), 1, 1);
             grid.Children.Add(busyIndicator, 0, 3, 0, 3);
 
 			this.Appearing += async (sender, e) => 

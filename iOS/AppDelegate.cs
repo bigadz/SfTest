@@ -14,9 +14,12 @@ namespace AjentiExplorer.iOS
 
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
+            new Syncfusion.SfNavigationDrawer.XForms.iOS.SfNavigationDrawerRenderer();
 
-            global::Xamarin.Forms.Forms.Init();
+			global::Xamarin.Forms.Forms.Init();
             global::Xamarin.FormsMaps.Init();
+
+            new Syncfusion.SfBusyIndicator.XForms.iOS.SfBusyIndicatorRenderer();
 
             this.locationManager = new CoreLocation.CLLocationManager();
 			this.locationManager.RequestWhenInUseAuthorization(); //This is used if you are doing anything in the foreground.

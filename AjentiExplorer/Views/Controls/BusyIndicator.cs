@@ -1,6 +1,7 @@
 ﻿using System;
 
 using Xamarin.Forms;
+using Syncfusion.SfBusyIndicator.XForms;
 using AjentiExplorer.ViewModels;
 
 namespace AjentiExplorer.Views.Controls
@@ -9,47 +10,31 @@ namespace AjentiExplorer.Views.Controls
     {
 		private BaseViewModel viewModel;
 
-        private ActivityIndicator activityIndicator;
-		private Label messageLabel;
+        private SfBusyIndicator sfBusyIndicator;
 
 		public BusyIndicator(BaseViewModel viewModel)
 		{
 			BindingContext = this.viewModel = viewModel;
 
-			this.activityIndicator = new ActivityIndicator()
-            {
-				IsRunning = true,
-                Color = Color.White,
-            	BackgroundColor = Color.Black.MultiplyAlpha(0.7),
-            };
-			//this.activityIndicator.SetBinding(ActivityIndicator.IsVisibleProperty, new Binding("IsBusy"));
-
-            this.messageLabel = new Label
-            {
-				FontAttributes = FontAttributes.None,
-				FontSize = 20,
-                TextColor = Color.White,
-                HorizontalOptions = LayoutOptions.Center,
-			};
-			this.messageLabel.SetBinding(Label.TextProperty, new Binding("BusyMessage"));
-			//this.messageLabel.SetBinding(Label.IsVisibleProperty, new Binding("IsBusy"));
-
-			var grid = new Grid
+			this.sfBusyIndicator = new SfBusyIndicator()
 			{
-				ColumnDefinitions =
-				{
-					new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) },
-				},
-				RowDefinitions =
-				{
-					new RowDefinition { Height = new GridLength(3, GridUnitType.Star) },
-					new RowDefinition { Height = new GridLength(2, GridUnitType.Star) },
-				}
+				BindingContext = viewModel,
+				AnimationType = AnimationTypes.Ball,
+				IsEnabled = true,
+				IsBusy = true,
+				IsVisible = true,
+				TextColor = Color.White,
+				BackgroundColor = Color.Black.MultiplyAlpha(0.7),
+				ViewBoxWidth = 200,
+				ViewBoxHeight = 200,
 			};
+            this.sfBusyIndicator.SetBinding(SfBusyIndicator.TitleProperty, new Binding("BusyMessage"));
+
+            var grid = new Grid();
+			grid.Children.Add(this.sfBusyIndicator);
 			Content = grid;
 
-			grid.Children.Add(this.activityIndicator, 0, 1, 0, 2);
-			grid.Children.Add(this.messageLabel, 0, 1, 1, 2);
+
 
 		}
     }
