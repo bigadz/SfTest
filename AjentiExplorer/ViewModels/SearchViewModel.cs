@@ -16,6 +16,13 @@ namespace AjentiExplorer.ViewModels
         public SearchViewModel()
         {
 			SearchCommand = new Command(async () => await SearchAsync());
+
+			this.MenuItems = new ObservableRangeCollection<string>()
+			{
+				"Login",
+				"EFN",
+				"Map"
+			};
 		}
 
 		string searchString = string.Empty;

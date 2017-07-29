@@ -18,7 +18,6 @@ namespace AjentiExplorer.ViewModels
         {
             this.location = location;
 			LoadImagesCommand = new Command(async () => await LoadImagesAsync());
-
 		}
 
 		public int Id

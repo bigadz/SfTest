@@ -19,8 +19,8 @@ namespace AjentiExplorer.Views
 
             Title = "Map";
 
-            // Listen for messages from the modelview(s)
-            MessagingCenter.Subscribe<InRangeViewModel, MessagingCenterAlert>(this, "alert", async (src, alert) =>
+			// Listen for messages from the modelview(s)
+			MessagingCenter.Subscribe<InRangeViewModel, MessagingCenterAlert>(this, "alert", async (src, alert) =>
 			{
 				var _alert = alert as MessagingCenterAlert;
 				await DisplayAlert(alert.Title, alert.Message, alert.Cancel);
@@ -36,19 +36,24 @@ namespace AjentiExplorer.Views
 				await DisplayAlert(alert.Title, alert.Message, alert.Cancel);
 			});
 
+            var navigationDrawer = LayoutFactories.NavigationDrawer.Create(viewModel);
+			Content = navigationDrawer;
+
 			var grid = new Grid();
-            Content = grid;
+			navigationDrawer.ContentView = grid;
 
 			var busyIndicator = new Controls.BusyIndicator(viewModel);
-			busyIndicator.SetBinding(ContentView.IsVisibleProperty, new Binding("IsBusy"));
+			busyIndicator.SetBinding(IsVisibleProperty, new Binding("IsBusy"));
             grid.Children.Add(busyIndicator);
 
 			Map map = null;
 
             this.Appearing += async (sender, e) => 
             {
-                // Only create the map on first appearance
-                if (map != null) return; 
+				NavigationPage.SetHasNavigationBar(this, false);
+
+				// Only create the map on first appearance
+				if (map != null) return; 
 
                 // This will not return null. It will return the default location (Hobart) if it fails to determine anything else.
                 var lastKnownPosition = await this.viewModel.GetLastKnownPosition();
@@ -131,6 +136,8 @@ namespace AjentiExplorer.Views
                     }
                 }
             };
+
+			this.Disappearing += (sender, e) => NavigationPage.SetHasNavigationBar(this, true);
         }
 
         async void Pin_Clicked(object sender, EventArgs e)

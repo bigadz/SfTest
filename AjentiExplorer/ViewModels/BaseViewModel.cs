@@ -41,5 +41,12 @@ namespace AjentiExplorer.ViewModels
             get { return title; }
             set { SetProperty(ref title, value); }
         }
+
+        private ObservableRangeCollection<string> menuItems = new ObservableRangeCollection<string>();
+        public ObservableRangeCollection<string> MenuItems
+        {
+            get { return menuItems; }
+            set { SetProperty(ref menuItems, value); }
+        }
     }
 }
