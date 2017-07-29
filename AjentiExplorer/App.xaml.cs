@@ -35,7 +35,7 @@ namespace AjentiExplorer
 				//list.Add("NumericUpDown");
 
                 //var list2 = new ObservableRangeCollection<string>() { "Login", "EFN", "Map" };
-
+                /*
 
                 var navigationDrawer = Views.LayoutFactories.NavigationDrawer.Create(new ViewModels.SearchViewModel());
 
@@ -64,17 +64,17 @@ namespace AjentiExplorer
                     Content = navigationDrawer,
                     
                 };
-
-				//var navPage = new NavigationPage(new Views.LoginPage(new ViewModels.LoginViewModel()))
-				//{
-				//	BarBackgroundColor = (Color)Current.Resources["Primary"],
-				//	BarTextColor = Color.White
-				//};
-				var navPage = new NavigationPage(contentPage)
+*/
+				var navPage = new NavigationPage(new Views.LoginPage(new ViewModels.LoginViewModel()))
 				{
 					BarBackgroundColor = (Color)Current.Resources["Primary"],
 					BarTextColor = Color.White
 				};
+				//var navPage = new NavigationPage(contentPage)
+				//{
+				//	BarBackgroundColor = (Color)Current.Resources["Primary"],
+				//	BarTextColor = Color.White
+				//};
                 Current.MainPage = navPage;
 
             }

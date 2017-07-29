@@ -18,7 +18,7 @@ namespace AjentiExplorer.Views
         {
             BindingContext = this.viewModel = viewModel;
 
-            Title = "Location";
+            Title = viewModel.Title;
 
             switch (Device.RuntimePlatform)
             {
@@ -76,7 +76,8 @@ namespace AjentiExplorer.Views
 					}
                 }
             };
-        }
+
+		}
 
         async void DirectionsButton_Clicked(object sender, EventArgs e)
         {

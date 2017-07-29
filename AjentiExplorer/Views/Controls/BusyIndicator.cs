@@ -16,7 +16,7 @@ namespace AjentiExplorer.Views.Controls
 		{
 			BindingContext = this.viewModel = viewModel;
 
-			this.sfBusyIndicator = new SfBusyIndicator()
+			this.sfBusyIndicator = new SfBusyIndicator
 			{
 				BindingContext = viewModel,
 				AnimationType = AnimationTypes.Ball,
@@ -30,12 +30,7 @@ namespace AjentiExplorer.Views.Controls
 			};
             this.sfBusyIndicator.SetBinding(SfBusyIndicator.TitleProperty, new Binding("BusyMessage"));
 
-            var grid = new Grid();
-			grid.Children.Add(this.sfBusyIndicator);
-			Content = grid;
-
-
-
+			Content = new Grid { Children = { this.sfBusyIndicator } };
 		}
     }
 }

@@ -6,6 +6,7 @@ namespace AjentiExplorer.Views.LayoutFactories
 {
     public static class NavigationDrawer
     {
+        private static Grid navigationBar;
 
         public static SfNavigationDrawer Create(ViewModels.BaseViewModel viewModel)
         {
@@ -24,8 +25,53 @@ namespace AjentiExplorer.Views.LayoutFactories
                 DrawerFooterView = NavigationDrawer.Footer,
 			};
 
-            return navigationDrawer;
+			var connectedNavBar = new Grid
+			{
+				ColumnDefinitions =
+				{
+					new ColumnDefinition { Width = new GridLength(60, GridUnitType.Absolute) },
+					new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) },
+				},
+				RowDefinitions =
+				{
+                    new RowDefinition { Height = new GridLength(60, GridUnitType.Absolute) },
+				},
+				BackgroundColor = (Color)Application.Current.Resources["Primary"],
+			};
+
+            var header = new Label
+            {
+                Text = viewModel.Title,
+                FontSize = 18,
+                FontAttributes = FontAttributes.Bold,
+                TextColor = Color.White,
+                HorizontalTextAlignment = TextAlignment.Center,
+                VerticalTextAlignment = TextAlignment.End,
+                Margin = new Thickness(0, 30, 0, 10),
+			};
+			connectedNavBar.Children.Add(header, 0, 2, 0, 1);
+
+            var menuButton = new Button
+            {
+                TextColor = Color.White,
+                Image = (FileImageSource)ImageSource.FromFile("slideout.png"),
+				Margin = new Thickness(0, 25, 0, 0),
+                Command = new Command(() => navigationDrawer.ToggleDrawer()),
+			};
+
+			connectedNavBar.Children.Add(menuButton, 0, 0);
+
+			NavigationDrawer.navigationBar = connectedNavBar;
+			return navigationDrawer;
         }
+
+		public static Layout NavigationBar
+		{
+			get
+			{
+				return navigationBar;
+			}
+		}
 
         private static Layout Header
         {
@@ -38,7 +84,7 @@ namespace AjentiExplorer.Views.LayoutFactories
 
 				var header = new Label
 				{
-					Text = "Header View",
+					Text = "Ajenti Explorer",
 					FontSize = 14,
 					TextColor = Color.White,
 					HorizontalTextAlignment = TextAlignment.Center,

@@ -17,6 +17,8 @@ namespace AjentiExplorer.ViewModels
         {
 			SearchCommand = new Command(async () => await SearchAsync());
 
+            this.Title = "Map";
+
 			this.MenuItems = new ObservableRangeCollection<string>()
 			{
 				"Login",
