@@ -49,6 +49,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Views\LocationPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\InRangeViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\LayoutFactories\NavigationDrawer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Views\Cells\DrawerMenuCell.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\DrawerMenuItem.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Views\AboutPage.xaml" />
@@ -60,6 +62,7 @@
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Views\Controls\" />
     <Folder Include="$(MSBuildThisFileDirectory)Views\LayoutFactories\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Views\Cells\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)Views\LoginPage.xaml" />

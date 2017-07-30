@@ -5,7 +5,7 @@ using System.Windows.Input;
 using Plugin.Geolocator;
 using Plugin.Geolocator.Abstractions;
 using Xamarin.Forms;
-
+using AjentiExplorer.Models;
 
 namespace AjentiExplorer.ViewModels
 {
@@ -19,11 +19,11 @@ namespace AjentiExplorer.ViewModels
 
             this.Title = "Map";
 
-			this.MenuItems = new ObservableRangeCollection<string>()
-			{
-				"Login",
-				"EFN",
-				"Map"
+            this.MenuItems = new ObservableRangeCollection<DrawerMenuItem>
+            {
+				new DrawerMenuItem() { Title = "Login" },
+				new DrawerMenuItem() { Title = "EFN" },
+				new DrawerMenuItem() { Title = "Map" },
 			};
 		}
 

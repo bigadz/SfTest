@@ -1,4 +1,5 @@
-﻿using AjentiExplorer.Services;
+﻿using AjentiExplorer.Models;
+using AjentiExplorer.Services;
 using Xamarin.Forms;
 
 namespace AjentiExplorer.ViewModels
@@ -42,8 +43,8 @@ namespace AjentiExplorer.ViewModels
             set { SetProperty(ref title, value); }
         }
 
-        private ObservableRangeCollection<string> menuItems = new ObservableRangeCollection<string>();
-        public ObservableRangeCollection<string> MenuItems
+        private ObservableRangeCollection<DrawerMenuItem> menuItems = new ObservableRangeCollection<DrawerMenuItem>();
+        public ObservableRangeCollection<DrawerMenuItem> MenuItems
         {
             get { return menuItems; }
             set { SetProperty(ref menuItems, value); }

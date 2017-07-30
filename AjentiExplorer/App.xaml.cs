@@ -7,7 +7,7 @@ namespace AjentiExplorer
 {
     public partial class App : Application
     {
-        public static bool UseMockDataStore = true;
+		public static bool UseMockDataStore = true;
         public static string BackendUrl = "https://localhost:5000";
 
         public static IDictionary<string, string> LoginParameters => null;
@@ -67,7 +67,7 @@ namespace AjentiExplorer
 */
 				var navPage = new NavigationPage(new Views.LoginPage(new ViewModels.LoginViewModel()))
 				{
-					BarBackgroundColor = (Color)Current.Resources["Primary"],
+                    BarBackgroundColor = Settings.YouTubeRed, //(Color)Current.Resources["Primary"],
 					BarTextColor = Color.White
 				};
 				//var navPage = new NavigationPage(contentPage)

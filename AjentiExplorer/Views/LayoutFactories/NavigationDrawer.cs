@@ -1,11 +1,16 @@
 ﻿using System;
 using Syncfusion.SfNavigationDrawer.XForms;
 using Xamarin.Forms;
+using AjentiExplorer.Models;
 
 namespace AjentiExplorer.Views.LayoutFactories
 {
     public static class NavigationDrawer
     {
+        private const int DrawerWidth = 200;
+        private const int DrawerHeaderHeight = 100;
+        private const int DrawerFooterHeight = 50;
+
         private static Grid navigationBar;
 
         public static SfNavigationDrawer Create(ViewModels.BaseViewModel viewModel)
@@ -16,10 +21,10 @@ namespace AjentiExplorer.Views.LayoutFactories
                 Transition = Transition.Push,
 
                 TouchThreshold = 50,
-                DrawerWidth = 200,
+                DrawerWidth = NavigationDrawer.DrawerWidth,
                 DrawerHeight = 100,
-                DrawerHeaderHeight = 100,
-                DrawerFooterHeight = 50,
+                DrawerHeaderHeight = NavigationDrawer.DrawerHeaderHeight,
+                DrawerFooterHeight = NavigationDrawer.DrawerFooterHeight,
                 DrawerHeaderView = NavigationDrawer.Header,
                 DrawerContentView = NavigationDrawer.DrawContent(viewModel.MenuItems),
                 DrawerFooterView = NavigationDrawer.Footer,
@@ -36,7 +41,7 @@ namespace AjentiExplorer.Views.LayoutFactories
 				{
                     new RowDefinition { Height = new GridLength(60, GridUnitType.Absolute) },
 				},
-				BackgroundColor = (Color)Application.Current.Resources["Primary"],
+                BackgroundColor = Settings.YouTubeRed, //(Color)Application.Current.Resources["Primary"],
 			};
 
             var header = new Label
@@ -79,24 +84,25 @@ namespace AjentiExplorer.Views.LayoutFactories
             {
 				var headerLayout = new Grid
 				{
-					BackgroundColor = Color.FromHex("#1aa1d6"),
+                    BackgroundColor = Settings.YouTubeRed,
 				};
 
 				var header = new Label
 				{
 					Text = "Ajenti Explorer",
-					FontSize = 14,
+					FontSize = 18,
+                    FontAttributes = FontAttributes.Bold,
 					TextColor = Color.White,
 					HorizontalTextAlignment = TextAlignment.Center,
 					VerticalTextAlignment = TextAlignment.Center,
-					BackgroundColor = Color.FromHex("#1aa1d6"),
+					BackgroundColor = Settings.YouTubeRed,
 				};
 				headerLayout.Children.Add(header);
                 return headerLayout;
 			}
         }
 
-        private static Layout DrawContent(ObservableRangeCollection<string> menuItems)
+        private static Layout DrawContent(ObservableRangeCollection<DrawerMenuItem> menuItems)
         {
             var menuStack = new StackLayout
 			{
@@ -104,11 +110,15 @@ namespace AjentiExplorer.Views.LayoutFactories
 				HeightRequest = 500,
 			};
 
-			ListView listView = new ListView
-			{
-				WidthRequest = 200,
-				VerticalOptions = LayoutOptions.FillAndExpand,
+            ListView listView = new ListView
+            {
+                WidthRequest = NavigationDrawer.DrawerWidth,
+                VerticalOptions = LayoutOptions.FillAndExpand,
+                BackgroundColor = Settings.Dark4,
+                SeparatorColor = Settings.DarkGray,
+
 				ItemsSource = menuItems,
+				ItemTemplate = new DataTemplate(typeof(Cells.DrawerMenuCell)),
 			};
 
             listView.ItemSelected += async (object sender, SelectedItemChangedEventArgs e) =>
@@ -118,7 +128,7 @@ namespace AjentiExplorer.Views.LayoutFactories
                 {
                     if (e.SelectedItem.ToString().Equals("Login"))
                     {
-                        await App.SwitchToPage(navPage.Navigation, new Views.LoginPage(new ViewModels.LoginViewModel()));
+                        await App.SwitchToPage(navPage.Navigation, new LoginPage(new ViewModels.LoginViewModel()));
                         //navigationDrawer.EnableSwipeGesture = true;
                         //navigationDrawer.ContentView = new RangeSlider().Content;
                     }
@@ -153,17 +163,25 @@ namespace AjentiExplorer.Views.LayoutFactories
 			{
 				var footerLayout = new StackLayout
 				{
-					BackgroundColor = Color.FromHex("#1aa1d6"),
+					//BackgroundColor = Color.FromHex("#1aa1d6"),
 				};
-				footerLayout.BackgroundColor = Color.FromHex("#1aa1d6");
-				var footer = new Label
-				{
-					Text = "Footer View",
-					FontSize = 14,
-					TextColor = Color.White,
-					HorizontalOptions = LayoutOptions.CenterAndExpand,
-					VerticalOptions = LayoutOptions.CenterAndExpand,
-					BackgroundColor = Color.FromHex("#1aa1d6"),
+                //var footer = new Label
+                //{
+                //	Text = "Footer View",
+                //	FontSize = 14,
+                //	TextColor = Color.White,
+                //	HorizontalOptions = LayoutOptions.CenterAndExpand,
+                //	VerticalOptions = LayoutOptions.CenterAndExpand,
+                //	BackgroundColor = Color.FromHex("#1aa1d6"),
+                //};
+                var footer = new Image
+                {
+                    Source = ImageSource.FromFile("entura_logo.png"),
+                    WidthRequest = NavigationDrawer.DrawerWidth - 20,
+                    HeightRequest = NavigationDrawer.DrawerFooterHeight - 20,
+				    HorizontalOptions = LayoutOptions.CenterAndExpand,
+				    VerticalOptions = LayoutOptions.CenterAndExpand,
+                    Aspect = Aspect.AspectFit,
 				};
 				footerLayout.Children.Add(footer);
 				return footerLayout;

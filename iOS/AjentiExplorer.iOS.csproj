@@ -183,6 +183,7 @@
     <BundleResource Include="Resources\xamarin_logo%403x.png" />
     <BundleResource Include="Resources\menu50.png" />
     <BundleResource Include="Resources\menu50%402x.png" />
+    <BundleResource Include="Resources\entura_logo.png" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppDelegate.cs" />

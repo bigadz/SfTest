@@ -26,6 +26,11 @@ namespace AjentiExplorer.iOS
 
 			LoadApplication(new App());
 
+            UIColor youTubeRed = UIColor.FromRGB((float)Settings.YouTubeRed.R, (float)Settings.YouTubeRed.G, (float)Settings.YouTubeRed.B);
+            UINavigationBar.Appearance.BarTintColor = youTubeRed;
+            //UITabBar.Appearance.SelectedImageTintColor = ColorNavBarTint;
+            UITabBar.Appearance.BarTintColor = youTubeRed;
+
 			return base.FinishedLaunching(app, options);
         }
 

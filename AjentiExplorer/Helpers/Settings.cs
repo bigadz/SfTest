@@ -1,6 +1,8 @@
 ﻿using Plugin.Settings;
 using Plugin.Settings.Abstractions;
 
+using Xamarin.Forms;
+
 namespace AjentiExplorer
 {
     /// <summary>
@@ -17,6 +19,20 @@ namespace AjentiExplorer
                 return CrossSettings.Current;
             }
         }
+
+		public static Color YouTubeRed = Color.FromHex("cd181f");
+
+		public static Color Dark6 = Color.FromRgb(28, 30, 31); // VS Studio Mac - Code Window BG
+        public static Color Dark5 = Color.FromRgb(36, 36, 36); // VS Studio Mac - Code Window Line Numbers BG
+		public static Color Dark4 = Color.FromRgb(48, 48, 48); // VS Studio Mac - Code Window Breakpoint BG
+		public static Color Dark3 = Color.FromRgb(71, 71, 71); // VS Studio Mac - Code Window Other Tabs BG
+		public static Color Dark2 = Color.FromRgb(82, 82, 82); // VS Studio Mac - Code Window Selected Tab BG
+		public static Color Dark1 = Color.FromRgb(72, 75, 85); // VS Studio Mac - Sln Menu Background
+
+        public static Color DarkGray = Color.FromRgb(136, 138, 130); // VS Studio Mac - Code Comments
+		public static Color LightGray = Color.FromRgb(191, 191, 191); // VS Studio Mac - Sln Menu Text
+
+
 
 		#region Setting Constants
 		const string UsernameKey = "username";
@@ -141,6 +157,6 @@ namespace AjentiExplorer
 				AppSettings.AddOrUpdateValue(ServerEnvironmentKey, value);
 			}
 		}
-		
+
 	}
 }
