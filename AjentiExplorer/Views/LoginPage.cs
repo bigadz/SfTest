@@ -14,10 +14,10 @@ namespace AjentiExplorer.Views
             BindingContext = this.viewModel = viewModel;
             this.viewModel.Navigation = this.Navigation;
 
-            Title = "Login";
+			SetBinding(TitleProperty, new Binding("Title"));
 
-            // Listen for messages from the modelview
-            MessagingCenter.Subscribe<LoginViewModel, MessagingCenterAlert>(this, "alert", HandleMessagingCenterAlert);
+			// Listen for messages from the modelview
+			MessagingCenter.Subscribe<LoginViewModel, MessagingCenterAlert>(this, "alert", HandleMessagingCenterAlert);
 
             var layoutGrid = new Grid
             {

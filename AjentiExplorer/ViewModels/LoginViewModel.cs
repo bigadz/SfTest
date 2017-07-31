@@ -11,6 +11,7 @@ namespace AjentiExplorer.ViewModels
 
         public LoginViewModel()
         {
+            Title = "Login";
             SignInCommand = new Command(async () => await SignInAsync());
         }
 

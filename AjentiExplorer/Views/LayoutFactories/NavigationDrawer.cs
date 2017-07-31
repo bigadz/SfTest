@@ -126,25 +126,22 @@ namespace AjentiExplorer.Views.LayoutFactories
 				var navPage = Application.Current.MainPage as NavigationPage;
 				try
                 {
-                    if (e.SelectedItem.ToString().Equals("Login"))
+                    var menuText = e.SelectedItem.ToString();
+
+                    if (menuText.Equals("Login"))
                     {
                         await App.SwitchToPage(navPage.Navigation, new LoginPage(new ViewModels.LoginViewModel()));
                         //navigationDrawer.EnableSwipeGesture = true;
                         //navigationDrawer.ContentView = new RangeSlider().Content;
                     }
 
-                    if (e.SelectedItem.ToString().Equals("BusyIndicator"))
+                    if (menuText.Equals("Logout"))
                     {
-                        //navigationDrawer.EnableSwipeGesture = true;
-                        //navigationDrawer.ContentView = new BusyIndicator().Content;
-                    }
-
-                    if (e.SelectedItem.ToString().Equals("NumericUpDown"))
-                    {
-
-                        //navigationDrawer.EnableSwipeGesture = true;
-                        //navigationDrawer.ContentView = new NumericUpDown().Content;
-                    }
+                        Settings.Logout();
+						await App.SwitchToPage(navPage.Navigation, new LoginPage(new ViewModels.LoginViewModel()));
+						//navigationDrawer.EnableSwipeGesture = true;
+						//navigationDrawer.ContentView = new NumericUpDown().Content;
+					}
                 }
                 catch (Exception ex)
                 {

@@ -20,7 +20,7 @@ namespace AjentiExplorer.Views
             BindingContext = this.viewModel = viewModel;
             this.viewModel.Navigation = this.Navigation;
 
-            this.Title = this.viewModel.Title;
+            SetBinding(TitleProperty, new Binding("Title"));
 
 			NavigationPage.SetHasNavigationBar(this, false);
 

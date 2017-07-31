@@ -61,6 +61,7 @@ namespace AjentiExplorer
 		#endregion
 
 		public static bool IsLoggedIn => !string.IsNullOrWhiteSpace(AuthToken);
+        public static void Logout() { AuthToken = null; }
 		public static string AuthToken
         {
             get
