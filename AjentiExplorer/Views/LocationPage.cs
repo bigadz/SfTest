@@ -8,19 +8,21 @@ using Plugin.ExternalMaps;
 
 namespace AjentiExplorer.Views
 {
-    public class LocationPage : ContentPage
+    public class LocationPage : BaseContentPage
     {
 		private LocationViewModel viewModel;
 
         private string externalMapsAppName;
 
+        private bool cameraImagesLoaded = false;
+
 		public LocationPage(LocationViewModel viewModel)
         {
             BindingContext = this.viewModel = viewModel;
 
-            Title = viewModel.Title;
+			SetBinding(TitleProperty, new Binding("Title"));
 
-            switch (Device.RuntimePlatform)
+			switch (Device.RuntimePlatform)
             {
                 case Device.Android:
                     this.externalMapsAppName = "Google Maps";
@@ -33,27 +35,33 @@ namespace AjentiExplorer.Views
 
 			var table = new TableView() { Intent = TableIntent.Form };
 			var root = new TableRoot();
-			var section1 = new TableSection() { Title = "Details" };
+			var section1 = new TableSection() { Title = "Site" };
 			var section2 = new TableSection() { Title = "Actions" };
 
-            var idCell = new TextCell { Detail = "Id", Text = viewModel.Id.ToString() };
 			var nameCell = new TextCell { Detail = "Name", Text = viewModel.Name };
 			var addressCell = new TextCell { Detail = "Address", Text = viewModel.Address };
-            var latitudeCell = new TextCell { Detail = "Latitude", Text = viewModel.Latitude.ToString() };
-			var longitudeCell = new TextCell { Detail = "Longitude", Text = viewModel.Longitude.ToString() };
             var siteTypesCell = new TextCell { Detail = "Site Types", Text = viewModel.SiteTypes };
+			var idCell = new TextCell { Detail = "ADMS Id", Text = viewModel.Id.ToString() };
 
-            var directionsButton = new Button { Text = $"Open in {this.externalMapsAppName}..." };
-            var directionsCell = new ViewCell { View = directionsButton };
-
-            section1.Add(idCell);
 			section1.Add(nameCell);
 			section1.Add(addressCell);
-			section1.Add(latitudeCell);
-			section1.Add(longitudeCell);
 			section1.Add(siteTypesCell);
+			section1.Add(idCell);
 
-			section2.Add(directionsCell);
+			var photosButton = new Button { Text = "Photos" };
+			photosButton.Clicked += PhotosButton_Clicked;
+			var dashboardsButton = new Button { Text = "Dashboards" };
+			dashboardsButton.Clicked += DashboardsButton_Clicked;
+			var fieldnoteButton = new Button { Text = $"Field Note" };
+			fieldnoteButton.Clicked += FieldNoteButton_Clicked;
+			var directionsButton = new Button { Text = $"Show in {this.externalMapsAppName} App..." };
+			directionsButton.Clicked += DirectionsButton_Clicked;
+
+
+			section2.Add(new ViewCell { View = photosButton });
+			section2.Add(new ViewCell { View = dashboardsButton });
+			section2.Add(new ViewCell { View = fieldnoteButton });
+			section2.Add(new ViewCell { View = directionsButton });
 
 			table.Root = root;
 			root.Add(section1);
@@ -61,19 +69,22 @@ namespace AjentiExplorer.Views
 
 			Content = table;
 
-            directionsButton.Clicked += DirectionsButton_Clicked;
 
             this.Appearing += async (sender, e) => 
             {
-                await this.viewModel.LoadImagesAsync();
-                Console.WriteLine($"image count={this.viewModel.CameraImages.Count}");
-				foreach (var cameraImage in this.viewModel.CameraImages)
+                if (!this.cameraImagesLoaded)
                 {
-                    Console.WriteLine($"name={cameraImage.name} urls={cameraImage.urls.Count}");
-					foreach (var url in cameraImage.urls)
+                    this.cameraImagesLoaded = true;
+                    await this.viewModel.LoadImagesAsync();
+                    Console.WriteLine($"image count={this.viewModel.CameraImages.Count}");
+                    foreach (var cameraImage in this.viewModel.CameraImages)
                     {
-						Console.WriteLine($"     url={url}");
-					}
+                        Console.WriteLine($"name={cameraImage.name} urls={cameraImage.urls.Count}");
+                        foreach (var url in cameraImage.urls)
+                        {
+                            Console.WriteLine($"     url={url}");
+                        }
+                    }
                 }
             };
 
@@ -86,8 +97,24 @@ namespace AjentiExplorer.Views
             {
                 await DisplayAlert("Open Location Error", $"Unable to open location in {this.externalMapsAppName}", "Ok");
             }
-        }   
-    }
+        }
+
+		async void FieldNoteButton_Clicked(object sender, EventArgs e)
+		{
+            await this.Navigation.PushAsync(new LocationFieldNotePage(new LocationFieldNoteViewModel(this.viewModel)));
+		}
+
+		async void PhotosButton_Clicked(object sender, EventArgs e)
+		{
+            await this.Navigation.PushAsync(new LocationPhotosPage(new LocationPhotosViewModel(this.viewModel)));
+		}
+
+		async void DashboardsButton_Clicked(object sender, EventArgs e)
+		{
+            await this.Navigation.PushAsync(new LocationDashboardsPage(new LocationDashboardsViewModel(this.viewModel)));
+		}
+
+	}
 }
 
 /*

@@ -17,6 +17,7 @@ namespace AjentiExplorer.ViewModels
 		public LocationViewModel(JsonMsgs.Location location)
         {
             this.location = location;
+            this.Title = "Location";
 			LoadImagesCommand = new Command(async () => await LoadImagesAsync());
 		}
 

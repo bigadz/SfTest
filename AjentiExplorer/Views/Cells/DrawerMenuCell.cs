@@ -18,12 +18,12 @@ namespace AjentiExplorer.Views.Cells
         {
             //instantiate each of our views
             //var image = new Image();
-            StackLayout cellWrapper = new StackLayout
-            {
-                HorizontalOptions = LayoutOptions.FillAndExpand,
-                VerticalOptions = LayoutOptions.FillAndExpand,
-                Orientation = StackOrientation.Vertical,
-            };
+            //StackLayout cellWrapper = new StackLayout
+            //{
+            //    HorizontalOptions = LayoutOptions.FillAndExpand,
+            //    VerticalOptions = LayoutOptions.FillAndExpand,
+            //    Orientation = StackOrientation.Vertical,
+            //};
 			//StackLayout horizontalLayout = new StackLayout();
             Label menuText = new Label
             { 

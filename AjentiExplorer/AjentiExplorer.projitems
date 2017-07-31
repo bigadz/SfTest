@@ -52,6 +52,15 @@
     <Compile Include="$(MSBuildThisFileDirectory)Models\DrawerMenuItem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\BaseContentPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\LayoutFactories\BusyIndicator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Views\LocationPhotosPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Views\LocationFieldNotePage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Views\SearchListPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Views\LocationDashboardsPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\LocationPhotosViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\LocationFieldNoteViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\LocationDashboardsViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\PhotoViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\Photo.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Views\AboutPage.xaml" />

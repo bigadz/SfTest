@@ -21,7 +21,6 @@ namespace AjentiExplorer.ViewModels
 
             this.MenuItems = new ObservableRangeCollection<DrawerMenuItem>
             {
-				new DrawerMenuItem() { Title = "EFN" },
 				new DrawerMenuItem() { Title = "Map" },
 				new DrawerMenuItem() { Title = "Search" },
 				new DrawerMenuItem() { Title = "Logout" },

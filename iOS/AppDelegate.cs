@@ -14,7 +14,9 @@ namespace AjentiExplorer.iOS
 
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
-            new Syncfusion.SfNavigationDrawer.XForms.iOS.SfNavigationDrawerRenderer();
+			new Syncfusion.SfNavigationDrawer.XForms.iOS.SfNavigationDrawerRenderer();
+            new Syncfusion.SfChart.XForms.iOS.Renderers.SfChartRenderer();
+			new Syncfusion.SfNavigationDrawer.XForms.iOS.SfNavigationDrawerRenderer();
 
 			global::Xamarin.Forms.Forms.Init();
             global::Xamarin.FormsMaps.Init();
@@ -24,7 +26,9 @@ namespace AjentiExplorer.iOS
             this.locationManager = new CoreLocation.CLLocationManager();
 			this.locationManager.RequestWhenInUseAuthorization(); //This is used if you are doing anything in the foreground.
 
-			LoadApplication(new App());
+            Syncfusion.ListView.XForms.iOS.SfListViewRenderer.Init();
+
+            LoadApplication(new App());
 
             UIColor youTubeRed = UIColor.FromRGB((float)Settings.YouTubeRed.R, (float)Settings.YouTubeRed.G, (float)Settings.YouTubeRed.B);
             UINavigationBar.Appearance.BarTintColor = youTubeRed;
