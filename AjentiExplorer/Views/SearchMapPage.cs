@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Maps;
@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 
 namespace AjentiExplorer.Views
 {
-    public class SearchMapPage : ContentPage
+    public class SearchMapPage : BaseContentPage
     {
         private SearchViewModel viewModel;
 
         private Map map;
-        private MapSpan mapSan;
+        private MapSpan lastUsedMapSpan;
 
 		public SearchMapPage(SearchViewModel viewModel)
         {
@@ -25,26 +25,14 @@ namespace AjentiExplorer.Views
 			NavigationPage.SetHasNavigationBar(this, false);
 
 			// Listen for messages from the modelview(s)
-			MessagingCenter.Subscribe<InRangeViewModel, MessagingCenterAlert>(this, "alert", async (src, alert) =>
-			{
-				var _alert = alert as MessagingCenterAlert;
-				await DisplayAlert(alert.Title, alert.Message, alert.Cancel);
-			});
-			MessagingCenter.Subscribe<SearchViewModel, MessagingCenterAlert>(this, "alert", async (src, alert) =>
-			{
-				var _alert = alert as MessagingCenterAlert;
-				await DisplayAlert(alert.Title, alert.Message, alert.Cancel);
-			});
-            MessagingCenter.Subscribe<LocationViewModel, MessagingCenterAlert>(this, "alert", async (src, alert) =>
-			{
-				var _alert = alert as MessagingCenterAlert;
-				await DisplayAlert(alert.Title, alert.Message, alert.Cancel);
-			});
+			MessagingCenter.Subscribe<InRangeViewModel, MessagingCenterAlert>(this, "alert", HandleMessagingCenterAlert);
+			MessagingCenter.Subscribe<SearchViewModel, MessagingCenterAlert>(this, "alert", HandleMessagingCenterAlert);
+			MessagingCenter.Subscribe<LocationViewModel, MessagingCenterAlert>(this, "alert", HandleMessagingCenterAlert);
 
-            var navigationDrawer = LayoutFactories.NavigationDrawer.Create(viewModel);
+			var navigationDrawer = LayoutFactories.NavigationDrawer.Create(viewModel);
 			Content = navigationDrawer;
 
-            var grid = new Grid
+			var layoutGrid = new Grid
             {
                 RowDefinitions =
                 {
@@ -52,8 +40,8 @@ namespace AjentiExplorer.Views
 					new RowDefinition { Height = new GridLength(1, GridUnitType.Star) },
                 }
             };
-            grid.Children.Add(LayoutFactories.NavigationDrawer.NavigationBar, 0, 1, 0, 1);
-			navigationDrawer.ContentView = grid;
+            layoutGrid.Children.Add(LayoutFactories.NavigationDrawer.NavigationBar, 0, 1, 0, 1);
+			navigationDrawer.ContentView = layoutGrid;
 
 			this.map = null;
 
@@ -66,10 +54,12 @@ namespace AjentiExplorer.Views
                 {
                     try
                     {
-                        this.map.MoveToRegion(this.mapSan);
-
-                        // No exceptions? Then our job here is done.
-                        return;
+                        if (this.lastUsedMapSpan != null)
+                        {
+                            this.map.MoveToRegion(this.lastUsedMapSpan);
+							// No exceptions? Then our job here is done.
+							return;
+						}
                     }
                     catch (Exception ex)
                     {
@@ -90,11 +80,8 @@ namespace AjentiExplorer.Views
                     VerticalOptions = LayoutOptions.FillAndExpand,
                     HorizontalOptions = LayoutOptions.FillAndExpand,
                 };
-                grid.Children.Add(this.map, 0, 1, 1, 2);
-
-				var busyIndicator = new Controls.BusyIndicator(viewModel);
-				busyIndicator.SetBinding(IsVisibleProperty, new Binding("IsBusy"));
-				grid.Children.Add(busyIndicator, 0, 1, 0, 2);
+                layoutGrid.Children.Add(this.map, 0, 1, 1, 2);
+				layoutGrid.Children.Add(LayoutFactories.BusyIndicator.Create(viewModel), 0, 1, 0, 2);
 
 				// If Searching....
 				this.viewModel.SearchString = "FISH";
@@ -128,12 +115,12 @@ namespace AjentiExplorer.Views
 
                 foreach (var location in this.viewModel.Locations)
                 {
-                    System.Diagnostics.Debug.WriteLine($"Location {location.Latitude},{location.Longitude} lbl={location.Name} addr={location.Address}");
+                    //System.Diagnostics.Debug.WriteLine($"Location {location.Latitude},{location.Longitude} lbl={location.Name} addr={location.Address}");
 					var pin = new Pin
 					{
                         Type = PinType.SearchResult,
                         BindingContext = location,
-                        Label = location.Name, // Note: There is no binding property for Label. (Why the &(*$ not?)
+                        Label = location.Name, // Note: There is no binding property for Label. (Why not?)
 					};
 					pin.SetBinding(Pin.PositionProperty, new Binding("Position"));
 					pin.SetBinding(Pin.AddressProperty, new Binding("Address"));
@@ -144,13 +131,13 @@ namespace AjentiExplorer.Views
             };
 
 			this.Disappearing += (sender, e) => NavigationPage.SetHasNavigationBar(this, true);
-        }
+		}
 
         async void Pin_Clicked(object sender, EventArgs e)
         {
             var pin = sender as Pin;
 
-            this.mapSan = this.map.VisibleRegion;
+            this.lastUsedMapSpan = this.map.VisibleRegion;
 
             await this.Navigation.PushAsync(new LocationPage(pin.BindingContext as LocationViewModel));
         }

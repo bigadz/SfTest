@@ -5,7 +5,7 @@ using AjentiExplorer.ViewModels;
 
 namespace AjentiExplorer.Views
 {
-    public class LoginPage : ContentPage
+    public class LoginPage : BaseContentPage
     {
         private LoginViewModel viewModel;
 
@@ -17,13 +17,9 @@ namespace AjentiExplorer.Views
             Title = "Login";
 
             // Listen for messages from the modelview
-            MessagingCenter.Subscribe<LoginViewModel, MessagingCenterAlert>(this, "alert", async (src, alert) =>
-			{
-				var _alert = alert as MessagingCenterAlert;
-                await DisplayAlert(alert.Title, alert.Message, alert.Cancel);
-			});
+            MessagingCenter.Subscribe<LoginViewModel, MessagingCenterAlert>(this, "alert", HandleMessagingCenterAlert);
 
-            var grid = new Grid
+            var layoutGrid = new Grid
             {
                 ColumnDefinitions =
                 {
@@ -38,14 +34,10 @@ namespace AjentiExplorer.Views
                     new RowDefinition { Height = new GridLength(3, GridUnitType.Star) },
                 }
             };
-            Content = grid;
+            Content = layoutGrid;
 
-            var busyIndicator = new Controls.BusyIndicator(viewModel);
-            busyIndicator.SetBinding(IsVisibleProperty, new Binding("IsBusy"));
-
-			//grid.Children.Add(new Label { Text = "Hello ContentPage" }, 1, 0);
-			grid.Children.Add(new Controls.UsernamePassword(viewModel), 1, 1);
-            grid.Children.Add(busyIndicator, 0, 3, 0, 3);
+			layoutGrid.Children.Add(new Controls.UsernamePassword(viewModel), 1, 1);
+            layoutGrid.Children.Add(LayoutFactories.BusyIndicator.Create(viewModel), 0, 3, 0, 3);
 
 			this.Appearing += async (sender, e) => 
             {

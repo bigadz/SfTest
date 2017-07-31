@@ -42,7 +42,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Services\DataViewApi.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Controls\UsernamePassword.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\LoginPage.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Views\Controls\BusyIndicator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\SearchViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\SearchMapPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\LocationViewModel.cs" />
@@ -51,6 +50,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Views\LayoutFactories\NavigationDrawer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Cells\DrawerMenuCell.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\DrawerMenuItem.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Views\BaseContentPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Views\LayoutFactories\BusyIndicator.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Views\AboutPage.xaml" />
