@@ -32,7 +32,7 @@ namespace AjentiExplorer.ViewModels
 			set { Settings.StayLoggedIn = value; OnPropertyChanged(); }
 		}
 
-        async Task SignInAsync()
+        public async Task SignInAsync()
         {
             try
             {

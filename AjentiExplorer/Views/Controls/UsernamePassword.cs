@@ -31,6 +31,7 @@ namespace AjentiExplorer.Views.Controls
                 IsPassword = true,
             };
 			this.passwordEntry.SetBinding(Entry.TextProperty, new Binding("Password"));
+            this.passwordEntry.Completed += async (sender, e) => await this.viewModel.SignInAsync();
 
 			this.loginButton = new Button
             {
