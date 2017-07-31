@@ -32,6 +32,7 @@ namespace AjentiExplorer
         public static Color DarkGray = Color.FromRgb(136, 138, 130); // VS Studio Mac - Code Comments
 		public static Color LightGray = Color.FromRgb(191, 191, 191); // VS Studio Mac - Sln Menu Text
 
+        public static Color NavBarColor = YouTubeRed;
 
 
 		#region Setting Constants

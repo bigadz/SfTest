@@ -67,8 +67,8 @@ namespace AjentiExplorer
 */
 				var navPage = new NavigationPage(new Views.LoginPage(new ViewModels.LoginViewModel()))
 				{
-                    BarBackgroundColor = Settings.YouTubeRed, //(Color)Current.Resources["Primary"],
-					BarTextColor = Color.White
+                    BarBackgroundColor = Settings.NavBarColor, //(Color)Current.Resources["Primary"],
+                    BarTextColor = Color.White,
 				};
 				//var navPage = new NavigationPage(contentPage)
 				//{

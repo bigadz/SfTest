@@ -28,11 +28,16 @@ namespace AjentiExplorer.Views
 
             SetBinding(TitleProperty, new Binding("Title"));
 
+            ToolbarItems.Add(new ToolbarItem("Next", null, async () => 
+            {
+                await App.SwitchToPage(this.Navigation, new LocationDashboardsPage(this.viewModel));
+			}));
+
             SfChart chart = new SfChart();
             chart.Title.Text = "9 Grays Road, Fern Tree";
             chart.Title.TextColor = Settings.LightGray;
             chart.ChartBehaviors.Add(new ChartZoomPanBehavior());
-            chart.BackgroundColor = Settings.Dark5;
+            chart.BackgroundColor = Settings.Dark4;
 
             //Initializing Primary Axis
             var primaryAxis = new NumericalAxis();

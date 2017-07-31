@@ -41,7 +41,7 @@ namespace AjentiExplorer.Views.LayoutFactories
 				{
                     new RowDefinition { Height = new GridLength(60, GridUnitType.Absolute) },
 				},
-                BackgroundColor = Settings.YouTubeRed, //(Color)Application.Current.Resources["Primary"],
+                BackgroundColor = Settings.NavBarColor,
 			};
 
             var header = new Label
