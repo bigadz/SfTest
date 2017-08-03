@@ -1,4 +1,6 @@
 ﻿using System;
+using Xamarin.Forms;
+
 namespace AjentiExplorer.Models
 {
     public class Photo: ObservableObject
@@ -15,7 +17,18 @@ namespace AjentiExplorer.Models
         public string Url
         {
             get { return url; }
-            set { SetProperty(ref url, value); }
+            set 
+            {
+                this.ImageSource = new UriImageSource { Uri = new Uri(value) };
+                SetProperty(ref url, value);
+            }
         }
+
+		ImageSource imageSource = null;
+		public ImageSource ImageSource
+		{
+			get { return imageSource; }
+            set { SetProperty(ref imageSource, value); }
+		}   
     }
 }
