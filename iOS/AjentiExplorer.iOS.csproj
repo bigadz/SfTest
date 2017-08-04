@@ -185,6 +185,15 @@
     <Reference Include="Syncfusion.SfChart.XForms.iOS">
       <HintPath>..\packages\Syncfusion.Xamarin.SfChart.15.2.0.46\lib\Xamarin.iOS10\Syncfusion.SfChart.XForms.iOS.dll</HintPath>
     </Reference>
+    <Reference Include="Syncfusion.SfCarousel.iOS">
+      <HintPath>..\packages\Syncfusion.Xamarin.SfCarousel.15.2.0.46\lib\Xamarin.iOS10\Syncfusion.SfCarousel.iOS.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.SfCarousel.XForms">
+      <HintPath>..\packages\Syncfusion.Xamarin.SfCarousel.15.2.0.46\lib\Xamarin.iOS10\Syncfusion.SfCarousel.XForms.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.SfCarousel.XForms.iOS">
+      <HintPath>..\packages\Syncfusion.Xamarin.SfCarousel.15.2.0.46\lib\Xamarin.iOS10\Syncfusion.SfCarousel.XForms.iOS.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json" />
