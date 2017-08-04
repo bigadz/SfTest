@@ -21,7 +21,9 @@ namespace AjentiExplorer.Views
             {
                 Source = this.viewModel.Photos,
             };
-            dataSource.SortDescriptors.Add(new SortDescriptor("Title"));
+
+            // This is causing a crash for device builds
+            //dataSource.SortDescriptors.Add(new SortDescriptor("Title"));
 
             var gridLayout = new GridLayout
             {
