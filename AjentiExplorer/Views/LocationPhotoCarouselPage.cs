@@ -22,12 +22,6 @@ namespace AjentiExplorer.Views
 
             var imageCollection = new ObservableRangeCollection<SfCarouselItem>();
 
-			//var dataSource = new DataSource
-			//{
-			//	Source = this.viewModel.LocationPhotos,
-			//};
-			//dataSource.SortDescriptors.Add(new SortDescriptor("Title"));
-
 			foreach (var photo in this.viewModel.LocationPhotos)
 			{
 				var grid = new Grid
@@ -56,11 +50,7 @@ namespace AjentiExplorer.Views
 				grid.Children.Add(photoImage, 0, 1, 0, 1);
 				grid.Children.Add(photoTitle, 0, 1, 0, 1);
 
-
-				imageCollection.Add(new SfCarouselItem
-				{
-                    ItemContent = grid,//new Image() { Source = photo.ImageSource, Aspect = Aspect.AspectFit }
-				});
+				imageCollection.Add(new SfCarouselItem { ItemContent = grid });
 			}
 
 
