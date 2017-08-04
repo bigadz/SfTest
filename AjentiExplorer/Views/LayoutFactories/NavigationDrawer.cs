@@ -128,11 +128,27 @@ namespace AjentiExplorer.Views.LayoutFactories
                 {
                     var menuText = e.SelectedItem.ToString();
 
+                    switch (menuText)
+                    {
+						case "Map":
+                            await App.SwitchToPage(navPage.Navigation, new SearchMapPage(new ViewModels.SearchMapViewModel()));
+							break;
+						case "Search":
+							await App.SwitchToPage(navPage.Navigation, new SearchListPage(new ViewModels.SearchListViewModel()));
+							break;
+						//case "Favourites":
+							//await App.SwitchToPage(navPage.Navigation, new FavouritesPage(new ViewModels.FavouritesViewModel()));
+							//break;
+						case "Logout":
+							Settings.Logout();
+							await App.SwitchToPage(navPage.Navigation, new LoginPage(new ViewModels.LoginViewModel()));
+							break;
+					}
+
+                    /*
                     if (menuText.Equals("Login"))
                     {
                         await App.SwitchToPage(navPage.Navigation, new LoginPage(new ViewModels.LoginViewModel()));
-                        //navigationDrawer.EnableSwipeGesture = true;
-                        //navigationDrawer.ContentView = new RangeSlider().Content;
                     }
 
                     if (menuText.Equals("Logout"))
@@ -142,6 +158,7 @@ namespace AjentiExplorer.Views.LayoutFactories
 						//navigationDrawer.EnableSwipeGesture = true;
 						//navigationDrawer.ContentView = new NumericUpDown().Content;
 					}
+					*/
                 }
                 catch (Exception ex)
                 {

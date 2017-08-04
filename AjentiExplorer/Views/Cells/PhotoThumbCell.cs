@@ -18,9 +18,10 @@ namespace AjentiExplorer.Views.Cells
 			};
             var photoTitle = new Label 
             { 
-                FontAttributes = FontAttributes.Bold, 
+                FontAttributes = FontAttributes.None, 
+                TextColor = Color.White,
                 BackgroundColor = Settings.Dark1.MultiplyAlpha(0.5), 
-                FontSize = 21,
+                FontSize = 14,
                 VerticalOptions = LayoutOptions.End,
 				Margin = new Thickness(5),
 			};

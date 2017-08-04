@@ -6,7 +6,18 @@ namespace AjentiExplorer.Models
     public class Photo: ObservableObject
     {
 
-        string title = string.Empty;
+        DateTime dateCreated = DateTime.MinValue;
+		public DateTime DateCreated
+		{
+			get { return dateCreated; }
+			set 
+            {
+                this.Title = $"{value:ddd, MMM d, yyyy h:m:s tt}";
+                SetProperty(ref dateCreated, value);
+            }
+		}
+
+		string title = string.Empty;
         public string Title
         {
             get { return title; }

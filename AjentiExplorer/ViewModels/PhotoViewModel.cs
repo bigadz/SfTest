@@ -6,9 +6,12 @@ namespace AjentiExplorer.ViewModels
 {
     public class PhotoViewModel : BaseViewModel
     {
-        public PhotoViewModel(Photo photo)
+        private LocationPhotosViewModel locationPhotosViewModel;
+
+        public PhotoViewModel(Photo photo, LocationPhotosViewModel locationPhotosViewModel)
         {
             this.Photo = photo;
+            this.locationPhotosViewModel = locationPhotosViewModel;
             this.Title = photo.Title;
         }
 
@@ -18,5 +21,11 @@ namespace AjentiExplorer.ViewModels
 			get { return photo; }
 			set { SetProperty(ref photo, value); }
 		}
+
+
+        public ObservableRangeCollection<Photo> LocationPhotos
+        {
+            get { return this.locationPhotosViewModel.Photos; }
+        }
     }
 }

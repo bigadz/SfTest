@@ -1,7 +1,7 @@
 ﻿using System;
-using Xamarin.Forms;
 using AjentiExplorer.Models;
 using AjentiExplorer.ViewModels;
+using Xamarin.Forms;
 using Syncfusion.ListView.XForms;
 using Syncfusion.DataSource;
 
@@ -32,15 +32,22 @@ namespace AjentiExplorer.Views
             {
                 LayoutManager = gridLayout,
                 ItemsSource = dataSource.DisplayItems,
-                //ItemsSource = this.viewModel.Photos,
 				ItemTemplate = new DataTemplate(typeof(Cells.PhotoThumbCell)),
                 AutoFitMode = AutoFitMode.Height,
 			};
+            listView.ItemTapped += ListView_ItemTapped;
 
             Grid grid = new Grid();
             grid.Children.Add(listView);
             Content = grid;
         }
+
+        async void ListView_ItemTapped(object sender, Syncfusion.ListView.XForms.ItemTappedEventArgs e)
+        {
+            var photo = e.ItemData as Photo;
+            await this.Navigation.PushAsync(new LocationPhotoCarouselPage(new PhotoViewModel(photo, this.viewModel)));
+			e.Handled = true;
+		}
     }
 }
 

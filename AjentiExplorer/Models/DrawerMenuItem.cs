@@ -10,6 +10,13 @@ namespace AjentiExplorer.Models
 			set { SetProperty(ref title, value); }
 		}
 
+        bool current = false;
+		public bool Current
+		{
+			get { return current; }
+			set { SetProperty(ref current, value); }
+		}
+
 		//public DrawerMenuItem(string title)
 		//{
 		//    this.Title = title;
