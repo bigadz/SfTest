@@ -1,0 +1,11 @@
+ <div #backgroundThing id="background-thing" >
+  <app-info [locationString]="locationString"
+            [dateString]="dateString"
+            [timeString]="timeString">
+  </app-info>
+</div> 
+
+<div style="display: none;">
+  <!-- Include all images (invisibly) on the page, so they preload -->
+   <img *ngFor="let imageUrl of images" src="{{'./assets/'+imageUrl}}"> 
+</div>
