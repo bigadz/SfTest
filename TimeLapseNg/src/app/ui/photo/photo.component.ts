@@ -12,6 +12,7 @@ export class PhotoComponent implements OnInit, OnDestroy {
   windowWidth: number;
   windowHeight: number;
   images: Array<string>;
+  autoplayImageIx: number = -1;
   currentImageRelative: string;
   currentImageAbsolute: string;
   maxPercent: number;
@@ -19,6 +20,7 @@ export class PhotoComponent implements OnInit, OnDestroy {
   locationString: string;
   dateString: string;
   timeString: string;
+  autoplayPaused: boolean = false;
 
   touchmoveListenFunc: Function;
   touchendListenFunc: Function;
@@ -44,10 +46,12 @@ export class PhotoComponent implements OnInit, OnDestroy {
             this.windowHeight = window.innerHeight;
         });
     };
+
+    setInterval(() => this.autoplayStep(), 500);
   }
 
   ngOnInit() {
-    this.switchImage(0);
+    this.switchImageByPos(0);
   }
 
   /*
@@ -76,7 +80,7 @@ export class PhotoComponent implements OnInit, OnDestroy {
   @HostListener('mousemove', ['$event'])
   onMouseMove(event: MouseEvent) 
   {
-    this.switchImage(event.pageX);
+    this.switchImageByPos(event.pageX);
     // or clientX
   }
 
@@ -84,7 +88,7 @@ export class PhotoComponent implements OnInit, OnDestroy {
   onTouchMove(event: TouchEvent) 
   {
     event.preventDefault();
-    this.switchImage(event.touches[0].pageX);
+    this.switchImageByPos(event.touches[0].pageX);
     // or clientX
   }
 
@@ -118,7 +122,19 @@ export class PhotoComponent implements OnInit, OnDestroy {
   }
 */
 
-  switchImage(pageX)
+  autoplayStep()
+  {
+    if (this.autoplayPaused) return;
+
+    this.autoplayImageIx++;
+    if (this.autoplayImageIx > this.images.length - 1)
+    {
+      this.autoplayImageIx = 0;
+    }
+    this.showImageIx(this.autoplayImageIx);
+  }
+
+  switchImageByPos(pageX)
   {
       var pos = Math.round((pageX / this.windowWidth) * this.maxPercent);
       
@@ -126,14 +142,23 @@ export class PhotoComponent implements OnInit, OnDestroy {
       if (whichIndex > this.images.length - 1)
           whichIndex = this.images.length - 1;
 
+      this.showImageIx(whichIndex);
+  }
+
+  showImageIx(whichIndex: number)
+  {
       this.currentImageRelative = `./assets/${this.images[whichIndex]}`;
       this.currentImageAbsolute = `${this.baseUrl}assets/${this.images[whichIndex]}`;
       this.backgroundThing.nativeElement.style.backgroundImage = `url('${this.currentImageAbsolute}')`;
 
-      this.locationString = `${pos}`;//"Penstock Lagoon";
+      this.locationString = "Penstock Lagoon";
       this.dateString = "05 Aug 2017";
       this.timeString = this.currentImageRelative.replace('src/assets/image', '').replace('.jpg', '').split('_')[1].replace('-', ':').substring(0, 5);
   }
-    
+  
+  autoplayChanged(data: boolean)
+  {
+    this.autoplayPaused = data;
+  }
 
 }
