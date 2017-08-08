@@ -17,6 +17,7 @@ namespace AjentiExplorer.iOS
 			new Syncfusion.SfNavigationDrawer.XForms.iOS.SfNavigationDrawerRenderer();
             new Syncfusion.SfChart.XForms.iOS.Renderers.SfChartRenderer();
 			new Syncfusion.SfNavigationDrawer.XForms.iOS.SfNavigationDrawerRenderer();
+            new Syncfusion.SfRangeSlider.XForms.iOS.SfRangeSliderRenderer();
 
 			global::Xamarin.Forms.Forms.Init();
             global::Xamarin.FormsMaps.Init();
