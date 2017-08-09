@@ -3,20 +3,21 @@ using AjentiExplorer.Models;
 
 namespace AjentiExplorer.ViewModels
 {
-    public class SearchMapViewModel: BaseSearchViewModel
+    public class RecentLocationsViewModel: BaseViewModel
     {
-        public SearchMapViewModel()
+        public RecentLocationsViewModel()
         {
-			this.Title = "Map";
+			this.Title = "Recent";
 
 			this.MenuItems = new ObservableRangeCollection<DrawerMenuItem>
 			{
-				new DrawerMenuItem { Title = "Map", Current = true },
+				new DrawerMenuItem { Title = "Map" },
 				new DrawerMenuItem { Title = "Search" },
-				new DrawerMenuItem { Title = "Recent" },
+				new DrawerMenuItem { Title = "Recent", Current = true },
 				new DrawerMenuItem { Title = "Favourites" },
 				new DrawerMenuItem { Title = "Logout" },
 			};
-        }
+
+		}
     }
 }

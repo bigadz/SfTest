@@ -136,9 +136,12 @@ namespace AjentiExplorer.Views.LayoutFactories
 						case "Search":
 							await App.SwitchToPage(navPage.Navigation, new SearchListPage(new ViewModels.SearchListViewModel()));
 							break;
-						//case "Favourites":
-							//await App.SwitchToPage(navPage.Navigation, new FavouritesPage(new ViewModels.FavouritesViewModel()));
-							//break;
+						case "Recent":
+                            await App.SwitchToPage(navPage.Navigation, new RecentLocationsPage(new ViewModels.RecentLocationsViewModel()));
+							break;
+						case "Favourites":
+                            await App.SwitchToPage(navPage.Navigation, new FavouriteLocationsPage(new ViewModels.FavouriteLocationsViewModel()));
+							break;
 						case "Logout":
 							Settings.Logout();
 							await App.SwitchToPage(navPage.Navigation, new LoginPage(new ViewModels.LoginViewModel()));
