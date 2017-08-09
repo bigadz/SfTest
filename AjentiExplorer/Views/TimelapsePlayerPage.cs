@@ -14,11 +14,12 @@ namespace AjentiExplorer.Views
         private ObservableRangeCollection<Image> images = new ObservableRangeCollection<Image>();
         private int currentImageIndex = 0;
         private SfRangeSlider slider;
-        private StackLayout ctrlsStack;
+        private Grid ctrlsLayout;
+		private Label dateLabel;
+		private Label timeLabel;
 		private Grid layoutGrid;
         private bool autoplayPaused = false;
         private int autoplayImageIx = -1;
-        private System.Threading.Timer timer;
 
         public TimelapsePlayerPage(TimelapsePlayerViewModel viewModel)
         {
@@ -42,41 +43,85 @@ namespace AjentiExplorer.Views
 
             this.slider = new SfRangeSlider
             {
+                TrackColor = Color.White,
+                TrackSelectionColor = Settings.YouTubeRed,
+                KnobColor = Settings.YouTubeRed,
                 Minimum = 0,
                 Maximum = this.viewModel.ImageUrls.Count - 1,
-                RangeStart = 0,
-                RangeEnd = 0,
+                Value = 0,
                 ShowRange = false,
                 Orientation = Orientation.Horizontal,
                 TickPlacement = TickPlacement.None,
                 HorizontalOptions = LayoutOptions.FillAndExpand,
                 TickFrequency = 1,
-                StepFrequency = 10,
-                ShowValueLabel = false,
                 SnapsTo = SnapsTo.Ticks,
+                ShowValueLabel = false,
+                HeightRequest = 70,
             };
             this.slider.ValueChanging += async (sender, e) =>
             {
-				this.autoplayPaused = true;
-				autoPlayBtn.Image = this.viewModel.AutoPlayButtonImageForState(this.autoplayPaused);
+                if (!this.autoplayPaused)
+                {
+                    // Pause autoplay when the slider is manually adjusted.
+                    this.autoplayPaused = true;
+                    autoPlayBtn.Image = this.viewModel.AutoPlayButtonImageForState(this.autoplayPaused);
+                }
 
 				await this.ShowImageIx((int)e.Value);
             };
 
+			this.ctrlsLayout = new Grid
+			{
+				RowDefinitions =
+				{
+					new RowDefinition { Height = new GridLength(1, GridUnitType.Star) },
+				},
+				ColumnDefinitions =
+				{
+					new ColumnDefinition { Width = new GridLength(1, GridUnitType.Auto) },
+					new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) },
+				},
 
-            this.ctrlsStack = new StackLayout
+				VerticalOptions = LayoutOptions.End,
+				HorizontalOptions = LayoutOptions.FillAndExpand,
+				Children =
+				{
+					autoPlayBtn,
+					this.slider
+				}
+			};
+            this.ctrlsLayout.Children.Add(autoPlayBtn, 0, 1, 0, 1);
+			this.ctrlsLayout.Children.Add(this.slider, 1, 2, 0, 1);
+
+			this.dateLabel = new Label { TextColor = Color.White, HorizontalOptions = LayoutOptions.End };
+			this.timeLabel = new Label { TextColor = Color.White, HorizontalOptions = LayoutOptions.End };
+            this.dateLabel.SetBinding(Label.TextProperty, new Binding("DateString"));
+			this.timeLabel.SetBinding(Label.TextProperty, new Binding("TimeString"));
+            var infoFrame = new Frame
             {
-                Orientation = StackOrientation.Horizontal,
-                VerticalOptions = LayoutOptions.End,
-                HorizontalOptions = LayoutOptions.Fill,
-                Children =
+                CornerRadius = 3,
+                BackgroundColor = Settings.DarkGray.MultiplyAlpha(0.3),
+                Padding = new Thickness(4),
+				Margin = new Thickness(5),
+                HasShadow = true,
+				HorizontalOptions = LayoutOptions.Start,
+				VerticalOptions = LayoutOptions.Start,
+				Content = new StackLayout
                 {
-                    autoPlayBtn,
-                    this.slider
-                }
+                    Orientation = StackOrientation.Vertical,
+                    BackgroundColor = Color.Transparent,
+                    Margin = new Thickness(0),
+                    HorizontalOptions = LayoutOptions.Start,
+                    VerticalOptions = LayoutOptions.Start,
+                    Children =
+                    {
+                        this.timeLabel,
+                        this.dateLabel,
+                    },
+                },
             };
 
-            this.layoutGrid = new Grid
+			this.layoutGrid = new Grid
             {
                 RowDefinitions =
                 {
@@ -104,16 +149,16 @@ namespace AjentiExplorer.Views
                 this.layoutGrid.Children.Add(image, 0, 1, 0, 2);
             }
 
-            this.layoutGrid.Children.Add(this.ctrlsStack, 0, 1, 1, 2);
+			this.layoutGrid.Children.Add(this.ctrlsLayout, 0, 1, 1, 2);
+			this.layoutGrid.Children.Add(infoFrame);
 
-            Content = this.layoutGrid;
+			Content = this.layoutGrid;
 			Device.StartTimer(TimeSpan.FromMilliseconds(500), AutoplayStep);
 
 		}
 
         private bool AutoplayStep()
         {
-            Console.WriteLine($"AutoplayStep - this.autoplayPaused = {this.autoplayPaused}");
 			if (this.autoplayPaused) return true;
 
 			this.autoplayImageIx++;
@@ -128,12 +173,17 @@ namespace AjentiExplorer.Views
 
         private async Task ShowImageIx(int imageIndex)
         {
+            // Verify there is a change.
+            if (imageIndex == this.currentImageIndex)
+                return;
+            
             if (imageIndex > this.viewModel.ImageUrls.Count-1)
                 imageIndex = this.viewModel.ImageUrls.Count - 1;
+            this.viewModel.CurrentImageIndex = imageIndex;
 
-            // Move image to the top, then fade it in
-            this.layoutGrid.Children.Remove(this.images[imageIndex]);
-            this.layoutGrid.Children.Insert(this.layoutGrid.Children.Count-1, this.images[imageIndex]);
+			// Move image to the top (below infoFrame and ctrlsLayout), then fade it in
+			this.layoutGrid.Children.Remove(this.images[imageIndex]);
+            this.layoutGrid.Children.Insert(this.layoutGrid.Children.Count-2, this.images[imageIndex]);
 
 
             await this.images[imageIndex].FadeTo(1);

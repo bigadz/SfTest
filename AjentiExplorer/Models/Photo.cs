@@ -24,6 +24,21 @@ namespace AjentiExplorer.Models
             set { SetProperty(ref title, value); }
         }
 
+		string dateString = string.Empty;
+		public string DateString
+		{
+			get { return dateString; }
+			set { SetProperty(ref dateString, value); }
+		}
+
+
+		string timeString = string.Empty;
+		public string TimeString
+		{
+			get { return timeString; }
+			set { SetProperty(ref timeString, value); }
+		}
+		
         string url = string.Empty;
         public string Url
         {

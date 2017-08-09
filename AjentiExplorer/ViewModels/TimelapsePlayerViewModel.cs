@@ -24,7 +24,51 @@ namespace AjentiExplorer.ViewModels
             }
         }
 
-        public string AutoPlayButtonImageForState(bool autoplayPaused)
+
+        private int currentImageIndex;
+        public int CurrentImageIndex
+		{
+            get { return this.currentImageIndex; }
+            set 
+            { 
+                this.currentImageIndex = value;
+				this.DateString = this.GetDateString(value);
+				this.TimeString = this.GetTimeString(value);
+				OnPropertyChanged("CurrentImageIndex"); 
+            }
+		}
+
+        private string dateString;
+		public string DateString
+		{
+			get { return this.dateString; }
+            set { this.dateString = value; OnPropertyChanged("DateString"); }
+		}
+
+
+        private string timeString;
+		public string TimeString
+		{
+            get { return this.timeString; }
+            set { this.timeString = value; OnPropertyChanged("TimeString"); }
+		}
+
+        public string GetDateString(int imageIndex)
+        {
+			// image17-08-05_06-59-58-35.jpg
+			var dateString = this.images[imageIndex].Replace("image", "").Replace(".jpg", "").Split('_')[0].Replace("-", "/");
+            return dateString;
+		}
+
+
+		public string GetTimeString(int imageIndex)
+		{
+			// image17-08-05_06-59-58-35.jpg
+            var timeString = this.images[imageIndex].Replace("image", "").Replace(".jpg", "").Split('_')[1].Replace("-", ":").Substring(0,5);
+            return timeString;
+		}
+
+		public string AutoPlayButtonImageForState(bool autoplayPaused)
         {
 			return autoplayPaused ? "30-circle-play.png" : "29-circle-pause.png";
 		}
