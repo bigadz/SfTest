@@ -19,6 +19,8 @@ namespace AjentiExplorer.Views
 
 			SetBinding(TitleProperty, new Binding("Title"));
 
+			NavigationPage.SetHasNavigationBar(this, false);
+
 			// Listen for messages from the modelview(s)
 			MessagingCenter.Subscribe<InRangeViewModel, MessagingCenterAlert>(this, "alert", HandleMessagingCenterAlert);
 			MessagingCenter.Subscribe<BaseSearchViewModel, MessagingCenterAlert>(this, "alert", HandleMessagingCenterAlert);
@@ -66,7 +68,7 @@ namespace AjentiExplorer.Views
 
 			};
 
-			this.Disappearing += (sender, e) => NavigationPage.SetHasNavigationBar(this, true);
+			this.Disappearing += (sender, e) => { if (!App.SwitchingTopLevelPages) NavigationPage.SetHasNavigationBar(this, true); };
 		}
 
 		//async void SearchResult_Clicked(object sender, EventArgs e)

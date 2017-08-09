@@ -14,6 +14,8 @@ namespace AjentiExplorer.Views
 
 			SetBinding(TitleProperty, new Binding("Title"));
 
+			NavigationPage.SetHasNavigationBar(this, false);
+
 			var navigationDrawer = LayoutFactories.NavigationDrawer.Create(viewModel);
 			Content = navigationDrawer;
 
@@ -37,8 +39,8 @@ namespace AjentiExplorer.Views
 				// Do stuff
 			};
 
-			this.Disappearing += (sender, e) => NavigationPage.SetHasNavigationBar(this, true);
-        }
+			this.Disappearing += (sender, e) => { if (!App.SwitchingTopLevelPages) NavigationPage.SetHasNavigationBar(this, true); };
+		}
     }
 }
 

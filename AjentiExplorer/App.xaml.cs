@@ -18,7 +18,9 @@ namespace AjentiExplorer
 		public static double DisplayScreenHeight = 0f;
 		public static double DisplayScaleFactor = 0f;
 
-        public App()
+        public static bool SwitchingTopLevelPages = false;
+
+		public App()
         {
             InitializeComponent();
             MessagingCenterAlert.Init();
@@ -112,19 +114,27 @@ namespace AjentiExplorer
 
         public static async System.Threading.Tasks.Task SwitchToPage(INavigation navigation, Page page, bool animated = true)
         {
-			if (navigation == null) throw new ArgumentNullException("navigation");
-			if (page == null) throw new ArgumentNullException("page");
+            try
+            {
+                SwitchingTopLevelPages = true;
+                if (navigation == null) throw new ArgumentNullException("navigation");
+                if (page == null) throw new ArgumentNullException("page");
 
-            int numberOfPagesOnStack = navigation.NavigationStack.Count;
-            if (numberOfPagesOnStack > 0)
-            {
-                var topPage = navigation.NavigationStack[numberOfPagesOnStack - 1];
-                navigation.InsertPageBefore(page, topPage);
-                await navigation.PopAsync(animated);
+                int numberOfPagesOnStack = navigation.NavigationStack.Count;
+                if (numberOfPagesOnStack > 0)
+                {
+                    var topPage = navigation.NavigationStack[numberOfPagesOnStack - 1];
+                    navigation.InsertPageBefore(page, topPage);
+                    await navigation.PopAsync(animated);
+                }
+                else
+                {
+                    await navigation.PushAsync(page, animated);
+                }
             }
-            else
+            finally
             {
-                await navigation.PushAsync(page, animated);
+                SwitchingTopLevelPages = false;
             }
 		}
     }

@@ -130,7 +130,7 @@ namespace AjentiExplorer.Views
                 }
             };
 
-			this.Disappearing += (sender, e) => NavigationPage.SetHasNavigationBar(this, true);
+            this.Disappearing += (sender, e) => { if (!App.SwitchingTopLevelPages) NavigationPage.SetHasNavigationBar(this, true); };
 		}
 
         async void Pin_Clicked(object sender, EventArgs e)

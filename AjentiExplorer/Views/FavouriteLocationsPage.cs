@@ -14,9 +14,11 @@ namespace AjentiExplorer.Views
 
 			SetBinding(TitleProperty, new Binding("Title"));
 
+			NavigationPage.SetHasNavigationBar(this, false);
+
 
 			// Listen for messages from the modelview(s)
-            MessagingCenter.Subscribe<FavouriteLocationsViewModel, MessagingCenterAlert>(this, "alert", HandleMessagingCenterAlert);
+			MessagingCenter.Subscribe<FavouriteLocationsViewModel, MessagingCenterAlert>(this, "alert", HandleMessagingCenterAlert);
 			MessagingCenter.Subscribe<LocationViewModel, MessagingCenterAlert>(this, "alert", HandleMessagingCenterAlert);
 
 			var navigationDrawer = LayoutFactories.NavigationDrawer.Create(viewModel);
@@ -42,7 +44,7 @@ namespace AjentiExplorer.Views
                 // Do stuff
 			};
 
-			this.Disappearing += (sender, e) => NavigationPage.SetHasNavigationBar(this, true);
+			this.Disappearing += (sender, e) => { if (!App.SwitchingTopLevelPages) NavigationPage.SetHasNavigationBar(this, true); };
 		}
     }
 }
