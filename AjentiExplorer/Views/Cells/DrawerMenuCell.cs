@@ -1,12 +1,13 @@
 ﻿using System;
+using AjentiExplorer.Models;
 using Xamarin.Forms;
 
 namespace AjentiExplorer.Views.Cells
 {
     public class DrawerMenuCell: ViewCell
     {
-		//public static readonly BindableProperty TitleProperty = BindableProperty.Create("Title", typeof(string), typeof(DrawerMenuCell), "Title");
-
+        //public static readonly BindableProperty TitleProperty = BindableProperty.Create("Title", typeof(string), typeof(DrawerMenuCell), "Title");
+        Label menuText;
 
 		//public string Title
 		//{
@@ -16,23 +17,24 @@ namespace AjentiExplorer.Views.Cells
 
         public DrawerMenuCell()
         {
-            //instantiate each of our views
-            //var image = new Image();
-            //StackLayout cellWrapper = new StackLayout
-            //{
-            //    HorizontalOptions = LayoutOptions.FillAndExpand,
-            //    VerticalOptions = LayoutOptions.FillAndExpand,
-            //    Orientation = StackOrientation.Vertical,
-            //};
+
+			//instantiate each of our views
+			//var image = new Image();
+			//StackLayout cellWrapper = new StackLayout
+			//{
+			//    HorizontalOptions = LayoutOptions.FillAndExpand,
+			//    VerticalOptions = LayoutOptions.FillAndExpand,
+			//    Orientation = StackOrientation.Vertical,
+			//};
 			//StackLayout horizontalLayout = new StackLayout();
-            Label menuText = new Label
+			this.menuText = new Label
             { 
                 TextColor = Settings.LightGray,
                 Margin = new Thickness(40, 15, 20, 5),
 			};
 
 			//set bindings
-			menuText.SetBinding(Label.TextProperty, "Title");
+			this.menuText.SetBinding(Label.TextProperty, "Title");
 			//image.SetBinding(Image.SourceProperty, "Image");
 
 			//Set properties for desired design
@@ -44,17 +46,18 @@ namespace AjentiExplorer.Views.Cells
 			//horizontalLayout.Children.Add(image);
 			//horizontalLayout.Children.Add(menuText);
 			//cellWrapper.Children.Add(menuText);
-            View = menuText;
+            View = this.menuText;
         }
 
-		//protected override void OnBindingContextChanged()
-		//{
-		//	base.OnBindingContextChanged();
+		protected override void OnBindingContextChanged()
+		{
+			base.OnBindingContextChanged();
 
-		//	if (BindingContext != null)
-		//	{
-		//		menuText.Text = Title;
-		//	}
-		//}
+			if (BindingContext != null)
+			{
+                var drawMenuItem = BindingContext as DrawerMenuItem;
+                this.menuText.TextColor = drawMenuItem.Current ? Color.White : Settings.LightGray;
+			}
+		}
     }
 }

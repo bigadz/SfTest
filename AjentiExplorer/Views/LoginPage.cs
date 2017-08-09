@@ -34,7 +34,7 @@ namespace AjentiExplorer.Views
                     new RowDefinition { Height = new GridLength(3, GridUnitType.Star) },
                 }
             };
-            Content = layoutGrid;
+            Content = new ScrollView { Content = layoutGrid };
 
 			layoutGrid.Children.Add(new Controls.UsernamePassword(viewModel), 1, 1);
             layoutGrid.Children.Add(LayoutFactories.BusyIndicator.Create(viewModel), 0, 3, 0, 3);

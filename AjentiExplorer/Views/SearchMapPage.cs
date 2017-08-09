@@ -10,12 +10,12 @@ namespace AjentiExplorer.Views
 {
     public class SearchMapPage : BaseContentPage
     {
-        private SearchViewModel viewModel;
+        private SearchMapViewModel viewModel;
 
         private Map map;
         private MapSpan lastUsedMapSpan;
 
-		public SearchMapPage(SearchViewModel viewModel)
+		public SearchMapPage(SearchMapViewModel viewModel)
         {
             BindingContext = this.viewModel = viewModel;
             this.viewModel.Navigation = this.Navigation;
@@ -26,7 +26,7 @@ namespace AjentiExplorer.Views
 
 			// Listen for messages from the modelview(s)
 			MessagingCenter.Subscribe<InRangeViewModel, MessagingCenterAlert>(this, "alert", HandleMessagingCenterAlert);
-			MessagingCenter.Subscribe<SearchViewModel, MessagingCenterAlert>(this, "alert", HandleMessagingCenterAlert);
+			MessagingCenter.Subscribe<BaseSearchViewModel, MessagingCenterAlert>(this, "alert", HandleMessagingCenterAlert);
 			MessagingCenter.Subscribe<LocationViewModel, MessagingCenterAlert>(this, "alert", HandleMessagingCenterAlert);
 
 			var navigationDrawer = LayoutFactories.NavigationDrawer.Create(viewModel);

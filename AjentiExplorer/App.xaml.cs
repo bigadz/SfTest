@@ -12,6 +12,12 @@ namespace AjentiExplorer
 
         public static IDictionary<string, string> LoginParameters => null;
 
+		// Set in the device specific projects
+		// See https://stackoverflow.com/questions/41489532/density-of-screen-in-ios-and-universal-windows-app/41510448#41510448
+		public static double DisplayScreenWidth = 0f;
+		public static double DisplayScreenHeight = 0f;
+		public static double DisplayScaleFactor = 0f;
+
         public App()
         {
             InitializeComponent();
@@ -21,6 +27,7 @@ namespace AjentiExplorer
                 DependencyService.Register<MockDataStore>();
             else
                 DependencyService.Register<CloudDataStore>();
+            
 
             SetMainPage();
         }

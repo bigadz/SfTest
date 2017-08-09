@@ -185,6 +185,24 @@
     <Reference Include="Syncfusion.SfChart.XForms.iOS">
       <HintPath>..\packages\Syncfusion.Xamarin.SfChart.15.2.0.46\lib\Xamarin.iOS10\Syncfusion.SfChart.XForms.iOS.dll</HintPath>
     </Reference>
+    <Reference Include="Syncfusion.SfCarousel.iOS">
+      <HintPath>..\packages\Syncfusion.Xamarin.SfCarousel.15.2.0.46\lib\Xamarin.iOS10\Syncfusion.SfCarousel.iOS.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.SfCarousel.XForms">
+      <HintPath>..\packages\Syncfusion.Xamarin.SfCarousel.15.2.0.46\lib\Xamarin.iOS10\Syncfusion.SfCarousel.XForms.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.SfCarousel.XForms.iOS">
+      <HintPath>..\packages\Syncfusion.Xamarin.SfCarousel.15.2.0.46\lib\Xamarin.iOS10\Syncfusion.SfCarousel.XForms.iOS.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.SfRangeSlider.iOS">
+      <HintPath>..\packages\Syncfusion.Xamarin.SfRangeSlider.15.3.0.26\lib\Xamarin.iOS10\Syncfusion.SfRangeSlider.iOS.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.SfRangeSlider.XForms">
+      <HintPath>..\packages\Syncfusion.Xamarin.SfRangeSlider.15.3.0.26\lib\Xamarin.iOS10\Syncfusion.SfRangeSlider.XForms.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.SfRangeSlider.XForms.iOS">
+      <HintPath>..\packages\Syncfusion.Xamarin.SfRangeSlider.15.3.0.26\lib\Xamarin.iOS10\Syncfusion.SfRangeSlider.XForms.iOS.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json" />
@@ -208,6 +226,10 @@
     <BundleResource Include="Resources\menu50.png" />
     <BundleResource Include="Resources\menu50%402x.png" />
     <BundleResource Include="Resources\entura_logo.png" />
+    <BundleResource Include="Resources\29-circle-pause.png" />
+    <BundleResource Include="Resources\29-circle-pause%402x.png" />
+    <BundleResource Include="Resources\30-circle-play.png" />
+    <BundleResource Include="Resources\30-circle-play%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppDelegate.cs" />

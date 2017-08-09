@@ -106,7 +106,8 @@ namespace AjentiExplorer.Views
 
 		async void PhotosButton_Clicked(object sender, EventArgs e)
 		{
-            await this.Navigation.PushAsync(new LocationPhotosPage(new LocationPhotosViewModel(this.viewModel)));
+            //await this.Navigation.PushAsync(new LocationPhotosPage(new LocationPhotosViewModel(this.viewModel)));
+            await this.Navigation.PushAsync(new TimelapsePlayerPage(new TimelapsePlayerViewModel()));
 		}
 
 		async void DashboardsButton_Clicked(object sender, EventArgs e)

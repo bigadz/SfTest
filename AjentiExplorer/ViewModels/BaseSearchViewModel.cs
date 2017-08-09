@@ -9,22 +9,13 @@ using AjentiExplorer.Models;
 
 namespace AjentiExplorer.ViewModels
 {
-    public class SearchViewModel : BaseViewModel
+    public class BaseSearchViewModel : BaseViewModel
     {
 		public ICommand SearchCommand { get; }
 
-        public SearchViewModel()
+        public BaseSearchViewModel()
         {
 			SearchCommand = new Command(async () => await SearchAsync());
-
-            this.Title = "Map";
-
-            this.MenuItems = new ObservableRangeCollection<DrawerMenuItem>
-            {
-				new DrawerMenuItem() { Title = "Map" },
-				new DrawerMenuItem() { Title = "Search" },
-				new DrawerMenuItem() { Title = "Logout" },
-			};
 		}
 
 		string searchString = string.Empty;
