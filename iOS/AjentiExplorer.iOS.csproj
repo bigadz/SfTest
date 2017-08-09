@@ -137,62 +137,11 @@
     <Reference Include="Plugin.ExternalMaps">
       <HintPath>..\packages\Xam.Plugin.ExternalMaps.4.0.1\lib\Xamarin.iOS10\Plugin.ExternalMaps.dll</HintPath>
     </Reference>
-    <Reference Include="Syncfusion.SfBusyIndicator.iOS">
-      <HintPath>..\packages\Syncfusion.Xamarin.SfBusyIndicator.15.2.0.46\lib\Xamarin.iOS10\Syncfusion.SfBusyIndicator.iOS.dll</HintPath>
-    </Reference>
-    <Reference Include="Syncfusion.SfBusyIndicator.XForms">
-      <HintPath>..\packages\Syncfusion.Xamarin.SfBusyIndicator.15.2.0.46\lib\Xamarin.iOS10\Syncfusion.SfBusyIndicator.XForms.dll</HintPath>
-    </Reference>
-    <Reference Include="Syncfusion.SfBusyIndicator.XForms.iOS">
-      <HintPath>..\packages\Syncfusion.Xamarin.SfBusyIndicator.15.2.0.46\lib\Xamarin.iOS10\Syncfusion.SfBusyIndicator.XForms.iOS.dll</HintPath>
-    </Reference>
-    <Reference Include="Syncfusion.SfNavigationDrawer.iOS">
-      <HintPath>..\packages\Syncfusion.Xamarin.SfNavigationDrawer.15.2.0.46\lib\Xamarin.iOS10\Syncfusion.SfNavigationDrawer.iOS.dll</HintPath>
-    </Reference>
-    <Reference Include="Syncfusion.SfNavigationDrawer.XForms">
-      <HintPath>..\packages\Syncfusion.Xamarin.SfNavigationDrawer.15.2.0.46\lib\Xamarin.iOS10\Syncfusion.SfNavigationDrawer.XForms.dll</HintPath>
-    </Reference>
-    <Reference Include="Syncfusion.SfNavigationDrawer.XForms.iOS">
-      <HintPath>..\packages\Syncfusion.Xamarin.SfNavigationDrawer.15.2.0.46\lib\Xamarin.iOS10\Syncfusion.SfNavigationDrawer.XForms.iOS.dll</HintPath>
-    </Reference>
     <Reference Include="Plugin.Connectivity.Abstractions">
       <HintPath>..\packages\Xam.Plugin.Connectivity.3.0.2\lib\Xamarin.iOS10\Plugin.Connectivity.Abstractions.dll</HintPath>
     </Reference>
     <Reference Include="Plugin.Connectivity">
       <HintPath>..\packages\Xam.Plugin.Connectivity.3.0.2\lib\Xamarin.iOS10\Plugin.Connectivity.dll</HintPath>
-    </Reference>
-    <Reference Include="Syncfusion.Core.XForms">
-      <HintPath>..\packages\Syncfusion.Xamarin.SfListView.15.2.0.46\lib\Xamarin.iOS10\Syncfusion.Core.XForms.dll</HintPath>
-    </Reference>
-    <Reference Include="Syncfusion.GridCommon.Portable">
-      <HintPath>..\packages\Syncfusion.Xamarin.SfListView.15.2.0.46\lib\Xamarin.iOS10\Syncfusion.GridCommon.Portable.dll</HintPath>
-    </Reference>
-    <Reference Include="Syncfusion.SfListView.XForms">
-      <HintPath>..\packages\Syncfusion.Xamarin.SfListView.15.2.0.46\lib\Xamarin.iOS10\Syncfusion.SfListView.XForms.dll</HintPath>
-    </Reference>
-    <Reference Include="Syncfusion.SfListView.XForms.iOS">
-      <HintPath>..\packages\Syncfusion.Xamarin.SfListView.15.2.0.46\lib\Xamarin.iOS10\Syncfusion.SfListView.XForms.iOS.dll</HintPath>
-    </Reference>
-    <Reference Include="Syncfusion.DataSource.Portable">
-      <HintPath>..\packages\Syncfusion.Xamarin.DataSource.15.2.0.46\lib\portable-win+net45+wp80+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Syncfusion.DataSource.Portable.dll</HintPath>
-    </Reference>
-    <Reference Include="Syncfusion.SFChart.iOS">
-      <HintPath>..\packages\Syncfusion.Xamarin.SfChart.15.2.0.46\lib\Xamarin.iOS10\Syncfusion.SFChart.iOS.dll</HintPath>
-    </Reference>
-    <Reference Include="Syncfusion.SfChart.XForms">
-      <HintPath>..\packages\Syncfusion.Xamarin.SfChart.15.2.0.46\lib\Xamarin.iOS10\Syncfusion.SfChart.XForms.dll</HintPath>
-    </Reference>
-    <Reference Include="Syncfusion.SfChart.XForms.iOS">
-      <HintPath>..\packages\Syncfusion.Xamarin.SfChart.15.2.0.46\lib\Xamarin.iOS10\Syncfusion.SfChart.XForms.iOS.dll</HintPath>
-    </Reference>
-    <Reference Include="Syncfusion.SfCarousel.iOS">
-      <HintPath>..\packages\Syncfusion.Xamarin.SfCarousel.15.2.0.46\lib\Xamarin.iOS10\Syncfusion.SfCarousel.iOS.dll</HintPath>
-    </Reference>
-    <Reference Include="Syncfusion.SfCarousel.XForms">
-      <HintPath>..\packages\Syncfusion.Xamarin.SfCarousel.15.2.0.46\lib\Xamarin.iOS10\Syncfusion.SfCarousel.XForms.dll</HintPath>
-    </Reference>
-    <Reference Include="Syncfusion.SfCarousel.XForms.iOS">
-      <HintPath>..\packages\Syncfusion.Xamarin.SfCarousel.15.2.0.46\lib\Xamarin.iOS10\Syncfusion.SfCarousel.XForms.iOS.dll</HintPath>
     </Reference>
     <Reference Include="Syncfusion.SfRangeSlider.iOS">
       <HintPath>..\packages\Syncfusion.Xamarin.SfRangeSlider.15.3.0.26\lib\Xamarin.iOS10\Syncfusion.SfRangeSlider.iOS.dll</HintPath>
@@ -202,6 +151,54 @@
     </Reference>
     <Reference Include="Syncfusion.SfRangeSlider.XForms.iOS">
       <HintPath>..\packages\Syncfusion.Xamarin.SfRangeSlider.15.3.0.26\lib\Xamarin.iOS10\Syncfusion.SfRangeSlider.XForms.iOS.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.SfBusyIndicator.iOS">
+      <HintPath>..\packages\Syncfusion.Xamarin.SfBusyIndicator.15.3.0.26\lib\Xamarin.iOS10\Syncfusion.SfBusyIndicator.iOS.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.SfBusyIndicator.XForms">
+      <HintPath>..\packages\Syncfusion.Xamarin.SfBusyIndicator.15.3.0.26\lib\Xamarin.iOS10\Syncfusion.SfBusyIndicator.XForms.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.SfBusyIndicator.XForms.iOS">
+      <HintPath>..\packages\Syncfusion.Xamarin.SfBusyIndicator.15.3.0.26\lib\Xamarin.iOS10\Syncfusion.SfBusyIndicator.XForms.iOS.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.SfCarousel.iOS">
+      <HintPath>..\packages\Syncfusion.Xamarin.SfCarousel.15.3.0.26\lib\Xamarin.iOS10\Syncfusion.SfCarousel.iOS.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.SfCarousel.XForms">
+      <HintPath>..\packages\Syncfusion.Xamarin.SfCarousel.15.3.0.26\lib\Xamarin.iOS10\Syncfusion.SfCarousel.XForms.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.SfCarousel.XForms.iOS">
+      <HintPath>..\packages\Syncfusion.Xamarin.SfCarousel.15.3.0.26\lib\Xamarin.iOS10\Syncfusion.SfCarousel.XForms.iOS.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.SfChart.XForms">
+      <HintPath>..\packages\Syncfusion.Xamarin.SfChart.15.3.0.26\lib\Xamarin.iOS10\Syncfusion.SfChart.XForms.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.SfChart.XForms.iOS">
+      <HintPath>..\packages\Syncfusion.Xamarin.SfChart.15.3.0.26\lib\Xamarin.iOS10\Syncfusion.SfChart.XForms.iOS.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.Core.XForms">
+      <HintPath>..\packages\Syncfusion.Xamarin.SfListView.15.3.0.26\lib\Xamarin.iOS10\Syncfusion.Core.XForms.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.DataSource.Portable">
+      <HintPath>..\packages\Syncfusion.Xamarin.SfListView.15.3.0.26\lib\Xamarin.iOS10\Syncfusion.DataSource.Portable.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.GridCommon.Portable">
+      <HintPath>..\packages\Syncfusion.Xamarin.SfListView.15.3.0.26\lib\Xamarin.iOS10\Syncfusion.GridCommon.Portable.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.SfListView.XForms">
+      <HintPath>..\packages\Syncfusion.Xamarin.SfListView.15.3.0.26\lib\Xamarin.iOS10\Syncfusion.SfListView.XForms.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.SfListView.XForms.iOS">
+      <HintPath>..\packages\Syncfusion.Xamarin.SfListView.15.3.0.26\lib\Xamarin.iOS10\Syncfusion.SfListView.XForms.iOS.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.SfNavigationDrawer.iOS">
+      <HintPath>..\packages\Syncfusion.Xamarin.SfNavigationDrawer.15.3.0.26\lib\Xamarin.iOS10\Syncfusion.SfNavigationDrawer.iOS.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.SfNavigationDrawer.XForms">
+      <HintPath>..\packages\Syncfusion.Xamarin.SfNavigationDrawer.15.3.0.26\lib\Xamarin.iOS10\Syncfusion.SfNavigationDrawer.XForms.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.SfNavigationDrawer.XForms.iOS">
+      <HintPath>..\packages\Syncfusion.Xamarin.SfNavigationDrawer.15.3.0.26\lib\Xamarin.iOS10\Syncfusion.SfNavigationDrawer.XForms.iOS.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
