@@ -18,7 +18,7 @@ namespace AjentiExplorer.Views.LayoutFactories
             var navigationDrawer = new SfNavigationDrawer
             {
                 Position = Position.Left,
-                Transition = Transition.Push,
+                Transition = Transition.Reveal,
 
                 TouchThreshold = 50,
                 DrawerWidth = NavigationDrawer.DrawerWidth,

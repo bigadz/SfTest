@@ -84,8 +84,15 @@ namespace AjentiExplorer.ViewModels
         }
 
 
-        ObservableRangeCollection<LocationViewModel> locations = new ObservableRangeCollection<LocationViewModel>();
-		public ObservableRangeCollection<LocationViewModel> Locations
+        ObservableRangeCollection<LocationViewModel> locationViewModels = new ObservableRangeCollection<LocationViewModel>();
+		public ObservableRangeCollection<LocationViewModel> LocationViewModels
+		{
+			get { return locationViewModels; }
+			set { SetProperty(ref locationViewModels, value); }
+		}
+
+        ObservableRangeCollection<Models.Location> locations = new ObservableRangeCollection<Models.Location>();
+		public ObservableRangeCollection<Models.Location> Locations
 		{
 			get { return locations; }
 			set { SetProperty(ref locations, value); }
@@ -96,7 +103,7 @@ namespace AjentiExplorer.ViewModels
 			try
 			{
 				IsBusy = true;
-				BusyMessage = "Loading locations...";
+				BusyMessage = "Searching locations...";
 
 				await TrySearchAsync();
 			}
@@ -110,7 +117,7 @@ namespace AjentiExplorer.ViewModels
 
         async Task<bool> TrySearchAsync()
 		{
-			this.locations.Clear();
+			this.locationViewModels.Clear();
 			
             var installationSearchRequest = new JsonMsgs.InstallationSearchRequest
 			{
@@ -129,11 +136,19 @@ namespace AjentiExplorer.ViewModels
             }
             else
             {
+                var newLocationViewModels = new ObservableRangeCollection<LocationViewModel>();
+                var newLocations = new ObservableRangeCollection<Models.Location>();
                 response.results.ForEach(result =>
                 {
                     if (result.latitude.HasValue && result.longitude.HasValue)
-                        this.locations.Add(new LocationViewModel(result));
+                    {
+						newLocationViewModels.Add(new LocationViewModel(result));
+                        newLocations.Add(new Models.Location(result));
+                        Console.WriteLine($"Location {result.name}");
+					}
                 });
+                this.locationViewModels.AddRange(newLocationViewModels);
+                this.locations.AddRange(newLocations);
             }
 
             return response.result;

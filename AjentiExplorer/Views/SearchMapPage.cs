@@ -113,7 +113,7 @@ namespace AjentiExplorer.Views
                     this.map.IsShowingUser = true;
                 }
 
-                foreach (var location in this.viewModel.Locations)
+                foreach (var location in this.viewModel.LocationViewModels)
                 {
                     //System.Diagnostics.Debug.WriteLine($"Location {location.Latitude},{location.Longitude} lbl={location.Name} addr={location.Address}");
 					var pin = new Pin
