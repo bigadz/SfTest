@@ -85,7 +85,19 @@ namespace AjentiExplorer.Views
 				await this.viewModel.SearchAsync();
 			};
 
-			this.Disappearing += (sender, e) => { if (!App.SwitchingTopLevelPages) NavigationPage.SetHasNavigationBar(this, true); };
+            this.Disappearing += (sender, e) =>
+            {
+                if (App.SwitchingTopLevelPages)
+                {
+                    var navDrawer = this.Content as Syncfusion.SfNavigationDrawer.XForms.SfNavigationDrawer;
+                    LayoutFactories.NavigationDrawer.ReleaseNavigationDrawer(navDrawer);
+                    this.Content = null;
+                }
+                else
+                {
+                    NavigationPage.SetHasNavigationBar(this, true);
+                }
+            };
 		}
 
         async void SfListView_ItemTapped(object sender, Syncfusion.ListView.XForms.ItemTappedEventArgs e)

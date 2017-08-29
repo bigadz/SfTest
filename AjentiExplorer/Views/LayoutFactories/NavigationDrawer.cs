@@ -18,7 +18,7 @@ namespace AjentiExplorer.Views.LayoutFactories
             var navigationDrawer = new SfNavigationDrawer
             {
                 Position = Position.Left,
-                Transition = Transition.Reveal,
+                Transition = Transition.Push,
 
                 TouchThreshold = 50,
                 DrawerWidth = NavigationDrawer.DrawerWidth,
@@ -66,9 +66,24 @@ namespace AjentiExplorer.Views.LayoutFactories
 
 			connectedNavBar.Children.Add(menuButton, 0, 0);
 
+            if (NavigationDrawer.navigationBar != null)
+            {
+				NavigationDrawer.navigationBar.Children.Clear();
+				NavigationDrawer.navigationBar = null;
+            }
 			NavigationDrawer.navigationBar = connectedNavBar;
 			return navigationDrawer;
         }
+
+        public static void ReleaseNavigationDrawer(SfNavigationDrawer navigationDrawer)
+        {
+            NavigationDrawer.navigationBar.Children.Clear();
+            NavigationDrawer.navigationBar = null;
+            navigationDrawer.Children.Clear();
+			navigationDrawer.DrawerHeaderView = null;
+			navigationDrawer.DrawerContentView = null;
+			navigationDrawer.DrawerFooterView = null;
+		}
 
 		public static Layout NavigationBar
 		{
