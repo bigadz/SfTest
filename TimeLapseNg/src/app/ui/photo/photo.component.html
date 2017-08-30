@@ -3,7 +3,7 @@
             [dateString]="dateString"
             [timeString]="timeString">
   </app-info>
-  <app-auto-play class="auto-play" (autoplayChanged)="autoplayChanged($event)"></app-auto-play>
+  <app-auto-play class="auto-play" [paused]="autoplayPaused"  (autoplayChanged)="onAutoplayChanged($event)"></app-auto-play>
   <div class="slider">
     <nouislider [min]="1" 
                 [max]="images.length" 

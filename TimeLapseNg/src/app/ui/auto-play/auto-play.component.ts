@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-auto-play',
@@ -7,6 +7,7 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 })
 export class AutoPlayComponent implements OnInit {
   @Output() autoplayChanged: EventEmitter<boolean> = new EventEmitter<boolean>();
+
   state: boolean = false;
   stateText: string = this.getTextForState();
   stateIconUri: string = this.getIconUriForState();
@@ -15,6 +16,13 @@ export class AutoPlayComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+  }
+
+  @Input() set paused(data: boolean)
+  {
+    this.state = data;
+    this.stateText = this.getTextForState();
+    this.stateIconUri = this.getIconUriForState();
   }
 
   toggleState($event): void

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, NgZone, HostListener, Renderer, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, NgZone, HostListener, Renderer, ViewChild, Output, EventEmitter } from '@angular/core';
 import { PhotosService } from '../../services/photos.service';
 
 @Component({
@@ -8,6 +8,7 @@ import { PhotosService } from '../../services/photos.service';
 })
 export class PhotoComponent implements OnInit, OnDestroy {
   @ViewChild("backgroundThing") backgroundThing;
+
   baseUrl: string;
   images: Array<string>;
   currentImageRelative: string;
@@ -39,18 +40,6 @@ export class PhotoComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
   }
-
-  // get sliderValue(): number
-  // {
-  //   return this.sliderPos;
-  // }
-
-  // set sliderValue(newValue: number)
-  // {
-  //   this.sliderPos = newValue;
-  //   let imageIx: number = this.sliderPos - 1;
-  //   this.showImageIx(imageIx);    
-  // }
 
   onSliderUpdate($event)
   {
@@ -92,7 +81,7 @@ export class PhotoComponent implements OnInit, OnDestroy {
     this.timeString = this.currentImageRelative.replace('src/assets/image', '').replace('.jpg', '').split('_')[1].replace('-', ':').substring(0, 5);
   }
   
-  autoplayChanged(data: boolean)
+  onAutoplayChanged(data: boolean)
   {
     this.autoplayPaused = data;
   }
