@@ -9,9 +9,34 @@
     height: auto;
     left: 0;
     min-height: 100%;
-    min-width: 1024px;
+    xmin-width: 1024px;
     overflow: hidden;
     position: fixed;
     top: 0;
     width: 100%;
+}
+
+.wrapper 
+{
+    display: grid;
+    grid-template-columns: 20px 34px 1px auto 20px;
+    grid-template-rows: 1fr 75px;
+    grid-template-areas: 
+    ". . . . ."
+    ". auto-play . slider .";
+    grid-gap: 10px;
+    width: 100vw;
+    height: 100vh;
+  }
+
+  .auto-play
+  {
+    grid-area: auto-play;
+    align-self: center;
+  }
+
+  .slider
+  {
+    grid-area: slider;
+    align-self: center;
 }

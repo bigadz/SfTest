@@ -113,7 +113,7 @@ namespace AjentiExplorer.Views
                     this.map.IsShowingUser = true;
                 }
 
-                foreach (var location in this.viewModel.Locations)
+                foreach (var location in this.viewModel.LocationViewModels)
                 {
                     //System.Diagnostics.Debug.WriteLine($"Location {location.Latitude},{location.Longitude} lbl={location.Name} addr={location.Address}");
 					var pin = new Pin
@@ -130,7 +130,7 @@ namespace AjentiExplorer.Views
                 }
             };
 
-			this.Disappearing += (sender, e) => NavigationPage.SetHasNavigationBar(this, true);
+            this.Disappearing += (sender, e) => { if (!App.SwitchingTopLevelPages) NavigationPage.SetHasNavigationBar(this, true); };
 		}
 
         async void Pin_Clicked(object sender, EventArgs e)

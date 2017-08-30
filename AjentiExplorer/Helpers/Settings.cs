@@ -1,4 +1,5 @@
-﻿using Plugin.Settings;
+﻿using System.Collections.Generic;
+using Plugin.Settings;
 using Plugin.Settings.Abstractions;
 
 using Xamarin.Forms;
@@ -20,46 +21,89 @@ namespace AjentiExplorer
             }
         }
 
-		public static Color YouTubeRed = Color.FromHex("cd181f");
+        public static Color YouTubeRed = Color.FromHex("cd181f");
 
-		public static Color Dark6 = Color.FromRgb(28, 30, 31); // VS Studio Mac - Code Window BG
+        public static Color Dark6 = Color.FromRgb(28, 30, 31); // VS Studio Mac - Code Window BG
         public static Color Dark5 = Color.FromRgb(36, 36, 36); // VS Studio Mac - Code Window Line Numbers BG
-		public static Color Dark4 = Color.FromRgb(48, 48, 48); // VS Studio Mac - Code Window Breakpoint BG
-		public static Color Dark3 = Color.FromRgb(71, 71, 71); // VS Studio Mac - Code Window Other Tabs BG
-		public static Color Dark2 = Color.FromRgb(82, 82, 82); // VS Studio Mac - Code Window Selected Tab BG
-		public static Color Dark1 = Color.FromRgb(72, 75, 85); // VS Studio Mac - Sln Menu Background
+        public static Color Dark4 = Color.FromRgb(48, 48, 48); // VS Studio Mac - Code Window Breakpoint BG
+        public static Color Dark3 = Color.FromRgb(71, 71, 71); // VS Studio Mac - Code Window Other Tabs BG
+        public static Color Dark2 = Color.FromRgb(82, 82, 82); // VS Studio Mac - Code Window Selected Tab BG
+        public static Color Dark1 = Color.FromRgb(72, 75, 85); // VS Studio Mac - Sln Menu Background
 
         public static Color DarkGray = Color.FromRgb(136, 138, 130); // VS Studio Mac - Code Comments
-		public static Color LightGray = Color.FromRgb(191, 191, 191); // VS Studio Mac - Sln Menu Text
+        public static Color LightGray = Color.FromRgb(191, 191, 191); // VS Studio Mac - Sln Menu Text
 
         public static Color NavBarColor = YouTubeRed;
 
 
-		#region Setting Constants
-		const string UsernameKey = "username";
-		static readonly string UsernameDefault = string.Empty;
+        #region Setting Constants
+        const string UsernameKey = "username";
+        static readonly string UsernameDefault = string.Empty;
 
-		const string PasswordKey = "password";
-		static readonly string PasswordDefault = string.Empty;
+        const string PasswordKey = "password";
+        static readonly string PasswordDefault = string.Empty;
 
-		const string AuthTokenKey = "authtoken";
+        const string AuthTokenKey = "authtoken";
         static readonly string AuthTokenDefault = string.Empty;
 
-		const string StayLoggedInKey = "stayloggedin";
-		static readonly bool StayLoggedInDefault = true;
+        const string StayLoggedInKey = "stayloggedin";
+        static readonly bool StayLoggedInDefault = true;
 
-		const string LatitudeKey = "latitude";
+        const string LatitudeKey = "latitude";
         static readonly double LatitudeDefault = -42.8823241; // Hobart
 
-		const string LongitudeKey = "longitude";
+        const string LongitudeKey = "longitude";
         static readonly double LongitudeDefault = 147.3197967; // Hobart
 
-		const string InitialPageKey = "initialpage";
-		static readonly string InitialPageDefault = string.Empty;
+        const string InitialPageKey = "initialpage";
+        static readonly string InitialPageDefault = string.Empty;
 
-		const string ServerEnvironmentKey = "serverenv";
-		static readonly string ServerEnvironmentDefault = "Prod";
+        const string ServerEnvironmentKey = "serverenv";
+        static readonly string ServerEnvironmentDefault = "Prod";
+
+        const string FavouriteLocationIdsKey = "favouritelocationids";
+        static readonly string FavouriteLocationIdsDefault = string.Empty;
+
+        const string RecentLocationIdsKey = "recentlocationids";
+        static readonly string RecentLocationIdsDefault = string.Empty;
+
 		#endregion
+
+		#region Handling Collections
+
+        private static ObservableRangeCollection<int> CSVToIntCollection(string csv)
+        {
+			var collection = new ObservableRangeCollection<int>();
+
+			if (!string.IsNullOrEmpty(csv))
+			{
+				foreach (var item in csv.Split(','))
+				{
+					collection.Add(int.Parse(item));
+				}
+			}
+
+			return collection;        
+        }
+
+		private static string IntCollectionToCSV(IEnumerable<int> collection)
+        {
+			var csvBuilder = new System.Text.StringBuilder();
+			foreach (var id in collection)
+			{
+				if (csvBuilder.Length == 0)
+				{
+					csvBuilder.Append($"{id}");
+				}
+				else
+				{
+					csvBuilder.Append($",{id}");
+				}
+			}
+			return csvBuilder.ToString();
+		}
+
+		#endregion // Handling Collections
 
 		public static bool IsLoggedIn => !string.IsNullOrWhiteSpace(AuthToken);
         public static void Logout() { AuthToken = null; }
@@ -157,6 +201,33 @@ namespace AjentiExplorer
 			set
 			{
 				AppSettings.AddOrUpdateValue(ServerEnvironmentKey, value);
+			}
+		}
+
+
+        public static ObservableRangeCollection<int> FavouriteLocationIds
+		{
+			get
+			{
+				var idCSV = AppSettings.GetValueOrDefault(FavouriteLocationIdsKey, FavouriteLocationIdsDefault);
+                return CSVToIntCollection(idCSV);
+			}
+			set
+			{
+                AppSettings.AddOrUpdateValue(RecentLocationIdsKey, IntCollectionToCSV(value));
+			}
+		}
+
+		public static ObservableRangeCollection<int> RecentLocationIds
+		{
+			get
+			{
+				var idCSV = AppSettings.GetValueOrDefault(RecentLocationIdsKey, RecentLocationIdsDefault);
+				return CSVToIntCollection(idCSV);
+			}
+			set
+			{
+				AppSettings.AddOrUpdateValue(RecentLocationIdsKey, IntCollectionToCSV(value));
 			}
 		}
 

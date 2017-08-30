@@ -37,5 +37,6 @@ namespace AjentiExplorer.Views.Cells
 
             View = grid;
         }
-    }
+
+	}
 }

@@ -1,9 +1,19 @@
- <div #backgroundThing id="background-thing" >
+ <div #backgroundThing id="background-thing" class="wrapper" >
   <app-info [locationString]="locationString"
             [dateString]="dateString"
             [timeString]="timeString">
   </app-info>
-  <app-auto-play (autoplayChanged)="autoplayChanged($event)"></app-auto-play>
+  <app-auto-play class="auto-play" (autoplayChanged)="autoplayChanged($event)"></app-auto-play>
+  <div class="slider">
+    <nouislider [min]="1" 
+                [max]="images.length" 
+                [step]="1" 
+                [ngModel]="sliderPos" 
+                [tooltips]="[true]"
+                (update)="onSliderUpdate($event)"
+                >
+    </nouislider>
+  </div>
 </div> 
 
 <div style="display: none;">

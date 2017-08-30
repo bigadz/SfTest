@@ -10,30 +10,36 @@ namespace AjentiExplorer.ViewModels
 {
     public class LocationViewModel : BaseViewModel
     {
-        private JsonMsgs.Location location;
-
 		public ICommand LoadImagesCommand { get; }
 
 		public LocationViewModel(JsonMsgs.Location location)
         {
-            this.location = location;
-            this.Title = "Location";
+            this.Location = new Models.Location(location);
+            this.Title = this.Location.Title;
 			LoadImagesCommand = new Command(async () => await LoadImagesAsync());
 		}
 
+		Models.Location location = null;
+		public Models.Location Location
+		{
+			get { return location; }
+			set { SetProperty(ref location, value); }
+		}
+
+
 		public int Id
 		{
-            get { return this.location.id; }
+            get { return this.Location.Id; }
 		}
 
 		public string Name
 		{
-            get { return this.location.name; }
+            get { return this.Location.Name; }
 		}
 
 		public string Address
 		{
-            get { return this.location.address; }
+            get { return this.Location.Address; }
 		}
 
         private string siteTypes;
@@ -44,7 +50,7 @@ namespace AjentiExplorer.ViewModels
                 if (this.siteTypes == null)
                 {
                     var sb = new StringBuilder();
-                    foreach (var siteType in this.location.siteTypes)
+                    foreach (var siteType in this.Location.SiteTypes)
                     {
                         if (sb.Length == 0)
                         {
@@ -64,22 +70,22 @@ namespace AjentiExplorer.ViewModels
 
 		public bool HasCoordinates
 		{
-            get { return this.location.latitude.HasValue && this.location.longitude.HasValue; }
+            get { return this.Location.HasCoordinates; }
 		}
 
 		public double Latitude
 		{
-            get { return this.location.latitude.Value; }
+            get { return this.Location.Latitude.Value; }
 		}
 
 		public double Longitude
 		{
-            get { return this.location.longitude.Value; }
+            get { return this.location.Longitude.Value; }
 		}
 
         public Position Position
         {
-            get { return new Position(Latitude, Longitude);  }
+            get { return this.Location.Position;  }
         }
 
 
@@ -113,7 +119,7 @@ namespace AjentiExplorer.ViewModels
 
             var getCameraImageLinksRequest = new JsonMsgs.GetCameraImageLinksRequest
 			{
-                id = this.location.id,
+                id = this.Location.Id,
                 imagesOnDisplay = 1,
 			};
             var response = await this.dataViewApi.GetCameraImageLinksAsync(getCameraImageLinksRequest);
