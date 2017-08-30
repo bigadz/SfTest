@@ -17,11 +17,6 @@ namespace AjentiExplorer.Views
 
 			SetBinding(TitleProperty, new Binding("Title"));
 
-            var dataSource = new DataSource
-            {
-                Source = this.viewModel.Photos,
-            };
-
             // This is causing a crash for device builds
             //dataSource.SortDescriptors.Add(new SortDescriptor("Title"));
 
@@ -33,10 +28,12 @@ namespace AjentiExplorer.Views
             var listView = new SfListView
             {
                 LayoutManager = gridLayout,
-                ItemsSource = dataSource.DisplayItems,
+                ItemsSource = this.viewModel.Photos,
 				ItemTemplate = new DataTemplate(typeof(Cells.PhotoThumbCell)),
-                AutoFitMode = AutoFitMode.Height,
+                ItemSize = 150,
+                SelectionMode = SelectionMode.None,
 			};
+            //listView.DataSource.SortDescriptors.Add(new SortDescriptor("Title")); -- Crashes on device
             listView.ItemTapped += ListView_ItemTapped;
 
             Grid grid = new Grid();

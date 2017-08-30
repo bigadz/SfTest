@@ -9,13 +9,8 @@ namespace AjentiExplorer.ViewModels
         {
 			this.Title = "Map";
 
-			this.MenuItems = new ObservableRangeCollection<DrawerMenuItem>
-			{
-				new DrawerMenuItem { Title = "Map", Current= true },
-				new DrawerMenuItem { Title = "Search" },
-				new DrawerMenuItem { Title = "Favourites" },
-				new DrawerMenuItem { Title = "Logout" },
-			};
-        }
+            this.MenuItems = DrawerMenuItem.CollectionFor(DrawerMenuItem.MenuItems.Map);
+
+		}
     }
 }

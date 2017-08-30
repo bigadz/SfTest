@@ -66,9 +66,24 @@ namespace AjentiExplorer.Views.LayoutFactories
 
 			connectedNavBar.Children.Add(menuButton, 0, 0);
 
+            if (NavigationDrawer.navigationBar != null)
+            {
+				NavigationDrawer.navigationBar.Children.Clear();
+				NavigationDrawer.navigationBar = null;
+            }
 			NavigationDrawer.navigationBar = connectedNavBar;
 			return navigationDrawer;
         }
+
+        public static void ReleaseNavigationDrawer(SfNavigationDrawer navigationDrawer)
+        {
+            NavigationDrawer.navigationBar.Children.Clear();
+            NavigationDrawer.navigationBar = null;
+            navigationDrawer.Children.Clear();
+			navigationDrawer.DrawerHeaderView = null;
+			navigationDrawer.DrawerContentView = null;
+			navigationDrawer.DrawerFooterView = null;
+		}
 
 		public static Layout NavigationBar
 		{
@@ -136,9 +151,12 @@ namespace AjentiExplorer.Views.LayoutFactories
 						case "Search":
 							await App.SwitchToPage(navPage.Navigation, new SearchListPage(new ViewModels.SearchListViewModel()));
 							break;
-						//case "Favourites":
-							//await App.SwitchToPage(navPage.Navigation, new FavouritesPage(new ViewModels.FavouritesViewModel()));
-							//break;
+						case "Recent":
+                            await App.SwitchToPage(navPage.Navigation, new RecentLocationsPage(new ViewModels.RecentLocationsViewModel()));
+							break;
+						case "Favourites":
+                            await App.SwitchToPage(navPage.Navigation, new FavouriteLocationsPage(new ViewModels.FavouriteLocationsViewModel()));
+							break;
 						case "Logout":
 							Settings.Logout();
 							await App.SwitchToPage(navPage.Navigation, new LoginPage(new ViewModels.LoginViewModel()));

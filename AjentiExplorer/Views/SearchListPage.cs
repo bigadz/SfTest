@@ -1,10 +1,10 @@
 ﻿using System;
-
+using System.Threading.Tasks;
+using AjentiExplorer.ViewModels;
 using Xamarin.Forms;
 
-
-using AjentiExplorer.ViewModels;
-using System.Threading.Tasks;
+using Syncfusion.ListView.XForms;
+using Syncfusion.DataSource;
 
 namespace AjentiExplorer.Views
 {
@@ -19,6 +19,8 @@ namespace AjentiExplorer.Views
 
 			SetBinding(TitleProperty, new Binding("Title"));
 
+			NavigationPage.SetHasNavigationBar(this, false);
+
 			// Listen for messages from the modelview(s)
 			MessagingCenter.Subscribe<InRangeViewModel, MessagingCenterAlert>(this, "alert", HandleMessagingCenterAlert);
 			MessagingCenter.Subscribe<BaseSearchViewModel, MessagingCenterAlert>(this, "alert", HandleMessagingCenterAlert);
@@ -26,6 +28,36 @@ namespace AjentiExplorer.Views
 
 			var navigationDrawer = LayoutFactories.NavigationDrawer.Create(viewModel);
 			Content = navigationDrawer;
+
+
+            var listViewGridLayout = new GridLayout
+			{
+				SpanCount = Device.Idiom == TargetIdiom.Phone ? 1 : 2,
+			};
+			
+			var listView = new SfListView
+			{
+				LayoutManager = listViewGridLayout,
+                ItemsSource = this.viewModel.LocationViewModels,
+                ItemTemplate = new DataTemplate(typeof(Cells.LocationCell)),
+                ItemSpacing = new Thickness(2),
+                ItemSize = 204,
+                RowSpacing = 4,
+                ColumnSpacing = 4,
+                SelectionMode = SelectionMode.None,
+			};
+			//listView.DataSource.SortDescriptors.Add(new SortDescriptor("Title")); -- Crashes on device
+
+			listView.ItemTapped += SfListView_ItemTapped;
+
+
+			//var listView = new ListView
+			//{
+   //             ItemsSource = this.viewModel.LocationViewModels,
+			//	ItemTemplate = new DataTemplate(typeof(Cells.LocationCell)),
+   //             RowHeight = 210,
+			//};
+            //listView.ItemTapped += ListView_ItemTapped;
 
 			var layoutGrid = new Grid
 			{
@@ -36,44 +68,47 @@ namespace AjentiExplorer.Views
 				}
 			};
 			layoutGrid.Children.Add(LayoutFactories.NavigationDrawer.NavigationBar, 0, 1, 0, 1);
+            layoutGrid.Children.Add(listView, 0, 1, 1, 2);
+			layoutGrid.Children.Add(LayoutFactories.BusyIndicator.Create(viewModel), 0, 1, 0, 2);
 			navigationDrawer.ContentView = layoutGrid;
 
 			this.Appearing += async (sender, e) =>
 			{
 				NavigationPage.SetHasNavigationBar(this, false);
 
-				// This will not return null. It will return the default location (Hobart) if it fails to determine anything else.
-				var lastKnownPosition = await this.viewModel.GetLastKnownPosition();
-
-				//this.map = new Map(
-				//		MapSpan.FromCenterAndRadius(
-				//			new Position(lastKnownPosition.Latitude, lastKnownPosition.Longitude),
-				//			Distance.FromKilometers(20)))
-				//{
-				//	IsShowingUser = false,
-				//	MapType = MapType.Street,
-				//	VerticalOptions = LayoutOptions.FillAndExpand,
-				//	HorizontalOptions = LayoutOptions.FillAndExpand,
-				//};
-				//layoutGrid.Children.Add(this.map, 0, 1, 1, 2);
-				layoutGrid.Children.Add(LayoutFactories.BusyIndicator.Create(viewModel), 0, 1, 0, 2);
+                if (this.viewModel.LocationViewModels.Count > 0)
+                    return;
 
 				// If Searching....
 				this.viewModel.SearchString = "FISH";
-				var currentPositionTask = this.viewModel.GetCurrentPosition();
-				var searchTask = this.viewModel.SearchAsync();
-				await Task.WhenAll(currentPositionTask, searchTask);
 
+				await this.viewModel.SearchAsync();
 			};
 
-			this.Disappearing += (sender, e) => NavigationPage.SetHasNavigationBar(this, true);
+            this.Disappearing += (sender, e) =>
+            {
+                if (App.SwitchingTopLevelPages)
+                {
+                    var navDrawer = this.Content as Syncfusion.SfNavigationDrawer.XForms.SfNavigationDrawer;
+                    LayoutFactories.NavigationDrawer.ReleaseNavigationDrawer(navDrawer);
+                    this.Content = null;
+                }
+                else
+                {
+                    NavigationPage.SetHasNavigationBar(this, true);
+                }
+            };
 		}
 
-		//async void SearchResult_Clicked(object sender, EventArgs e)
-		//{
-  //          var searchResult = sender as 
-		//	await this.Navigation.PushAsync(new LocationPage(searchResult.BindingContext as LocationViewModel));
-		//}
-	}
+        async void SfListView_ItemTapped(object sender, Syncfusion.ListView.XForms.ItemTappedEventArgs e)
+        {
+            await this.Navigation.PushAsync(new LocationPage(e.ItemData as LocationViewModel));
+        }
+
+        async void ListView_ItemTapped(object sender, Xamarin.Forms.ItemTappedEventArgs e)
+        {
+            await this.Navigation.PushAsync(new LocationPage(e.Item as LocationViewModel));
+        }
+    }
 }
 
