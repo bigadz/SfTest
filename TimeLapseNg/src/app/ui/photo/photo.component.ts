@@ -47,7 +47,11 @@ export class PhotoComponent implements OnInit, OnDestroy {
 
     if (updatedSliderValue == this.sliderPos) return;
 
-    this.autoplayPaused = true;
+    if ((Math.abs(updatedSliderValue - this.sliderPos) > 2) && !(updatedSliderValue == 1 && this.sliderPos == this.images.length-1))
+    {
+      this.autoplayPaused = true;
+    }
+
     let imageIx: number = updatedSliderValue - 1;
     this.showImageIx(imageIx);    
   }
@@ -57,10 +61,13 @@ export class PhotoComponent implements OnInit, OnDestroy {
   {
     if (this.autoplayPaused) return;
 
-    this.sliderPos++;
-    if (this.sliderPos > this.images.length)
+    if (this.sliderPos >= this.images.length)
     {
       this.sliderPos = 0;
+    }
+    else
+    {
+      this.sliderPos++;
     }
     this.showImageIx(this.sliderPos - 1);
   }
