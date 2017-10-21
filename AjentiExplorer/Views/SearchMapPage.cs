@@ -84,26 +84,27 @@ namespace AjentiExplorer.Views
 				layoutGrid.Children.Add(LayoutFactories.BusyIndicator.Create(viewModel), 0, 1, 0, 2);
 
 				// If Searching....
-				this.viewModel.SearchString = "FISH";
-                var currentPositionTask = this.viewModel.GetCurrentPosition();
-                var searchTask = this.viewModel.SearchAsync();
-                await Task.WhenAll(currentPositionTask, searchTask);
-				var currentPosition = await currentPositionTask;
+				//this.viewModel.SearchString = "FISH";
+                //var currentPositionTask = this.viewModel.GetCurrentPosition();
+                //var searchTask = this.viewModel.SearchAsync();
+                //await Task.WhenAll(currentPositionTask, searchTask);
+                var currentPosition = lastKnownPosition;// await currentPositionTask;
 
                 // If InRanging...
 				//var currentPosition = await this.viewModel.GetCurrentPosition();
 
-				//            if (currentPosition == null)
-				//            {
-				//	this.viewModel.Latitude = lastKnownPosition.Latitude;
-				//	this.viewModel.Longitude = lastKnownPosition.Longitude;
-				//	await this.viewModel.InRangeAsync();
-				//}
-				//           else
-				//           {
-				//this.viewModel.Latitude = currentPosition.Latitude;
-				//this.viewModel.Longitude = currentPosition.Longitude;
-				//await this.viewModel.InRangeAsync();
+                //if (currentPosition == null)
+                //{
+                //    this.viewModel.Latitude = lastKnownPosition.Latitude;
+                //    this.viewModel.Longitude = lastKnownPosition.Longitude;
+                //    await this.viewModel.InRangeAsync();
+                //}
+                //else
+                //{
+                //    this.viewModel.Latitude = currentPosition.Latitude;
+                //    this.viewModel.Longitude = currentPosition.Longitude;
+                //    await this.viewModel.InRangeAsync();
+                //}
 
 				if (currentPosition != null)
                 {

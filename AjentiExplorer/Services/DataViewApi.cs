@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using JsonMsgs;
@@ -43,10 +44,15 @@ namespace AjentiExplorer.Services
 
 			try
 			{
-				request.token = Settings.AuthToken;
-				string body = JsonConvert.SerializeObject(request);
-				string jsonResponse = await this.ajentiMobileApi.PostAsync("/DataView/GetCameraImageLinks", body);
-				response = JsonConvert.DeserializeObject<GetCameraImageLinksResponse>(jsonResponse);
+				//request.token = Settings.AuthToken;
+				//string body = JsonConvert.SerializeObject(request);
+				//string jsonResponse = await this.ajentiMobileApi.PostAsync("/DataView/GetCameraImageLinks", body);
+				//response = JsonConvert.DeserializeObject<GetCameraImageLinksResponse>(jsonResponse);
+                response = new GetCameraImageLinksResponse
+                {
+                    images = new List<CameraImage>(),
+                    result = true,
+                };
 			}
 			catch (Exception ex)
 			{
@@ -66,10 +72,14 @@ namespace AjentiExplorer.Services
 
 			try
 			{
-				request.token = Settings.AuthToken;
-				string body = JsonConvert.SerializeObject(request);
-				string jsonResponse = await this.ajentiMobileApi.PostAsync("/DataView/GetSiteJournal", body);
-				response = JsonConvert.DeserializeObject<GetSiteJournalResponse>(jsonResponse);
+				//request.token = Settings.AuthToken;
+				//string body = JsonConvert.SerializeObject(request);
+				//string jsonResponse = await this.ajentiMobileApi.PostAsync("/DataView/GetSiteJournal", body);
+				//response = JsonConvert.DeserializeObject<GetSiteJournalResponse>(jsonResponse);
+                response = new GetSiteJournalResponse
+                {
+                    result = true,
+                };
 			}
 			catch (Exception ex)
 			{
@@ -89,10 +99,22 @@ namespace AjentiExplorer.Services
 
 			try
 			{
-				request.token = Settings.AuthToken;
-				string body = JsonConvert.SerializeObject(request);
-				string jsonResponse = await this.ajentiMobileApi.PostAsync("/DataView/InstallationSearch", body);
-				response = JsonConvert.DeserializeObject<InstallationSearchResponse>(jsonResponse);
+				//request.token = Settings.AuthToken;
+				//string body = JsonConvert.SerializeObject(request);
+				//string jsonResponse = await this.ajentiMobileApi.PostAsync("/DataView/InstallationSearch", body);
+				//response = JsonConvert.DeserializeObject<InstallationSearchResponse>(jsonResponse);
+                response = new InstallationSearchResponse
+                {
+                    result = true,
+                };
+                response.results.Add(new Location
+                {
+                    name = "Hobart",
+                    latitude = -42.8823389,
+                    longitude = 147.3110038,
+                    id = 1,
+                    address  = "Hobart",
+                });
 			}
 			catch (Exception ex)
 			{
@@ -112,10 +134,15 @@ namespace AjentiExplorer.Services
 
 			try
 			{
-				request.token = Settings.AuthToken;
-				string body = JsonConvert.SerializeObject(request);
-				string jsonResponse = await this.ajentiMobileApi.PostAsync("/DataView/InstallationsInRange", body);
-				response = JsonConvert.DeserializeObject<InstallationsInRangeResponse>(jsonResponse);
+				//request.token = Settings.AuthToken;
+				//string body = JsonConvert.SerializeObject(request);
+				//string jsonResponse = await this.ajentiMobileApi.PostAsync("/DataView/InstallationsInRange", body);
+				//response = JsonConvert.DeserializeObject<InstallationsInRangeResponse>(jsonResponse);
+                response = new InstallationsInRangeResponse
+                {
+                    result = true,
+                };
+
 			}
 			catch (Exception ex)
 			{
@@ -135,9 +162,15 @@ namespace AjentiExplorer.Services
 
 			try
 			{
-				string body = JsonConvert.SerializeObject(login);
-				string jsonResponse = await this.ajentiMobileApi.PostAsync("/DataView/Login", body);
-				response = JsonConvert.DeserializeObject<AccountLoginResponse>(jsonResponse);
+				//string body = JsonConvert.SerializeObject(login);
+				//string jsonResponse = await this.ajentiMobileApi.PostAsync("/DataView/Login", body);
+                //response = JsonConvert.DeserializeObject<AccountLoginResponse>(jsonResponse);
+                response = new AccountLoginResponse
+                {
+                    username = login.username,
+                    token = "123",
+                    result = true,
+                };
 
                 // Store the token created by the login
                 Settings.AuthToken = response.token;
@@ -162,9 +195,14 @@ namespace AjentiExplorer.Services
 
 			try
 			{
-				string body = JsonConvert.SerializeObject(request);
-				string jsonResponse = await this.ajentiMobileApi.PostAsync("/DataView/PasswordReset", body);
-				response = JsonConvert.DeserializeObject<PasswordResetResponse>(jsonResponse);
+				//string body = JsonConvert.SerializeObject(request);
+				//string jsonResponse = await this.ajentiMobileApi.PostAsync("/DataView/PasswordReset", body);
+				//response = JsonConvert.DeserializeObject<PasswordResetResponse>(jsonResponse);
+                response = new PasswordResetResponse
+                {
+                    token = "123",
+                    result = true,
+                };
 			}
 			catch (Exception ex)
 			{
@@ -184,10 +222,17 @@ namespace AjentiExplorer.Services
 
 			try
 			{
-				request.token = Settings.AuthToken;
-				string body = JsonConvert.SerializeObject(request);
-				string jsonResponse = await this.ajentiMobileApi.PostAsync("/DataView/Reauthenticate", body);
-				response = JsonConvert.DeserializeObject<AccountLoginResponse>(jsonResponse);
+				//request.token = Settings.AuthToken;
+				//string body = JsonConvert.SerializeObject(request);
+				//string jsonResponse = await this.ajentiMobileApi.PostAsync("/DataView/Reauthenticate", body);
+				//response = JsonConvert.DeserializeObject<AccountLoginResponse>(jsonResponse);
+                response = new AccountLoginResponse
+                {
+                    username = Settings.Username,
+                    token = Settings.AuthToken,
+                    result = true,
+                };
+
 			}
 			catch (Exception ex)
 			{
@@ -207,10 +252,14 @@ namespace AjentiExplorer.Services
 
 			try
 			{
-				request.token = Settings.AuthToken;
-				string body = JsonConvert.SerializeObject(request);
-				string jsonResponse = await this.ajentiMobileApi.PostAsync("/DataView/RecordLocation", body);
-				response = JsonConvert.DeserializeObject<BaseResponse>(jsonResponse);
+				//request.token = Settings.AuthToken;
+				//string body = JsonConvert.SerializeObject(request);
+				//string jsonResponse = await this.ajentiMobileApi.PostAsync("/DataView/RecordLocation", body);
+				//response = JsonConvert.DeserializeObject<BaseResponse>(jsonResponse);
+                response = new BaseResponse
+                {
+                    result = true,
+                };
 			}
 			catch (Exception ex)
 			{
@@ -230,10 +279,14 @@ namespace AjentiExplorer.Services
 
 			try
 			{
-				request.token = Settings.AuthToken;
-				string body = JsonConvert.SerializeObject(request);
-				string jsonResponse = await this.ajentiMobileApi.PostAsync("/DataView/RecordSiteJournal", body);
-				response = JsonConvert.DeserializeObject<BaseResponse>(jsonResponse);
+				//request.token = Settings.AuthToken;
+				//string body = JsonConvert.SerializeObject(request);
+				//string jsonResponse = await this.ajentiMobileApi.PostAsync("/DataView/RecordSiteJournal", body);
+				//response = JsonConvert.DeserializeObject<BaseResponse>(jsonResponse);
+                response = new AccountLoginResponse
+                {
+                    result = true,
+                };
 			}
 			catch (Exception ex)
 			{

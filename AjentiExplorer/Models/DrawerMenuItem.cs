@@ -46,7 +46,7 @@ namespace AjentiExplorer.Models
 		{
 			var collection = new ObservableRangeCollection<DrawerMenuItem>
 			{
-				new DrawerMenuItem { Title = "Collections", Current = currentItem.Equals(MenuItems.Collections) },
+				//new DrawerMenuItem { Title = "Collections", Current = currentItem.Equals(MenuItems.Collections) },
 				new DrawerMenuItem { Title = "Favourites", Current = currentItem.Equals(MenuItems.Favourites) },
 				new DrawerMenuItem { Title = "Map", Current = currentItem.Equals(MenuItems.Map) },
 				new DrawerMenuItem { Title = "Recent", Current = currentItem.Equals(MenuItems.Recent) },

@@ -38,10 +38,10 @@ namespace AjentiExplorer.Views
 			var section1 = new TableSection() { Title = "Site" };
 			var section2 = new TableSection() { Title = "Actions" };
 
-			var nameCell = new TextCell { Detail = "Name", Text = viewModel.Name };
-			var addressCell = new TextCell { Detail = "Address", Text = viewModel.Address };
-            var siteTypesCell = new TextCell { Detail = "Site Types", Text = viewModel.SiteTypes };
-			var idCell = new TextCell { Detail = "ADMS Id", Text = viewModel.Id.ToString() };
+            var nameCell = new TextCell { Detail = "Name", Text = "Name"};//viewModel.Name };
+            var addressCell = new TextCell { Detail = "Address", Text = "Address"};//viewModel.Address };
+            var siteTypesCell = new TextCell { Detail = "Site Types", Text = "Site Types"};//viewModel.SiteTypes };
+            var idCell = new TextCell { Detail = "ADMS Id", Text = "1"};//viewModel.Id.ToString() };
 
 			section1.Add(nameCell);
 			section1.Add(addressCell);

@@ -152,7 +152,14 @@ namespace AjentiExplorer.Views.LayoutFactories
 							await App.SwitchToPage(navPage.Navigation, new SearchListPage(new ViewModels.SearchListViewModel()));
 							break;
 						case "Recent":
-                            await App.SwitchToPage(navPage.Navigation, new RecentLocationsPage(new ViewModels.RecentLocationsViewModel()));
+                            {
+                                var loc = new JsonMsgs.Location
+                                {
+                                    name = "Demo site",
+                                };
+                                await App.SwitchToPage(navPage.Navigation, new LocationPage(new ViewModels.LocationViewModel(loc)));
+                            //  await App.SwitchToPage(navPage.Navigation, new RecentLocationsPage(new ViewModels.RecentLocationsViewModel()));
+                            }
 							break;
 						case "Favourites":
                             await App.SwitchToPage(navPage.Navigation, new FavouriteLocationsPage(new ViewModels.FavouriteLocationsViewModel()));
